@@ -1,11 +1,108 @@
 <!DOCTYPE html>
 <html lang="cs">
 <head>
-<meta charset="UTF-8">
-<meta http-equiv="refresh" content="0; url=presentations/onko-podklady-schuzka1.html">
-<title>ALT+SHIFT+HEAL — Onko</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ALT+SHIFT+HEAL</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{min-height:100vh;background:#07090c;font-family:'Inter',system-ui,sans-serif;
+  display:flex;align-items:center;justify-content:center}
+.wrap{max-width:480px;width:100%;padding:48px 32px}
+.logo{display:flex;align-items:center;gap:12px;margin-bottom:40px}
+.logo-mark{width:40px;height:40px;border-radius:11px;
+  background:linear-gradient(135deg,#32BCA9,#1A7D70);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-mark svg{width:22px;height:22px}
+.logo-name{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:16px;
+  letter-spacing:.04em;color:#e6edf3}
+.logo-sub{font-size:11px;color:#2A9D8F;letter-spacing:.12em;text-transform:uppercase;
+  margin-top:2px}
+h1{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;
+  color:#e6edf3;line-height:1.2;margin-bottom:10px}
+.desc{font-size:14px;color:#5a6677;line-height:1.65;margin-bottom:36px}
+.cards{display:flex;flex-direction:column;gap:12px}
+.card{display:flex;align-items:center;gap:16px;background:#0f141a;
+  border:1px solid #1e2a38;border-radius:14px;padding:18px 20px;
+  text-decoration:none;color:inherit;transition:border-color .18s,transform .15s}
+.card:hover{border-color:#2A9D8F;transform:translateY(-2px)}
+.card-ic{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;
+  justify-content:center;flex-shrink:0}
+.card-ic.teal{background:#0d1f1c}
+.card-ic.slate{background:#111827}
+.card-ic svg{width:20px;height:20px;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.card-ic.teal svg{stroke:#2A9D8F}
+.card-ic.slate svg{stroke:#6B7280}
+.card-body{}
+.card-title{font-size:15px;font-weight:600;color:#c9d1d9;margin-bottom:2px}
+.card-meta{font-size:12px;color:#5a6677}
+.card-arr{margin-left:auto;color:#2e3a4a;font-size:18px;flex-shrink:0}
+.card:hover .card-arr{color:#2A9D8F}
+.footer{margin-top:40px;font-family:'JetBrains Mono',monospace;font-size:10px;
+  color:#2e3a4a;letter-spacing:.08em;text-align:center}
+</style>
 </head>
 <body>
-<a href="presentations/onko-podklady-schuzka1.html">Otvoriť prezentáciu →</a>
+<div class="wrap">
+
+  <div class="logo">
+    <div class="logo-mark">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path d="M7 18Q12 12 17 7" stroke="#fff" stroke-width="2.2" stroke-linecap="round" opacity=".44"/>
+        <circle cx="7" cy="18" r="2" fill="#fff" opacity=".35"/>
+        <circle cx="12" cy="12" r="2.5" fill="#fff" opacity=".66"/>
+        <circle cx="17" cy="7" r="3.5" fill="#fff"/>
+      </svg>
+    </div>
+    <div>
+      <div class="logo-name">ALT+SHIFT+HEAL</div>
+      <div class="logo-sub">Průvodce léčbou</div>
+    </div>
+  </div>
+
+  <h1>Digitální průvodce<br>onkologického pacienta</h1>
+  <p class="desc">Student competition entry — SPŠE IT Ostrava · 2026.<br>
+    Personalizovaná aplikace pro pacienty s karcinomem prostaty.</p>
+
+  <div class="cards">
+
+    <a class="card" href="app/prototyp.html">
+      <div class="card-ic teal">
+        <svg viewBox="0 0 24 24">
+          <rect x="5" y="2" width="14" height="20" rx="2"/>
+          <line x1="9" y1="7" x2="15" y2="7"/>
+          <line x1="9" y1="11" x2="15" y2="11"/>
+          <line x1="9" y1="15" x2="13" y2="15"/>
+        </svg>
+      </div>
+      <div class="card-body">
+        <div class="card-title">Prototyp aplikácie</div>
+        <div class="card-meta">Pacientská aplikácia · PWA · offline</div>
+      </div>
+      <div class="card-arr">→</div>
+    </a>
+
+    <a class="card" href="presentations/onko-podklady-schuzka1.html">
+      <div class="card-ic slate">
+        <svg viewBox="0 0 24 24">
+          <rect x="2" y="3" width="20" height="14" rx="2"/>
+          <line x1="8" y1="21" x2="16" y2="21"/>
+          <line x1="12" y1="17" x2="12" y2="21"/>
+        </svg>
+      </div>
+      <div class="card-body">
+        <div class="card-title">Prezentácia</div>
+        <div class="card-meta">Systémová analýza · 18 slajdov</div>
+      </div>
+      <div class="card-arr">→</div>
+    </a>
+
+  </div>
+
+  <div class="footer">SPŠE IT OSTRAVA · 2026 · MIT LICENSE</div>
+
+</div>
 </body>
 </html>

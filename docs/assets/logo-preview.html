@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ALT+SHIFT+HEAL — Logo System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#07090c;color:#e6edf3;font-family:'Inter',system-ui,sans-serif;min-height:100vh}
+
+.page{max-width:900px;margin:0 auto;padding:72px 40px 100px}
+
+/* Header */
+.pg-eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;
+  color:#5a6677;text-transform:uppercase;margin-bottom:16px}
+.pg-title{font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:700;
+  color:#e6edf3;letter-spacing:-.01em;margin-bottom:8px}
+.pg-title span{color:#2A9D8F}
+.pg-sub{font-size:14px;color:#5a6677;line-height:1.6;margin-bottom:72px}
+
+/* Section */
+.sec{margin-bottom:64px}
+.sec-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;
+  color:#5a6677;text-transform:uppercase;margin-bottom:28px;padding-bottom:10px;
+  border-bottom:1px solid #161c24}
+
+/* Concepts grid */
+.concepts{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.concept-card{background:#0f141a;border:1px solid #1e2a38;border-radius:16px;
+  padding:32px 24px 24px;cursor:pointer;transition:border-color .2s,transform .15s}
+.concept-card:hover{border-color:#2A9D8F;transform:translateY(-2px)}
+.concept-card.chosen{border-color:#2A9D8F;background:#0d1a17}
+.concept-center{display:flex;justify-content:center;margin-bottom:20px}
+.concept-name{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;
+  color:#c9d1d9;margin-bottom:6px}
+.concept-desc{font-size:12px;color:#5a6677;line-height:1.55}
+.chosen-badge{display:inline-block;margin-top:10px;background:#2A9D8F;color:#fff;
+  font-size:10px;font-family:'JetBrains Mono',monospace;letter-spacing:.1em;
+  padding:3px 8px;border-radius:4px;text-transform:uppercase}
+
+/* Size showcase */
+.sizes-row{display:flex;align-items:flex-end;gap:32px;flex-wrap:wrap}
+.size-block{text-align:center}
+.size-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:#5a6677;
+  margin-top:8px;letter-spacing:.06em}
+
+/* Lockup */
+.lockup-section{display:flex;flex-direction:column;gap:28px}
+.lockup{display:flex;align-items:center;gap:18px}
+.lockup-text{}
+.lockup-name{font-family:'JetBrains Mono',monospace;font-weight:700;
+  color:#e6edf3;line-height:1.1;letter-spacing:.01em}
+.lockup-sub{font-family:'Inter',sans-serif;font-weight:500;
+  color:#2A9D8F;letter-spacing:.14em;text-transform:uppercase;margin-top:4px}
+
+.on-light{background:#F4F8FB;border-radius:12px;padding:32px 28px;
+  display:flex;flex-direction:column;gap:24px}
+.on-light .lockup-name{color:#1A202C}
+.on-light .lockup-sub{color:#2A9D8F}
+.on-light .section-note{font-size:11px;color:#718096;margin-top:4px}
+
+/* Colour palette */
+.palette{display:flex;gap:14px;flex-wrap:wrap}
+.swatch{width:80px}
+.sw-box{height:64px;border-radius:10px}
+.sw-name{font-family:'JetBrains Mono',monospace;font-size:10px;color:#8b97a7;
+  margin-top:7px;letter-spacing:.04em}
+.sw-hex{font-family:'JetBrains Mono',monospace;font-size:11px;color:#c9d1d9;
+  margin-top:2px}
+
+/* Divider */
+.divider{border:none;border-top:1px solid #161c24;margin:12px 0 36px}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <p class="pg-eyebrow">Brand Assets · v0.3</p>
+  <h1 class="pg-title">ALT+SHIFT+<span>HEAL</span></h1>
+  <p class="pg-sub">Logo system pro digitálního průvodce onkologického pacienta.<br>
+    Tři koncepty — klikni na zvolený, abys označil výběr.</p>
+
+  <!-- ── 3 CONCEPTS ─────────────────────────────────── -->
+  <div class="sec">
+    <div class="sec-label">Koncepty — Výběr směru</div>
+    <div class="concepts">
+
+      <!-- Concept A: Rising Path -->
+      <div class="concept-card chosen" onclick="choose(this,'a')" id="c-a">
+        <div class="concept-center">
+          <!-- 80×80 preview -->
+          <svg width="80" height="80" viewBox="0 0 64 64" fill="none">
+            <defs>
+              <linearGradient id="gA" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#32BCA9"/>
+                <stop offset="1" stop-color="#1A7D70"/>
+              </linearGradient>
+            </defs>
+            <rect width="64" height="64" rx="16" fill="url(#gA)"/>
+            <path d="M16 48 Q32 32 48 16" stroke="white" stroke-width="4.5"
+                  stroke-linecap="round" fill="none" opacity=".42"/>
+            <circle cx="16" cy="48" r="5" fill="white" opacity=".32"/>
+            <circle cx="32" cy="32" r="6.5" fill="white" opacity=".64"/>
+            <circle cx="48" cy="16" r="9.5" fill="white"/>
+            <circle cx="48" cy="16" r="14" stroke="white" stroke-width="1.5"
+                    fill="none" opacity=".18"/>
+          </svg>
+        </div>
+        <div class="concept-name">A — Rising Path</div>
+        <div class="concept-desc">Tri kroky stúpajúce diagonálne — priamo metafora liečebnej cesty. Väčší bod = cieľ. Halo ring = dosažiteľnosť.</div>
+        <span class="chosen-badge">Odporúčané</span>
+      </div>
+
+      <!-- Concept B: Compass -->
+      <div class="concept-card" onclick="choose(this,'b')" id="c-b">
+        <div class="concept-center">
+          <svg width="80" height="80" viewBox="0 0 64 64" fill="none">
+            <defs>
+              <linearGradient id="gB" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#32BCA9"/>
+                <stop offset="1" stop-color="#1A7D70"/>
+              </linearGradient>
+            </defs>
+            <rect width="64" height="64" rx="16" fill="url(#gB)"/>
+            <!-- Outer ring -->
+            <circle cx="32" cy="32" r="18" stroke="white" stroke-width="1.5"
+                    fill="none" opacity=".28"/>
+            <!-- Inner tick marks (N/S/E/W subtle) -->
+            <line x1="32" y1="12" x2="32" y2="15" stroke="white" stroke-width="1.5"
+                  opacity=".3" stroke-linecap="round"/>
+            <line x1="52" y1="32" x2="49" y2="32" stroke="white" stroke-width="1.5"
+                  opacity=".3" stroke-linecap="round"/>
+            <line x1="32" y1="52" x2="32" y2="49" stroke="white" stroke-width="1.5"
+                  opacity=".3" stroke-linecap="round"/>
+            <line x1="12" y1="32" x2="15" y2="32" stroke="white" stroke-width="1.5"
+                  opacity=".3" stroke-linecap="round"/>
+            <!-- North needle (bright, pointing up-right) -->
+            <polygon points="32,32 29,38 32,14 35,38" fill="white"/>
+            <!-- South needle (faded) -->
+            <polygon points="32,32 29,26 32,50 35,26" fill="white" opacity=".28"/>
+            <!-- Center pivot -->
+            <circle cx="32" cy="32" r="3.5" fill="#1A7D70"/>
+            <circle cx="32" cy="32" r="2" fill="white"/>
+          </svg>
+        </div>
+        <div class="concept-name">B — Compass Guide</div>
+        <div class="concept-desc">Kompas ako symbol navigácie a vedenia. "Průvodce" = sprievodca. Klasická medicínska orientácia — severne = vpred.</div>
+      </div>
+
+      <!-- Concept C: Forward Arrow -->
+      <div class="concept-card" onclick="choose(this,'c')" id="c-c">
+        <div class="concept-center">
+          <svg width="80" height="80" viewBox="0 0 64 64" fill="none">
+            <defs>
+              <linearGradient id="gC" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#32BCA9"/>
+                <stop offset="1" stop-color="#1A7D70"/>
+              </linearGradient>
+            </defs>
+            <rect width="64" height="64" rx="16" fill="url(#gC)"/>
+            <!-- Forked origin (two paths = "no matter where you start") -->
+            <path d="M32 50 L16 58" stroke="white" stroke-width="3"
+                  stroke-linecap="round" opacity=".32"/>
+            <path d="M32 50 L48 58" stroke="white" stroke-width="3"
+                  stroke-linecap="round" opacity=".32"/>
+            <!-- Shaft -->
+            <line x1="32" y1="50" x2="32" y2="22" stroke="white" stroke-width="5"
+                  stroke-linecap="round"/>
+            <!-- Head -->
+            <path d="M20 32 L32 18 L44 32" stroke="white" stroke-width="5"
+                  stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+        </div>
+        <div class="concept-name">C — Forward Arrow</div>
+        <div class="concept-desc">Čistá šípka nahor. Minimalistická, silná, okamžite čitateľná. Vidlicový chvost = "odkiaľkoľvek, smer je vopred".</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── CHOSEN CONCEPT — SIZES ─────────────────────── -->
+  <div class="sec" id="sizes-sec">
+    <div class="sec-label">Ikona · Veľkosti</div>
+    <div class="sizes-row" id="sizes-row">
+      <!-- 16 -->
+      <div class="size-block">
+        <svg id="ico-16" width="16" height="16" viewBox="0 0 64 64" fill="none">
+          <use href="#chosen-icon"/>
+        </svg>
+        <div class="size-label">16 px</div>
+      </div>
+      <!-- 24 -->
+      <div class="size-block">
+        <svg id="ico-24" width="24" height="24" viewBox="0 0 64 64" fill="none">
+          <use href="#chosen-icon"/>
+        </svg>
+        <div class="size-label">24 px</div>
+      </div>
+      <!-- 32 -->
+      <div class="size-block">
+        <svg id="ico-32" width="32" height="32" viewBox="0 0 64 64" fill="none">
+          <use href="#chosen-icon"/>
+        </svg>
+        <div class="size-label">32 px</div>
+      </div>
+      <!-- 64 -->
+      <div class="size-block">
+        <svg id="ico-64" width="64" height="64" viewBox="0 0 64 64" fill="none">
+          <use href="#chosen-icon"/>
+        </svg>
+        <div class="size-label">64 px</div>
+      </div>
+      <!-- 128 -->
+      <div class="size-block">
+        <svg id="ico-128" width="128" height="128" viewBox="0 0 64 64" fill="none">
+          <use href="#chosen-icon"/>
+        </svg>
+        <div class="size-label">128 px</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── LOCKUP — DARK ──────────────────────────────── -->
+  <div class="sec">
+    <div class="sec-label">Kompletné logo · Tmavé pozadie</div>
+    <div class="lockup-section">
+
+      <!-- Large lockup -->
+      <div class="lockup">
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+          <defs>
+            <linearGradient id="gLK" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#32BCA9"/><stop offset="1" stop-color="#1A7D70"/>
+            </linearGradient>
+          </defs>
+          <rect width="64" height="64" rx="16" fill="url(#gLK)"/>
+          <path d="M16 48 Q32 32 48 16" stroke="white" stroke-width="4.5"
+                stroke-linecap="round" fill="none" opacity=".42"/>
+          <circle cx="16" cy="48" r="5" fill="white" opacity=".32"/>
+          <circle cx="32" cy="32" r="6.5" fill="white" opacity=".64"/>
+          <circle cx="48" cy="16" r="9.5" fill="white"/>
+          <circle cx="48" cy="16" r="14" stroke="white" stroke-width="1.5"
+                  fill="none" opacity=".18"/>
+        </svg>
+        <div class="lockup-text">
+          <div class="lockup-name" style="font-size:26px">ALT+SHIFT+HEAL</div>
+          <div class="lockup-sub" style="font-size:11px">Průvodce léčbou · Karcinom prostaty</div>
+        </div>
+      </div>
+
+      <!-- Medium lockup -->
+      <div class="lockup">
+        <svg width="40" height="40" viewBox="0 0 64 64" fill="none">
+          <defs>
+            <linearGradient id="gMK" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#32BCA9"/><stop offset="1" stop-color="#1A7D70"/>
+            </linearGradient>
+          </defs>
+          <rect width="64" height="64" rx="16" fill="url(#gMK)"/>
+          <path d="M16 48 Q32 32 48 16" stroke="white" stroke-width="4.5"
+                stroke-linecap="round" fill="none" opacity=".42"/>
+          <circle cx="16" cy="48" r="5" fill="white" opacity=".32"/>
+          <circle cx="32" cy="32" r="6.5" fill="white" opacity=".64"/>
+          <circle cx="48" cy="16" r="9.5" fill="white"/>
+          <circle cx="48" cy="16" r="14" stroke="white" stroke-width="1.5"
+                  fill="none" opacity=".18"/>
+        </svg>
+        <div class="lockup-text">
+          <div class="lockup-name" style="font-size:18px">ALT+SHIFT+HEAL</div>
+          <div class="lockup-sub" style="font-size:10px">Průvodce léčbou</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── LOCKUP — LIGHT ─────────────────────────────── -->
+  <div class="sec">
+    <div class="sec-label">Kompletné logo · Svetlé pozadie (app)</div>
+    <div class="on-light">
+
+      <div class="lockup">
+        <svg width="48" height="48" viewBox="0 0 64 64" fill="none">
+          <defs>
+            <linearGradient id="gLL" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#32BCA9"/><stop offset="1" stop-color="#1A7D70"/>
+            </linearGradient>
+          </defs>
+          <rect width="64" height="64" rx="16" fill="url(#gLL)"/>
+          <path d="M16 48 Q32 32 48 16" stroke="white" stroke-width="4.5"
+                stroke-linecap="round" fill="none" opacity=".42"/>
+          <circle cx="16" cy="48" r="5" fill="white" opacity=".32"/>
+          <circle cx="32" cy="32" r="6.5" fill="white" opacity=".64"/>
+          <circle cx="48" cy="16" r="9.5" fill="white"/>
+          <circle cx="48" cy="16" r="14" stroke="white" stroke-width="1.5"
+                  fill="none" opacity=".18"/>
+        </svg>
+        <div class="lockup-text">
+          <div class="lockup-name" style="font-size:22px;color:#1A202C;
+            font-family:'JetBrains Mono',monospace;font-weight:700">ALT+SHIFT+HEAL</div>
+          <div class="lockup-sub" style="font-size:10px">Průvodce léčbou</div>
+        </div>
+      </div>
+
+      <!-- App header context (actual size used in app) -->
+      <hr class="divider">
+      <div style="display:flex;align-items:center;gap:10px">
+        <svg width="30" height="30" viewBox="0 0 64 64" fill="none">
+          <defs>
+            <linearGradient id="gApp" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#32BCA9"/><stop offset="1" stop-color="#1A7D70"/>
+            </linearGradient>
+          </defs>
+          <rect width="64" height="64" rx="16" fill="url(#gApp)"/>
+          <path d="M16 48 Q32 32 48 16" stroke="white" stroke-width="4.5"
+                stroke-linecap="round" fill="none" opacity=".42"/>
+          <circle cx="16" cy="48" r="5" fill="white" opacity=".32"/>
+          <circle cx="32" cy="32" r="6.5" fill="white" opacity=".64"/>
+          <circle cx="48" cy="16" r="9.5" fill="white"/>
+          <circle cx="48" cy="16" r="14" stroke="white" stroke-width="1.5"
+                  fill="none" opacity=".18"/>
+        </svg>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:12px;
+          font-weight:600;letter-spacing:.12em;color:#1A202C">PRŮVODCE</span>
+        <span style="font-size:11px;color:#718096;margin-left:4px">← app header (aktuálna veľkosť)</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── PALETTE ─────────────────────────────────────── -->
+  <div class="sec">
+    <div class="sec-label">Farebná paleta</div>
+    <div class="palette">
+      <div class="swatch">
+        <div class="sw-box" style="background:linear-gradient(135deg,#32BCA9,#1A7D70)"></div>
+        <div class="sw-name">Logo gradient</div>
+        <div class="sw-hex">#32BCA9 → #1A7D70</div>
+      </div>
+      <div class="swatch">
+        <div class="sw-box" style="background:#2A9D8F"></div>
+        <div class="sw-name">Teal primary</div>
+        <div class="sw-hex">#2A9D8F</div>
+      </div>
+      <div class="swatch">
+        <div class="sw-box" style="background:#07090c"></div>
+        <div class="sw-name">Brand dark</div>
+        <div class="sw-hex">#07090C</div>
+      </div>
+      <div class="swatch">
+        <div class="sw-box" style="background:#1A202C"></div>
+        <div class="sw-name">Ink</div>
+        <div class="sw-hex">#1A202C</div>
+      </div>
+      <div class="swatch">
+        <div class="sw-box" style="background:#E6EDF3;border:1px solid #232c38"></div>
+        <div class="sw-name">Off-white</div>
+        <div class="sw-hex">#E6EDF3</div>
+      </div>
+      <div class="swatch">
+        <div class="sw-box" style="background:#F4F8FB;border:1px solid #D1DCE5"></div>
+        <div class="sw-name">App bg</div>
+        <div class="sw-hex">#F4F8FB</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TYPOGRAPHY ─────────────────────────────────── -->
+  <div class="sec">
+    <div class="sec-label">Typografia</div>
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:700;
+          color:#e6edf3;letter-spacing:.01em">ALT+SHIFT+HEAL</div>
+        <div style="font-size:11px;color:#5a6677;margin-top:4px;font-family:'JetBrains Mono',monospace;
+          letter-spacing:.08em">JetBrains Mono · Bold · Brand name / logotype</div>
+      </div>
+      <div>
+        <div style="font-family:'Inter',sans-serif;font-size:17px;color:#c9d1d9;line-height:1.6">
+          Průvodce léčbou karcinomu prostaty. Připravíme vás krok za krokem.</div>
+        <div style="font-size:11px;color:#5a6677;margin-top:4px;font-family:'JetBrains Mono',monospace;
+          letter-spacing:.08em">Inter · Regular · Body text (app)</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Hidden defs for <use> (fallback — most browsers won't support cross-element use easily) -->
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gShared" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#32BCA9"/>
+      <stop offset="1" stop-color="#1A7D70"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<script>
+function choose(card, id){
+  document.querySelectorAll('.concept-card').forEach(c=>c.classList.remove('chosen'));
+  document.querySelectorAll('.chosen-badge').forEach(b=>b.remove());
+  card.classList.add('chosen');
+  const badge=document.createElement('span');
+  badge.className='chosen-badge';badge.textContent='Vybrané';
+  card.appendChild(badge);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,2133 @@
+<!doctype html>
+<html lang="cs">
+  <head>
+<style data-omelette-injected>html,body{background:transparent}</style><script data-omelette-injected>(()=>{var j=["https://claude.ai","https://preview.claude.ai"];var x=true;var S=30000;var f=3000;document.addEventListener("DOMContentLoaded",()=>{const H=window.Babel;const G="om-src-id";if(H&&H.registerPlugin&&!(H.availablePlugins&&H.availablePlugins[G])){H.registerPlugin(G,({types:Y})=>({visitor:{JSXOpeningElement(U,Q){const J=U.node;if(J.name&&J.name.type==="JSXMemberExpression")return;for(let V=0;V<J.attributes.length;V++){const L=J.attributes[V];if(L.type==="JSXAttribute"&&L.name&&L.name.name==="data-om-id")return}const W=Q.file&&Q.file.opts&&Q.file.opts.filename||"?";const Z=J.loc&&J.loc.start;const z=`jsx:${W}:${J.start??0}:${Z?Z.line:0}:${Z?Z.column+1:0}`;J.attributes.push(Y.jsxAttribute(Y.jsxIdentifier("data-om-id"),Y.stringLiteral(z)))}}}))}const k="om-text-extract";let A=false;if(x&&H&&H.registerPlugin&&!(H.availablePlugins&&H.availablePlugins[k])){const Y=window.React;if(Y&&Y.useSyncExternalStore&&Y.createElement){A=true;const U={};const Q=new Set;let J=0;window.__omTextO=U;window.__omTextSet=(z)=>{for(const V in z){const L=z[V];if(L==null)delete U[V];else U[V]=L}J++;Q.forEach((V)=>V())};const W=(z)=>{Q.add(z);return()=>Q.delete(z)};const Z=()=>J;window.__OmT=function z(V){Y.useSyncExternalStore(W,Z,Z);return Y.createElement("span",{"data-om-text":V.i,className:"__om-t"},V.i in U?U[V.i]:V.children)};H.registerPlugin(k,({types:z})=>{const V={style:1,script:1,noscript:1,textarea:1,title:1,option:1,text:1,tspan:1,textPath:1};const L={placeholder:1,alt:1,title:1,label:1,"aria-label":1,"aria-description":1,"aria-placeholder":1};const _=($,C)=>z.logicalExpression("??",z.memberExpression(z.logicalExpression("||",z.memberExpression(z.identifier("window"),z.identifier("__omTextO")),z.objectExpression([])),z.stringLiteral($),true),C);const E=($)=>$.file&&$.file.opts&&$.file.opts.filename||"?";const B=($)=>$.file&&$.file.code||"";const b=($,C)=>{const X=(F)=>F&&F.start!=null&&F.end!=null&&(F.type==="StringLiteral"||F.type==="TemplateLiteral"&&F.expressions.length===0)?[F.start,F.end]:null;const N=X(C);if(N)return N;if(C&&C.type==="Identifier"){const F=$.scope.getBinding(C.name);if(F&&F.constant&&F.path.node.type==="VariableDeclarator"){return X(F.path.node.init)}}return null};const M=($,C,X)=>{const N=$.node;let F=false;const w=(K,q)=>{F=true;return z.jsxElement(z.jsxOpeningElement(z.jsxIdentifier("__OmT"),[z.jsxAttribute(z.jsxIdentifier("i"),z.stringLiteral(K))],false),z.jsxClosingElement(z.jsxIdentifier("__OmT")),[q],false)};const D=N.children.map((K)=>{if(K.type==="JSXText"){if(K.start==null||K.end==null)return K;const q=X.slice(K.start,K.end);const R=q.length-q.trimStart().length;const m=q.length-q.trimEnd().length;if(R+m>=q.length)return K;return w(`txt:${C}:${K.start+R}:${K.end-m}`,K)}if(K.type==="JSXExpressionContainer"){const q=b($,K.expression);if(q)return w(`str:${C}:${q[0]}:${q[1]}`,K)}return K});if(F)N.children=D};return{visitor:{JSXOpeningElement($,C){const X=$.node;const N=E(C);const F={};for(let w=0;w<X.attributes.length;w++){const D=X.attributes[w];if(D.type!=="JSXAttribute"||!D.name)continue;const K=D.name.name;if(!L[K])continue;if(!D.value||D.value.type!=="StringLiteral")continue;if(D.value.start==null||D.value.end==null)continue;const q=`txt:${N}:${D.value.start}:${D.value.end}`;F[K]=q;D.value=z.jsxExpressionContainer(_(q,z.stringLiteral(D.value.value)))}if(Object.keys(F).length){X.attributes.push(z.jsxAttribute(z.jsxIdentifier("data-om-text-attrs"),z.stringLiteral(JSON.stringify(F))))}},JSXElement($,C){const X=$.node.openingElement;const N=X&&X.name&&X.name.name;if(N==="__OmT")return;if(typeof N==="string"&&V[N])return;M($,E(C),B(C))},JSXFragment($,C){M($,E(C),B(C))}}}})}}const u=A?["transform-react-jsx-source",G,k]:["transform-react-jsx-source",G];document.querySelectorAll('script[type="text/babel"],script[type="text/jsx"]').forEach((Y,U)=>{const Q=Y.getAttribute("data-plugins")||"";const J=u.filter((W)=>Q.indexOf(W)<0);if(J.length){Y.setAttribute("data-plugins",Q?`${Q},${J.join(",")}`:J.join(","))}if(!Y.hasAttribute("data-filename")){Y.setAttribute("data-filename",Y.getAttribute("src")||`inline-${U}`)}})});var y=window.parent;if(y&&y!==window){const H=(Q,J)=>{try{y.postMessage({__omelette_log:true,type:Q,data:J},"*")}catch{}};["log","warn","error"].forEach((Q)=>{const J=console[Q];console[Q]=(...W)=>{const Z=W.map((z)=>{try{return typeof z==="object"?JSON.stringify(z):String(z)}catch{try{return String(z)}catch{return"[unstringifiable]"}}}).join(" ");H(Q,Z);J.apply(console,W)}});window.addEventListener("error",(Q)=>{const J=Q.target;if(J&&J!==window&&J.tagName){const W=J.src||J.href||"";H("resource_error",`${J.tagName} failed to load: ${W}`)}else{H("error",`${Q.message||"Unknown error"} at ${Q.filename||"?"}:${Q.lineno||0}:${Q.colno||0}`)}},true);window.addEventListener("unhandledrejection",(Q)=>{const J=Q.reason;const W=J instanceof Error?`${J.message} ${J.stack}`:String(J);H("error",`Unhandled rejection: ${W}`)});const G=()=>{try{y.postMessage({type:"omelette:height",height:document.documentElement.scrollHeight},"*")}catch{}};if(document.readyState==="complete")G();else window.addEventListener("load",G);if(window.ResizeObserver)new ResizeObserver(G).observe(document.documentElement);const k={};let A=0;window.claude={complete(Q){return new Promise((J,W)=>{if(!j.length){W(new Error("claude.complete: no parent origin"));return}const Z=`c${++A}`;const z=()=>setTimeout(()=>{delete k[Z];W(new Error(`claude.complete: no data for ${S/1000}s`))},S);const V=z();k[Z]={resolve:J,reject:W,text:"",t:V,arm:z};try{for(const L of j){y.postMessage({__om_api:true,id:Z,body:Q},L)}}catch(L){clearTimeout(V);delete k[Z];W(L)}})}};const u={};let Y=0;window.omelette={writeFile:(Q,J)=>new Promise((W,Z)=>{if(!j.length){W();return}const z=`f${++Y}`;const V=setTimeout(()=>{delete u[z];W()},f);u[z]={resolve:W,reject:Z,t:V};try{for(const L of j){y.postMessage({__om_file:true,id:z,op:"write",path:Q,content:J},L)}}catch{clearTimeout(V);delete u[z];W()}})};const U=(Q)=>{try{return JSON.stringify(Q)}catch{return JSON.stringify(String(Q))}};window.addEventListener("message",(Q)=>{if(j.indexOf(Q.origin)<0)return;if(Q.source!==y)return;const J=Q.data;if(!J)return;if(J.type==="omelette-preview-refresh"){if(typeof J.token!=="string"||!/^[0-9a-f.-]+$/.test(J.token))return;const z=Math.max(1,Math.floor((J.expiresAt||0)-Date.now()/1000));document.cookie="__Host-omelette-preview="+J.token+"; Path=/; Secure; SameSite=None; Partitioned; Max-Age="+z;return}if(J.__om_file_r){const z=u[J.id];if(!z)return;clearTimeout(z.t);delete u[J.id];if(J.ok)z.resolve();else z.reject(new Error(J.error||"write failed"));return}if(J.__om_api_r){const z=k[J.id];if(!z)return;if(J.error!=null){clearTimeout(z.t);delete k[J.id];z.reject(new Error(J.error));return}if(J.chunk!=null){clearTimeout(z.t);z.t=z.arm();z.text+=J.chunk;return}if(J.done){clearTimeout(z.t);delete k[J.id];z.resolve(J.text!=null?J.text:z.text);return}return}if(!J.__om_eval)return;const W=J;const Z=(z)=>{Q.source.postMessage({...z,__om_eval_r:1,id:W.id},Q.origin)};try{const z=(0,eval)(W.code);if(z&&typeof z.then==="function"){z.then((V)=>Z({ok:1,v:U(V)}),(V)=>Z({ok:0,e:String(V)}))}else{Z({ok:1,v:U(z)})}}catch(z){Z({ok:0,e:String(z)})}})}})();
+</script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Onko — Podklady ke schůzce · MUDr. Čermáková</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,300;1,6..72,400;1,6..72,500;1,6..72,600&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <template id="__bundler_thumbnail">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+        <rect width="200" height="200" fill="#07090c"/>
+        <g stroke="#5be3a8" stroke-width="2" fill="none" stroke-linejoin="round" stroke-linecap="round">
+          <path d="M 30 100 L 70 100 L 78 80 L 86 120 L 94 60 L 102 140 L 110 100 L 170 100"/>
+        </g>
+        <circle cx="100" cy="100" r="60" fill="none" stroke="#5be3a8" stroke-width="1" opacity="0.3"/>
+        <text x="100" y="160" text-anchor="middle" font-family="Georgia,serif" font-style="italic" font-size="18" fill="#ebe3d2">Onko</text>
+      </svg>
+    </template>
+    <style>
+      :root {
+        /* CINEMATIC DARK THEATRE */
+        --bg:        #07090c;
+        --bg-2:      #0c1014;
+        --bg-3:      #11161c;
+        --surf:      #131922;
+        --surf-2:    #19212c;
+        --surf-3:    #1f2935;
+        --line:      #23303d;
+        --line-2:    #2e3d4d;
+        --line-3:    #3f5263;
+
+        /* INK */
+        --bone:      #ebe3d2;     /* warm bone — primary */
+        --bone-2:    #d5cdba;
+        --paper:     #b9b1a0;
+        --dim:       #7a8492;
+        --mute:      #4d5664;
+        --faint:     #2f3845;
+
+        /* SIGNATURE — vital green (ECG) */
+        --vital:     #5be3a8;
+        --vital-2:   #8af0c4;
+        --vital-3:   #b4f5d6;
+        --vital-dim: rgba(91, 227, 168, 0.16);
+        --vital-glow: rgba(91, 227, 168, 0.55);
+
+        /* SIGNATURE — alert vermilion */
+        --alert:     #ff6a4d;
+        --alert-2:   #ff8a72;
+        --alert-dim: rgba(255, 106, 77, 0.14);
+
+        /* SIGNATURE — radiant amber */
+        --amber:     #f5b942;
+        --amber-2:   #ffd277;
+        --amber-dim: rgba(245, 185, 66, 0.12);
+
+        /* SIGNATURE — cool slate */
+        --azure:     #6aa9ff;
+        --azure-dim: rgba(106, 169, 255, 0.12);
+
+        --serif: "Newsreader", "Iowan Old Style", Georgia, serif;
+        --sans:  "Inter", system-ui, -apple-system, sans-serif;
+        --mono:  "JetBrains Mono", ui-monospace, "SF Mono", monospace;
+      }
+
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body {
+        height: 100%;
+        background: var(--bg);
+        color: var(--bone);
+        font-family: var(--sans);
+        overflow: hidden;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        font-feature-settings: "ss01", "ss02";
+      }
+
+      /* ━━━━━ AMBIENT BACKGROUND ━━━━━ */
+      .ambient {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 1;
+        overflow: hidden;
+      }
+      /* blueprint grid */
+      .ambient .grid {
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(91, 227, 168, 0.045) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(91, 227, 168, 0.045) 1px, transparent 1px);
+        background-size: 56px 56px;
+        mask-image: radial-gradient(ellipse at 50% 50%, black 30%, transparent 75%);
+        -webkit-mask-image: radial-gradient(ellipse at 50% 50%, black 30%, transparent 75%);
+      }
+      /* aurora glow blobs */
+      .ambient .glow-1 {
+        position: absolute;
+        width: 80vw; height: 80vh;
+        left: -10%; top: -20%;
+        background: radial-gradient(circle, rgba(91, 227, 168, 0.07) 0%, transparent 60%);
+        filter: blur(20px);
+      }
+      .ambient .glow-2 {
+        position: absolute;
+        width: 60vw; height: 60vh;
+        right: -10%; bottom: -20%;
+        background: radial-gradient(circle, rgba(106, 169, 255, 0.05) 0%, transparent 60%);
+        filter: blur(20px);
+      }
+      /* vignette */
+      .ambient .vignette {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse at 50% 50%, transparent 50%, rgba(0,0,0,0.55) 100%);
+      }
+      /* ECG line — continuous animated */
+      .ecg-band {
+        position: fixed;
+        left: 0; right: 0;
+        top: 47%;
+        height: 80px;
+        pointer-events: none;
+        z-index: 2;
+        opacity: 0.08;
+        mask-image: linear-gradient(90deg, transparent, black 15%, black 85%, transparent);
+        -webkit-mask-image: linear-gradient(90deg, transparent, black 15%, black 85%, transparent);
+      }
+      .ecg-band svg {
+        width: 200%;
+        height: 100%;
+        animation: ecg-scroll 12s linear infinite;
+      }
+      @keyframes ecg-scroll {
+        from { transform: translateX(0); }
+        to   { transform: translateX(-50%); }
+      }
+
+      /* ━━━━━ DECK STAGE ━━━━━ */
+      .deck { position: fixed; inset: 0; z-index: 10; }
+      .slide {
+        position: absolute;
+        inset: 0;
+        display: none;
+        flex-direction: column;
+        padding: 78px 84px 98px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        scrollbar-width: none;
+      }
+      .slide::-webkit-scrollbar { display: none; }
+      .slide.on {
+        display: flex;
+        opacity: 1;
+      }
+      /* Animations are enhancement only — default resting state is fully visible. */
+      @media (prefers-reduced-motion: no-preference) {
+        .slide.on {
+          animation: slide-in 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .slide.on .reveal { animation: reveal 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .slide.on .reveal-1 { animation-delay: 0.10s; }
+        .slide.on .reveal-2 { animation-delay: 0.18s; }
+        .slide.on .reveal-3 { animation-delay: 0.26s; }
+        .slide.on .reveal-4 { animation-delay: 0.34s; }
+        .slide.on .reveal-5 { animation-delay: 0.42s; }
+        .slide.on .reveal-6 { animation-delay: 0.50s; }
+        .slide.on .reveal-7 { animation-delay: 0.58s; }
+        .slide.on .draw-line {
+          animation: draw-line 1.1s cubic-bezier(0.65, 0, 0.35, 1) 0.2s;
+          transform-origin: left center;
+        }
+      }
+      @keyframes slide-in {
+        from { opacity: 0; transform: translateY(14px); filter: blur(6px); }
+        to   { opacity: 1; transform: translateY(0); filter: blur(0); }
+      }
+      @keyframes reveal {
+        from { opacity: 0; transform: translateY(12px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+      @keyframes draw-line {
+        from { transform: scaleX(0); opacity: 0; }
+        to   { transform: scaleX(1); opacity: 1; }
+      }
+
+      /* ━━━━━ HUD CHROME ━━━━━ */
+      .hud-top {
+        position: fixed;
+        top: 0; left: 0; right: 0;
+        padding: 22px 32px 22px 32px;
+        z-index: 50;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 24px;
+        font-family: var(--mono);
+        font-size: 10.5px;
+        letter-spacing: 0.18em;
+        color: var(--mute);
+        text-transform: uppercase;
+        pointer-events: none;
+        background: linear-gradient(180deg, var(--bg) 0%, rgba(7,9,12,0.9) 60%, transparent 100%);
+        white-space: nowrap;
+      }
+      .hud-top .brand { flex-shrink: 0; }
+      .hud-top .right {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        min-width: 0;
+      }
+      @media (max-width: 1100px) {
+        .hud-top { font-size: 9.5px; letter-spacing: 0.12em; }
+        .hud-top .right .hide-mid { display: none; }
+      }
+      @media (max-width: 820px) {
+        .hud-top .right { display: none; }
+      }
+      .hud-top .brand {
+        display: flex; align-items: center; gap: 14px;
+      }
+      .hud-top .pulse {
+        width: 8px; height: 8px;
+        border-radius: 50%;
+        background: var(--vital);
+        box-shadow: 0 0 0 0 var(--vital-glow);
+        animation: pulse 2s ease-out infinite;
+      }
+      @keyframes pulse {
+        0%   { box-shadow: 0 0 0 0 rgba(91, 227, 168, 0.7); }
+        70%  { box-shadow: 0 0 0 10px rgba(91, 227, 168, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(91, 227, 168, 0); }
+      }
+      .hud-top .brand b {
+        color: var(--bone);
+        font-weight: 500;
+        letter-spacing: 0.22em;
+      }
+      .hud-top .right { color: var(--paper); }
+      .hud-top .right b { color: var(--bone); font-weight: 500; letter-spacing: 0.12em; }
+
+      /* corner brackets */
+      .bracket {
+        position: fixed;
+        width: 22px; height: 22px;
+        border: 1.5px solid var(--vital);
+        opacity: 0.5;
+        z-index: 50;
+        pointer-events: none;
+      }
+      .bracket.tl { top: 16px; left: 16px; border-right: 0; border-bottom: 0; }
+      .bracket.tr { top: 16px; right: 16px; border-left: 0; border-bottom: 0; }
+      .bracket.bl { bottom: 16px; left: 16px; border-right: 0; border-top: 0; }
+      .bracket.br { bottom: 16px; right: 16px; border-left: 0; border-top: 0; }
+
+      /* footer */
+      .hud-bot {
+        position: fixed;
+        bottom: 0; left: 0; right: 0;
+        padding: 22px 32px 22px 32px;
+        z-index: 50;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-family: var(--mono);
+        font-size: 10.5px;
+        letter-spacing: 0.18em;
+        color: var(--mute);
+        text-transform: uppercase;
+        pointer-events: none;
+        background: linear-gradient(0deg, var(--bg) 0%, rgba(7,9,12,0.9) 50%, transparent 100%);
+        padding-bottom: 30px;
+      }
+      .hud-bot .pos {
+        display: flex; align-items: baseline; gap: 10px;
+      }
+      .hud-bot .pos .big {
+        font-family: var(--serif);
+        font-style: italic;
+        font-weight: 400;
+        font-size: 22px;
+        color: var(--vital);
+        line-height: 1;
+        letter-spacing: -0.02em;
+      }
+      .hud-bot .pos .tot {
+        color: var(--mute);
+        letter-spacing: 0.08em;
+      }
+      .hud-bot .label { color: var(--paper); }
+
+      .nav {
+        position: fixed;
+        right: 28px;
+        bottom: 56px;
+        display: flex;
+        gap: 4px;
+        z-index: 60;
+        pointer-events: auto;
+      }
+      .nav button {
+        width: 38px; height: 38px;
+        border-radius: 50%;
+        border: 1px solid var(--line-2);
+        background: rgba(19, 25, 34, 0.7);
+        backdrop-filter: blur(8px);
+        color: var(--paper);
+        font-family: var(--serif);
+        font-size: 22px;
+        font-weight: 300;
+        cursor: pointer;
+        display: flex; align-items: center; justify-content: center;
+        transition: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .nav button:hover {
+        border-color: var(--vital);
+        color: var(--vital);
+        transform: scale(1.05);
+      }
+
+      .dots {
+        position: fixed;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 18px;
+        display: flex;
+        gap: 5px;
+        z-index: 60;
+        pointer-events: auto;
+      }
+      .dots i {
+        width: 4px; height: 4px;
+        border-radius: 50%;
+        background: var(--line-3);
+        cursor: pointer;
+        transition: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        display: block;
+      }
+      .dots i.on {
+        background: var(--vital);
+        width: 22px;
+        border-radius: 2px;
+        box-shadow: 0 0 8px var(--vital-glow);
+      }
+
+      /* ━━━━━ TYPE SYSTEM ━━━━━ */
+      .eyebrow {
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: 0.32em;
+        text-transform: uppercase;
+        color: var(--vital);
+        margin-bottom: 22px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .eyebrow::before {
+        content: "";
+        width: 36px;
+        height: 1px;
+        background: var(--vital);
+        display: block;
+      }
+      .eyebrow .sec-no {
+        color: var(--mute);
+        font-weight: 400;
+        letter-spacing: 0.2em;
+      }
+
+      h1 {
+        font-family: var(--serif);
+        font-weight: 400;
+        font-size: clamp(44px, 5.6vw, 88px);
+        line-height: 1.0;
+        letter-spacing: -0.035em;
+        color: var(--bone);
+        font-feature-settings: "ss01";
+      }
+      h1 em {
+        font-style: italic;
+        font-weight: 400;
+        color: var(--vital);
+        text-shadow: 0 0 28px rgba(91, 227, 168, 0.25);
+      }
+      h1 .alt { font-style: italic; font-weight: 300; color: var(--paper); }
+
+      h2 {
+        font-family: var(--serif);
+        font-weight: 400;
+        font-size: clamp(38px, 4.6vw, 68px);
+        line-height: 1.0;
+        letter-spacing: -0.028em;
+        color: var(--bone);
+        margin-bottom: 36px;
+      }
+      h2 em {
+        font-style: italic;
+        font-weight: 400;
+        color: var(--vital);
+        text-shadow: 0 0 24px rgba(91, 227, 168, 0.22);
+      }
+      h2 em.alert { color: var(--alert); text-shadow: 0 0 24px rgba(255,106,77,0.2); }
+      h2 em.amber { color: var(--amber); text-shadow: 0 0 24px rgba(245,185,66,0.2); }
+      h2 em.azure { color: var(--azure); text-shadow: 0 0 24px rgba(106,169,255,0.2); }
+
+      h3 {
+        font-family: var(--sans);
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--bone);
+        letter-spacing: -0.005em;
+      }
+
+      .lede {
+        font-family: var(--serif);
+        font-weight: 300;
+        font-size: clamp(18px, 1.7vw, 24px);
+        line-height: 1.42;
+        color: var(--bone-2);
+        max-width: 60ch;
+        margin-top: 18px;
+      }
+      .lede em { font-style: italic; color: var(--vital); }
+      .lede b { font-weight: 500; color: var(--bone); }
+
+      .lede.sans {
+        font-family: var(--sans);
+        font-weight: 400;
+        font-size: clamp(15px, 1.3vw, 18px);
+        line-height: 1.6;
+        color: var(--paper);
+      }
+
+      .mono { font-family: var(--mono); }
+
+      /* hero glow halo behind title */
+      .title-halo {
+        position: relative;
+      }
+      .title-halo::before {
+        content: "";
+        position: absolute;
+        left: -8%; right: -8%;
+        top: 10%; bottom: -10%;
+        background: radial-gradient(ellipse at 30% 50%, rgba(91, 227, 168, 0.18) 0%, transparent 55%);
+        filter: blur(40px);
+        z-index: -1;
+        pointer-events: none;
+      }
+
+      /* hairline rule with end-cap */
+      .h-rule {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 28px;
+      }
+      .h-rule .label {
+        font-family: var(--mono);
+        font-size: 10.5px;
+        letter-spacing: 0.26em;
+        text-transform: uppercase;
+        color: var(--vital);
+      }
+      .h-rule .line {
+        flex: 1;
+        height: 1px;
+        background: linear-gradient(90deg, var(--vital), var(--line-2) 40%, transparent);
+      }
+      .h-rule .endcap {
+        width: 5px; height: 5px;
+        border-radius: 50%;
+        background: var(--vital);
+        box-shadow: 0 0 10px var(--vital-glow);
+      }
+
+      /* mega number for big metrics */
+      .mega-stat {
+        position: relative;
+        padding: 28px 30px;
+        border: 1px solid var(--line-2);
+        border-radius: 10px;
+        background:
+          linear-gradient(135deg, rgba(91, 227, 168, 0.04), transparent 50%),
+          var(--surf);
+        overflow: hidden;
+      }
+      .mega-stat::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 0;
+        width: 3px; height: 100%;
+        background: linear-gradient(180deg, var(--vital), transparent);
+      }
+      .mega-stat.alert::before { background: linear-gradient(180deg, var(--alert), transparent); }
+      .mega-stat.amber::before { background: linear-gradient(180deg, var(--amber), transparent); }
+      .mega-stat.azure::before { background: linear-gradient(180deg, var(--azure), transparent); }
+
+      .mega-stat {
+        padding: 18px 22px;
+      }
+      .mega-stat .val {
+        font-family: var(--serif);
+        font-style: italic;
+        font-weight: 400;
+        font-size: clamp(40px, 4.6vw, 64px);
+        line-height: 0.92;
+        letter-spacing: -0.035em;
+        color: var(--vital);
+        text-shadow: 0 0 28px rgba(91, 227, 168, 0.25);
+        margin-bottom: 8px;
+      }
+      .mega-stat.alert .val { color: var(--alert); text-shadow: 0 0 28px rgba(255,106,77,0.25); }
+      .mega-stat.amber .val { color: var(--amber); text-shadow: 0 0 28px rgba(245,185,66,0.25); }
+      .mega-stat.azure .val { color: var(--azure); text-shadow: 0 0 28px rgba(106,169,255,0.25); }
+      .mega-stat .lbl {
+        font-family: var(--sans);
+        font-size: 13.5px;
+        color: var(--paper);
+        line-height: 1.55;
+        font-weight: 400;
+        max-width: 38ch;
+      }
+
+      /* ━━━━━ HERO ━━━━━ */
+      .hero {
+        flex: 1;
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 80px;
+        align-items: center;
+      }
+      .hero-left .doc-meta {
+        display: grid;
+        grid-template-columns: max-content 1fr;
+        gap: 6px 24px;
+        margin-top: 28px;
+        font-family: var(--mono);
+        font-size: 11px;
+        line-height: 1.55;
+      }
+      .hero-left .doc-meta dt {
+        color: var(--mute);
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+      .hero-left .doc-meta dd { color: var(--paper); }
+      .hero-left .doc-meta dd b { color: var(--bone); font-weight: 500; }
+
+      .hero-right {
+        display: flex; flex-direction: column;
+        gap: 10px;
+      }
+
+      /* big sage line */
+      .sig-rule {
+        width: 96px;
+        height: 2px;
+        background: var(--vital);
+        box-shadow: 0 0 16px var(--vital-glow);
+        margin-bottom: 28px;
+      }
+
+      /* ━━━━━ CARDS ━━━━━ */
+      .card {
+        position: relative;
+        background: var(--surf);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 24px 26px;
+        overflow: hidden;
+        transition: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(91, 227, 168, 0.04), transparent 40%);
+        pointer-events: none;
+      }
+      .card .num {
+        font-family: var(--mono);
+        font-size: 10.5px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--paper);
+        margin-bottom: 14px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .card .num .dot {
+        width: 6px; height: 6px;
+        border-radius: 50%;
+        background: var(--vital);
+        box-shadow: 0 0 8px var(--vital-glow);
+      }
+      .card.alert .num .dot { background: var(--alert); box-shadow: 0 0 8px rgba(255,106,77,0.6); }
+      .card.amber .num .dot { background: var(--amber); box-shadow: 0 0 8px rgba(245,185,66,0.6); }
+      .card.azure .num .dot { background: var(--azure); box-shadow: 0 0 8px rgba(106,169,255,0.6); }
+      .card .num .label-text { color: var(--vital); }
+      .card.alert .num .label-text { color: var(--alert); }
+      .card.amber .num .label-text { color: var(--amber); }
+      .card h3 {
+        font-family: var(--serif);
+        font-weight: 400;
+        font-size: 22px;
+        line-height: 1.15;
+        color: var(--bone);
+        margin-bottom: 10px;
+        letter-spacing: -0.01em;
+      }
+      .card h3 em { font-style: italic; color: var(--vital); }
+      .card p {
+        font-family: var(--sans);
+        font-size: 13.5px;
+        color: var(--paper);
+        line-height: 1.6;
+      }
+
+      /* ━━━━━ GRIDS ━━━━━ */
+      .g { display: grid; gap: 16px; }
+      .g2 { grid-template-columns: 1fr 1fr; }
+      .g3 { grid-template-columns: repeat(3, 1fr); }
+      .g4 { grid-template-columns: repeat(4, 1fr); }
+      .g-21 { grid-template-columns: 1.25fr 0.75fr; gap: 56px; align-items: start; }
+      .g-12 { grid-template-columns: 0.75fr 1.25fr; gap: 56px; align-items: start; }
+
+      /* ━━━━━ BULLETS (editorial w/ accent) ━━━━━ */
+      .bul { list-style: none; }
+      .bul li {
+        position: relative;
+        padding-left: 36px;
+        margin-bottom: 18px;
+        font-family: var(--sans);
+        font-size: clamp(15px, 1.4vw, 18px);
+        color: var(--bone-2);
+        line-height: 1.55;
+        font-weight: 400;
+      }
+      .bul li::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0.55em;
+        width: 22px;
+        height: 1px;
+        background: var(--vital);
+        box-shadow: 0 0 6px var(--vital-glow);
+      }
+      .bul li b { color: var(--bone); font-weight: 600; }
+      .bul li em { font-style: italic; color: var(--vital); }
+
+      /* ━━━━━ TEAM ━━━━━ */
+      .team {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+        margin-bottom: 20px;
+      }
+      .tm {
+        position: relative;
+        background: var(--surf);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 22px;
+        overflow: hidden;
+        transition: 0.3s;
+      }
+      .tm::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(91, 227, 168, 0.05), transparent 50%);
+        pointer-events: none;
+      }
+      .tm .ini {
+        font-family: var(--serif);
+        font-style: italic;
+        font-weight: 400;
+        font-size: 38px;
+        line-height: 1;
+        color: var(--vital);
+        margin-bottom: 16px;
+        letter-spacing: -0.04em;
+        text-shadow: 0 0 16px rgba(91, 227, 168, 0.25);
+      }
+      .tm h3 {
+        font-family: var(--serif);
+        font-weight: 500;
+        font-size: 18px;
+        color: var(--bone);
+        margin-bottom: 4px;
+        letter-spacing: -0.01em;
+      }
+      .tm .role {
+        font-family: var(--mono);
+        font-size: 10px;
+        color: var(--vital);
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+      .tm .q {
+        font-family: var(--serif);
+        font-style: italic;
+        font-weight: 300;
+        font-size: 14px;
+        color: var(--paper);
+        margin-top: 14px;
+        line-height: 1.5;
+        padding-top: 14px;
+        border-top: 1px solid var(--line);
+        position: relative;
+      }
+      .tm .q::before {
+        content: "“";
+        position: absolute;
+        top: 4px; left: -4px;
+        font-family: var(--serif);
+        font-size: 28px;
+        color: var(--vital);
+        opacity: 0.5;
+        line-height: 1;
+      }
+
+      .gar {
+        position: relative;
+        background:
+          linear-gradient(135deg, rgba(91, 227, 168, 0.10), transparent 60%),
+          var(--surf-2);
+        border: 1px solid var(--vital-dim);
+        border-radius: 12px;
+        padding: 22px 26px;
+        display: flex;
+        align-items: center;
+        gap: 22px;
+        overflow: hidden;
+      }
+      .gar::before {
+        content: "";
+        position: absolute;
+        left: 0; top: 0; bottom: 0;
+        width: 3px;
+        background: linear-gradient(180deg, var(--vital), transparent);
+        box-shadow: 0 0 12px var(--vital-glow);
+      }
+      .gar .ini-big {
+        width: 64px; height: 64px;
+        border-radius: 10px;
+        background:
+          radial-gradient(circle at 30% 30%, rgba(255,255,255,0.18), transparent 50%),
+          var(--vital);
+        color: var(--bg);
+        font-family: var(--serif);
+        font-weight: 500;
+        font-style: italic;
+        font-size: 28px;
+        display: flex; align-items: center; justify-content: center;
+        flex-shrink: 0;
+        letter-spacing: -0.04em;
+        box-shadow: 0 0 24px rgba(91, 227, 168, 0.35);
+      }
+      .gar-info .name {
+        font-family: var(--serif);
+        font-weight: 500;
+        font-size: 22px;
+        color: var(--bone);
+        margin-bottom: 4px;
+        letter-spacing: -0.01em;
+      }
+      .gar-info .tagrow {
+        font-family: var(--mono);
+        font-size: 10.5px;
+        color: var(--vital);
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        margin-bottom: 6px;
+      }
+      .gar-info .place {
+        font-family: var(--sans);
+        font-size: 13.5px;
+        color: var(--paper);
+      }
+
+      /* ━━━━━ PILLARS ━━━━━ */
+      .pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+      .pillar {
+        position: relative;
+        background: var(--surf);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 28px 26px;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      .pillar::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 2px;
+      }
+      .pillar.p1::before { background: var(--vital); box-shadow: 0 0 12px var(--vital-glow); }
+      .pillar.p2::before { background: var(--alert); box-shadow: 0 0 12px rgba(255,106,77,0.45); }
+      .pillar.p3::before { background: var(--amber); box-shadow: 0 0 12px rgba(245,185,66,0.45); }
+
+      .pillar .roman-num {
+        font-family: var(--serif);
+        font-style: italic;
+        font-weight: 300;
+        font-size: 56px;
+        line-height: 0.9;
+        color: var(--mute);
+        margin-bottom: 8px;
+        opacity: 0.35;
+        letter-spacing: -0.04em;
+      }
+      .pillar.p1 .roman-num { color: var(--vital); }
+      .pillar.p2 .roman-num { color: var(--alert); }
+      .pillar.p3 .roman-num { color: var(--amber); }
+
+      .pillar .pn {
+        font-family: var(--mono);
+        font-size: 10.5px;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        margin-bottom: 16px;
+        color: var(--paper);
+      }
+      .pillar h3 {
+        font-family: var(--serif);
+        font-weight: 400;
+        font-size: 26px;
+        line-height: 1.1;
+        color: var(--bone);
+        margin-bottom: 12px;
+        letter-spacing: -0.02em;
+      }
+      .pillar h3 em { font-style: italic; color: var(--vital); }
+      .pillar.p2 h3 em { color: var(--alert); }
+      .pillar.p3 h3 em { color: var(--amber); }
+      .pillar p {
+        font-family: var(--sans);
+        font-size: 14px;
+        color: var(--bone-2);
+        line-height: 1.6;
+        margin-bottom: 16px;
+      }
+      .pillar .note {
+        margin-top: auto;
+        padding-top: 14px;
+        border-top: 1px dashed var(--line);
+        font-family: var(--serif);
+        font-style: italic;
+        font-weight: 300;
+        font-size: 13px;
+        color: var(--dim);
+        line-height: 1.55;
+      }
+
+      /* ━━━━━ VERDICT ━━━━━ */
+      .verdict { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; }
+      .vcard {
+        position: relative;
+        background: var(--surf);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 28px 26px;
+        overflow: hidden;
+        transition: 0.3s;
+      }
+      .vcard.bad  { box-shadow: inset 0 -2px 0 var(--alert); }
+      .vcard.good { box-shadow: inset 0 -2px 0 var(--vital); }
+      .vcard.star { box-shadow: inset 0 -2px 0 var(--amber); }
+      .vcard::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(160deg, transparent 60%, rgba(255,255,255,0.02));
+        pointer-events: none;
+      }
+      .vcard .verdict-stamp {
+        position: absolute;
+        top: 18px; right: 20px;
+        font-family: var(--serif);
+        font-style: italic;
+        font-size: 64px;
+        line-height: 0.9;
+        opacity: 0.12;
+        letter-spacing: -0.04em;
+      }
+      .vcard.bad .verdict-stamp { color: var(--alert); }
+      .vcard.good .verdict-stamp { color: var(--vital); }
+      .vcard.star .verdict-stamp { color: var(--amber); }
+      .vcard .vl {
+        font-family: var(--mono);
+        font-size: 10.5px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        margin-bottom: 16px;
+      }
+      .vcard.bad .vl  { color: var(--alert); }
+      .vcard.good .vl { color: var(--vital); }
+      .vcard.star .vl { color: var(--amber); }
+      .vcard h3 {
+        font-family: var(--serif);
+        font-weight: 400;
+        font-size: 28px;
+        line-height: 1.05;
+        color: var(--bone);
+        margin-bottom: 14px;
+        letter-spacing: -0.02em;
+      }
+      .vcard p {
+        font-family: var(--sans);
+        font-size: 13.5px;
+        color: var(--bone-2);
+        line-height: 1.6;
+      }
+
+      /* ━━━━━ COMPETITION MAP ━━━━━ */
+      .comp-map { display: flex; flex-direction: column; gap: 10px; }
+      .comp-row {
+        display: grid;
+        grid-template-columns: 170px 1fr auto;
+        gap: 22px;
+        align-items: center;
+        background: var(--surf);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 16px 22px;
+        transition: 0.3s;
+      }
+      .comp-row.ours {
+        background:
+          linear-gradient(135deg, rgba(91, 227, 168, 0.10), transparent 60%),
+          var(--surf-2);
+        border-color: var(--vital);
+        box-shadow: 0 0 32px rgba(91, 227, 168, 0.18), inset 0 0 0 1px rgba(91,227,168,0.2);
+      }
+      .comp-row .cl {
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        color: var(--vital);
+        font-weight: 500;
+        text-transform: uppercase;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .comp-row .cl::before {
+        content: "";
+        width: 5px; height: 5px;
+        border-radius: 50%;
+        background: var(--vital);
+      }
+      .comp-row.ours .cl::before {
+        box-shadow: 0 0 8px var(--vital-glow);
+      }
+      .comp-row .cn {
+        font-family: var(--sans);
+        font-size: 14px;
+        color: var(--paper);
+        line-height: 1.55;
+      }
+      .comp-row .cn b { color: var(--bone); font-weight: 600; }
+      .comp-row .cn em { font-style: italic; color: var(--bone-2); }
+
+      .pill {
+        font-family: var(--mono);
+        font-size: 10px;
+        letter-spacing: 0.1em;
+        padding: 5px 12px;
+        border-radius: 3px;
+        white-space: nowrap;
+        text-transform: uppercase;
+        font-weight: 500;
+      }
+      .pill-vital { background: var(--vital-dim); color: var(--vital); border: 1px solid rgba(91,227,168,0.3); }
+      .pill-alert { background: var(--alert-dim); color: var(--alert); border: 1px solid rgba(255,106,77,0.25); }
+      .pill-amber { background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(245,185,66,0.25); }
+      .pill-azure { background: var(--azure-dim); color: var(--azure); border: 1px solid rgba(106,169,255,0.25); }
+
+      /* ━━━━━ RISK TABLE ━━━━━ */
+      .risk-list { display: flex; flex-direction: column; gap: 6px; }
+      .risk-row {
+        display: grid;
+        grid-template-columns: 1.5fr 0.5fr 2fr;
+        gap: 18px;
+        align-items: center;
+        padding: 16px 22px;
+        background: var(--surf);
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        transition: 0.3s;
+      }
+      .risk-row .rn {
+        font-family: var(--serif);
+        font-weight: 400;
+        font-size: 18px;
+        color: var(--bone);
+        letter-spacing: -0.01em;
+      }
+      .risk-row .rm {
+        font-family: var(--sans);
+        font-size: 13.5px;
+        color: var(--paper);
+        line-height: 1.5;
+      }
+
+      /* ━━━━━ QA ━━━━━ */
+      .qa { counter-reset: q; display: flex; flex-direction: column; }
+      .qa-item {
+        display: grid;
+        grid-template-columns: 90px 1fr;
+        gap: 24px;
+        padding: 22px 0;
+        border-bottom: 1px solid var(--line);
+        align-items: start;
+      }
+      .qa-item:last-child { border-bottom: 0; }
+      .qa-item::before {
+        counter-increment: q;
+        content: counter(q, decimal-leading-zero);
+        font-family: var(--serif);
+        font-style: italic;
+        font-weight: 300;
+        color: var(--vital);
+        font-size: 56px;
+        line-height: 0.9;
+        letter-spacing: -0.04em;
+        text-shadow: 0 0 20px rgba(91, 227, 168, 0.25);
+      }
+      .qa-item .qbody {
+        font-family: var(--serif);
+        font-size: clamp(20px, 1.85vw, 26px);
+        line-height: 1.2;
+        color: var(--bone);
+        font-weight: 400;
+        letter-spacing: -0.015em;
+      }
+      .qa-item .qbody em { font-style: italic; color: var(--vital); }
+      .qa-item .qbody .ans {
+        display: block;
+        font-family: var(--sans);
+        font-weight: 400;
+        color: var(--paper);
+        font-size: 14px;
+        margin-top: 10px;
+        line-height: 1.6;
+        letter-spacing: 0;
+      }
+
+      /* ━━━━━ HIGHLIGHT BOX ━━━━━ */
+      .hl-box {
+        position: relative;
+        background:
+          linear-gradient(135deg, rgba(91, 227, 168, 0.08), transparent 60%),
+          var(--surf);
+        border: 1px solid var(--vital-dim);
+        border-radius: 10px;
+        padding: 22px 26px 22px 30px;
+        margin-top: 20px;
+        overflow: hidden;
+      }
+      .hl-box::before {
+        content: "";
+        position: absolute;
+        left: 0; top: 0; bottom: 0;
+        width: 3px;
+        background: var(--vital);
+        box-shadow: 0 0 16px var(--vital-glow);
+      }
+      .hl-box p {
+        font-family: var(--serif);
+        font-size: clamp(16px, 1.5vw, 20px);
+        color: var(--bone);
+        line-height: 1.45;
+        font-weight: 300;
+      }
+      .hl-box p b { color: var(--vital); font-weight: 500; font-style: italic; }
+      .hl-box p em { font-style: italic; color: var(--vital); }
+
+      /* ━━━━━ EVIDENCE ━━━━━ */
+      .evidence { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+      .ev-card {
+        position: relative;
+        background: var(--surf);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 28px 26px;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      .ev-card::after {
+        content: "";
+        position: absolute;
+        bottom: 0; left: 0; right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, var(--vital), transparent);
+        box-shadow: 0 0 8px var(--vital-glow);
+      }
+      .ev-card .ev-num {
+        font-family: var(--serif);
+        font-weight: 400;
+        font-style: italic;
+        font-size: 56px;
+        line-height: 0.9;
+        color: var(--vital);
+        margin-bottom: 18px;
+        letter-spacing: -0.04em;
+        text-shadow: 0 0 24px rgba(91, 227, 168, 0.3);
+      }
+      .ev-card p {
+        font-family: var(--sans);
+        font-size: 14px;
+        color: var(--bone-2);
+        line-height: 1.6;
+        flex: 1;
+      }
+      .ev-card .ev-src {
+        font-family: var(--mono);
+        font-size: 10px;
+        color: var(--mute);
+        margin-top: 18px;
+        padding-top: 14px;
+        border-top: 1px solid var(--line);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      /* ━━━━━ SCOPE ━━━━━ */
+      .scope-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+      .scope-col {
+        position: relative;
+        background: var(--surf);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 26px;
+        overflow: hidden;
+      }
+      .scope-col.in::before  { background: var(--vital); box-shadow: 0 0 12px var(--vital-glow); }
+      .scope-col.out::before { background: var(--alert); box-shadow: 0 0 12px rgba(255,106,77,0.4); }
+      .scope-col::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 2px;
+      }
+      .scope-col h3 {
+        font-family: var(--serif);
+        font-weight: 500;
+        font-style: italic;
+        font-size: 24px;
+        margin-bottom: 18px;
+        letter-spacing: -0.02em;
+      }
+      .scope-col.in h3  { color: var(--vital); }
+      .scope-col.out h3 { color: var(--alert); }
+      .scope-item {
+        display: grid;
+        grid-template-columns: 20px 1fr;
+        gap: 12px;
+        align-items: start;
+        padding: 10px 0;
+        border-bottom: 1px dashed var(--line);
+        font-family: var(--sans);
+        font-size: 14px;
+        color: var(--bone-2);
+        line-height: 1.5;
+      }
+      .scope-item:last-child { border-bottom: 0; }
+      .scope-item .ico {
+        font-family: var(--serif);
+        font-weight: 500;
+        font-style: italic;
+        font-size: 18px;
+        line-height: 1.3;
+      }
+      .scope-col.in .scope-item .ico { color: var(--vital); }
+      .scope-col.out .scope-item .ico { color: var(--alert); }
+
+      .arch-card {
+        grid-column: 1 / -1;
+        position: relative;
+        background:
+          linear-gradient(135deg, rgba(91, 227, 168, 0.10), transparent 60%),
+          var(--surf-2);
+        border: 1px solid var(--vital-dim);
+        border-radius: 10px;
+        padding: 24px 28px;
+        overflow: hidden;
+      }
+      .arch-card::before {
+        content: "";
+        position: absolute;
+        left: 0; top: 0; bottom: 0;
+        width: 3px;
+        background: linear-gradient(180deg, var(--vital), transparent);
+        box-shadow: 0 0 12px var(--vital-glow);
+      }
+      .arch-card h3 {
+        font-family: var(--serif);
+        font-weight: 400;
+        font-style: italic;
+        font-size: 26px;
+        color: var(--vital);
+        margin-bottom: 10px;
+        letter-spacing: -0.02em;
+      }
+      .arch-card p {
+        font-family: var(--sans);
+        font-size: 15px;
+        color: var(--bone-2);
+        line-height: 1.65;
+      }
+      .arch-card p b { color: var(--bone); font-weight: 600; }
+
+      /* ━━━━━ PROCESS ROW ━━━━━ */
+      .process-row {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+
+      /* ━━━━━ META GRID ━━━━━ */
+      .meta-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+      .meta-card {
+        background: var(--surf);
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 18px 20px;
+      }
+      .meta-card .mk {
+        font-family: var(--mono);
+        font-size: 10px;
+        color: var(--vital);
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+      }
+      .meta-card .mv {
+        font-family: var(--serif);
+        font-size: 15.5px;
+        color: var(--bone-2);
+        line-height: 1.5;
+        font-weight: 300;
+      }
+      .meta-card .mv b { color: var(--bone); font-weight: 500; }
+
+      /* ━━━━━ NEXT STEPS ━━━━━ */
+      .next-steps {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+      }
+      .ns {
+        position: relative;
+        background: var(--surf);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 26px;
+        overflow: hidden;
+      }
+      .ns::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 2px;
+        background: var(--vital);
+        box-shadow: 0 0 8px var(--vital-glow);
+      }
+      .ns .nd {
+        font-family: var(--mono);
+        font-size: 10.5px;
+        letter-spacing: 0.18em;
+        color: var(--vital);
+        text-transform: uppercase;
+        margin-bottom: 14px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .ns .nd::before {
+        content: "";
+        width: 5px; height: 5px;
+        border-radius: 50%;
+        background: var(--vital);
+        box-shadow: 0 0 6px var(--vital-glow);
+      }
+      .ns h3 {
+        font-family: var(--serif);
+        font-weight: 400;
+        font-size: 22px;
+        color: var(--bone);
+        margin-bottom: 10px;
+        line-height: 1.15;
+        letter-spacing: -0.015em;
+      }
+      .ns p {
+        font-family: var(--sans);
+        font-size: 13.5px;
+        color: var(--bone-2);
+        line-height: 1.6;
+      }
+      .ns p b { color: var(--vital); font-weight: 500; }
+
+      /* ━━━━━ SOURCES ━━━━━ */
+      .sources-two {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 44px;
+      }
+      .src-list { list-style: none; }
+      .src-list li {
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--bone-2);
+        padding: 11px 0 11px 26px;
+        border-bottom: 1px solid var(--line);
+        line-height: 1.5;
+        position: relative;
+      }
+      .src-list li::before {
+        content: "→";
+        position: absolute;
+        left: 0;
+        top: 11px;
+        color: var(--vital);
+      }
+      .src-list li:last-child { border-bottom: 0; }
+      .label-eyebrow {
+        font-family: var(--mono);
+        font-size: 10.5px;
+        color: var(--mute);
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        margin-bottom: 14px;
+      }
+
+      /* ━━━━━ CLOSE ━━━━━ */
+      .close-wrap {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        max-width: 1100px;
+        position: relative;
+      }
+      .close-sig {
+        margin-top: 48px;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        padding-top: 28px;
+        border-top: 1px solid var(--line);
+      }
+      .close-mark {
+        width: 60px; height: 60px;
+        border-radius: 10px;
+        background:
+          radial-gradient(circle at 30% 30%, rgba(255,255,255,0.18), transparent 50%),
+          var(--vital);
+        color: var(--bg);
+        display: flex; align-items: center; justify-content: center;
+        font-family: var(--serif);
+        font-style: italic;
+        font-weight: 500;
+        font-size: 30px;
+        letter-spacing: -0.04em;
+        box-shadow: 0 0 32px rgba(91, 227, 168, 0.4);
+      }
+
+      .ribbon {
+        font-family: var(--mono);
+        font-size: 10.5px;
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+        color: var(--vital);
+        margin-bottom: 14px;
+      }
+      .ribbon b { color: var(--bone); font-weight: 500; }
+
+      .center { justify-content: center; }
+
+      /* ━━━━━ CHAPTER (full-bleed section break) — used on slide 15 close ━━━━━ */
+      .chapter-glow {
+        position: absolute;
+        left: -10%; top: 20%;
+        width: 60%; height: 60%;
+        background: radial-gradient(ellipse, rgba(91, 227, 168, 0.18) 0%, transparent 65%);
+        filter: blur(40px);
+        pointer-events: none;
+        z-index: -1;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- AMBIENT BG -->
+    <div class="ambient">
+      <div class="glow-1"></div>
+      <div class="glow-2"></div>
+      <div class="grid"></div>
+      <div class="vignette"></div>
+    </div>
+
+    <!-- ECG LINE BAND -->
+    <div class="ecg-band">
+      <svg viewBox="0 0 4000 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M 0 40
+                 L 200 40 L 220 40 L 230 20 L 240 60 L 250 10 L 260 70 L 270 40
+                 L 600 40 L 620 40 L 630 20 L 640 60 L 650 10 L 660 70 L 670 40
+                 L 1000 40 L 1020 40 L 1030 20 L 1040 60 L 1050 10 L 1060 70 L 1070 40
+                 L 1400 40 L 1420 40 L 1430 20 L 1440 60 L 1450 10 L 1460 70 L 1470 40
+                 L 1800 40 L 1820 40 L 1830 20 L 1840 60 L 1850 10 L 1860 70 L 1870 40
+                 L 2200 40 L 2220 40 L 2230 20 L 2240 60 L 2250 10 L 2260 70 L 2270 40
+                 L 2600 40 L 2620 40 L 2630 20 L 2640 60 L 2650 10 L 2660 70 L 2670 40
+                 L 3000 40 L 3020 40 L 3030 20 L 3040 60 L 3050 10 L 3060 70 L 3070 40
+                 L 3400 40 L 3420 40 L 3430 20 L 3440 60 L 3450 10 L 3460 70 L 3470 40
+                 L 3800 40 L 4000 40"
+              fill="none" stroke="#5be3a8" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+    <!-- CORNER BRACKETS -->
+    <div class="bracket tl"></div>
+    <div class="bracket tr"></div>
+    <div class="bracket bl"></div>
+    <div class="bracket br"></div>
+
+    <!-- HUD TOP -->
+    <div class="hud-top">
+      <div class="brand">
+        <span class="pulse"></span>
+        <span><b>ONKO</b><span class="hide-mid"> · ALT+SHIFT+HEAL</span> · LIVE</span>
+      </div>
+      <div class="right">
+        Podklady ke schůzce<span class="hide-mid"> · <b>MUDr. Čermáková, Ph.D.</b></span> · FN Ostrava
+      </div>
+    </div>
+
+    <!-- DECK -->
+    <div class="deck">
+
+      <!-- ═══ 1 · TITUL ═══ -->
+      <section class="slide center" data-screen-label="01 Titul">
+        <div class="hero" style="flex:1">
+          <div class="hero-left">
+            <div class="h-rule reveal reveal-1">
+              <span class="endcap"></span>
+              <span class="label">Zdravotnictví 4.0 · FEI VŠB–TUO · 2026</span>
+              <span class="line draw-line"></span>
+            </div>
+            <div class="reveal reveal-2 title-halo">
+              <h1>
+                Systémová analýza<br/>
+                a základ řešení<br/>
+                <em>ALT+SHIFT+HEAL</em>
+              </h1>
+            </div>
+            <p class="lede reveal reveal-3">
+              Hloubková analýza klinických problémů, architektury systému a strategického zdůvodnění —
+              podklad pro tým i klinického garanta. Každý slide přímý vstup do prototypu.
+            </p>
+            <dl class="doc-meta reveal reveal-4">
+              <dt>Klinický garant</dt>
+              <dd><b>MUDr. Zuzana Čermáková, Ph.D.</b></dd>
+              <dt>Pracoviště</dt>
+              <dd>FN Ostrava · Onkologická klinika</dd>
+              <dt>Tým</dt>
+              <dd>Mucha · Martynková · Tomica · Tobola</dd>
+              <dt>Datum</dt>
+              <dd>Květen 2026 · interní systémová analýza</dd>
+            </dl>
+          </div>
+          <div class="hero-right">
+            <div class="mega-stat reveal reveal-3">
+              <div class="val">~400</div>
+              <div class="lbl">pacientů ročně s ca prostaty na FN Ostrava — reálný, měřitelný pilot</div>
+            </div>
+            <div class="mega-stat alert reveal reveal-4">
+              <div class="val">7–14</div>
+              <div class="lbl">dní „slepé okno" bez podpory od odeslání po 1. onkologickou návštěvu</div>
+            </div>
+            <div class="mega-stat amber reveal reveal-5">
+              <div class="val">~20 %</div>
+              <div class="lbl">verbálních informací si pacient v šoku uchová — zbytek se ztrácí</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ 2 · TÝM ═══ -->
+      <section class="slide" data-screen-label="02 Tým">
+        <div class="eyebrow reveal reveal-1"><span class="sec-no">§ 02</span> Kdo jsme</div>
+        <h2 class="reveal reveal-2">Tým <em>ALT+SHIFT+HEAL</em></h2>
+        <div class="team">
+          <div class="tm reveal reveal-3">
+            <div class="ini">TM</div>
+            <h3>Tomáš Mucha</h3>
+            <div class="role">Founder · Full-stack</div>
+            <div class="q">Medicína vs. IT — moje věčné dilema. Vyhrálo programování, ale srdce zůstalo v obou.</div>
+          </div>
+          <div class="tm reveal reveal-4">
+            <div class="ini">AM</div>
+            <h3>Adela Martynková</h3>
+            <div class="role">Data · Health</div>
+            <div class="q">Z letecké dopravy přes NL až k datům — IT kvůli skutečnému dopadu.</div>
+          </div>
+          <div class="tm reveal reveal-5">
+            <div class="ini">MT</div>
+            <h3>Martin Tomica</h3>
+            <div class="role">Software Eng.</div>
+            <div class="q">Programování je stavebnice — limitem jsi jen ty sám.</div>
+          </div>
+          <div class="tm reveal reveal-6">
+            <div class="ini">DT</div>
+            <h3>David Tobola</h3>
+            <div class="role">Python · Mobile</div>
+            <div class="q">Žádné zbytečné věci. Jen software, který má dosah.</div>
+          </div>
+        </div>
+        <div class="gar reveal reveal-7">
+          <div class="ini-big">ZČ</div>
+          <div class="gar-info">
+            <div class="name">MUDr. Zuzana Čermáková, Ph.D.</div>
+            <div class="tagrow">Klinický garant</div>
+            <div class="place">Fakultní nemocnice Ostrava · Onkologická klinika</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ 3 · KLINICKÉ PROBLÉMY 1/3 ═══ -->
+      <section class="slide" data-screen-label="03 Vakuum">
+        <div class="eyebrow reveal reveal-1"><span class="sec-no">§ 03</span> Klinické problémy — 1 / 3</div>
+        <h2 class="reveal reveal-2">Informační <em>vakuum</em> po diagnóze</h2>
+        <div class="g g-21" style="flex:1">
+          <div class="reveal reveal-3">
+            <ul class="bul">
+              <li>Medián čekání na 1. onkologické vyšetření: <b>7–14 dní</b> — žádný verifikovaný informační zdroj</li>
+              <li>Pacient googí — naráží na <b>americké statistiky, fóra hrůzy a reklamu na alternativu</b></li>
+              <li>Rodina začne „bádat" — produkuje <b>paniku místo podpory</b></li>
+              <li>Přijde na první návštěvu vyčerpaný, s nesprávnými očekáváními nebo v popření</li>
+              <li>Klinický dopad: lékař tráví první hodinu <b>psychoedukací místo diagnostiky a léčebného plánu</b></li>
+            </ul>
+            <div class="hl-box">
+              <p><b>Jádro problému:</b> informační deficit <em>před</em> první návštěvou — přesně v okamžiku, kdy pacient a rodina informace nejvíce potřebují a nemají je odkud vzít.</p>
+            </div>
+          </div>
+          <div class="g reveal reveal-4" style="gap:14px">
+            <div class="mega-stat">
+              <div class="val">7–14</div>
+              <div class="lbl">dní bez podpory · od odeslání po 1. návštěvu onkologie</div>
+            </div>
+            <div class="mega-stat alert">
+              <div class="val">~67</div>
+              <div class="lbl">let medián věku diagnózy · nízká digitální gramotnost · klíčová role rodiny</div>
+            </div>
+            <div class="mega-stat amber">
+              <div class="val">400</div>
+              <div class="lbl">pacientů / rok · FN Ostrava · dostatečný pilot pro měření dopadu</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ 4 · KLINICKÉ PROBLÉMY 2/3 ═══ -->
+      <section class="slide" data-screen-label="04 Přetížení">
+        <div class="eyebrow reveal reveal-1"><span class="sec-no">§ 04</span> Klinické problémy — 2 / 3</div>
+        <h2 class="reveal reveal-2">První návštěva: příliš <em class="alert">hustá</em> — příliš <em class="amber">pozdě</em></h2>
+        <div class="g g2 reveal reveal-3" style="flex:1;align-items:start">
+          <div class="card">
+            <div class="num"><span class="dot"></span><span class="label-text">Kognitívní přetížení</span></div>
+            <h3>Retence pod 20 %</h3>
+            <p>1. návštěva zahrnuje: potvrzení diagnózy, staging, léčebné možnosti, nežádoucí účinky, organizaci, informovaný souhlas. Pacient je v emocionálním šoku. Výzkumy ukazují retenci verbálních informací pod 20 % při stresové záteži.</p>
+          </div>
+          <div class="card alert">
+            <div class="num"><span class="dot"></span><span class="label-text">Informační ztráta</span></div>
+            <h3>Papír, PDF, ticho</h3>
+            <p>Papírové letáky se ztrácejí. PDF v e-mailu není personalizovaný na konkrétní léčbu. Otázky, které pacienta napadnou ve 2 v noci, nemají kam jít. Rodina není zapojena do informačního toku.</p>
+          </div>
+          <div class="card amber">
+            <div class="num"><span class="dot"></span><span class="label-text">Zapomenuté otázky</span></div>
+            <h3>Klíčové dotazy padají</h3>
+            <p>Otázky připravené doma pacient v ordinaci v šoku zapomene. Příležitost se nevrátí do příštího termínu — který může být za týdny. Průvodce je místo, kde si je zaznamená a s sebou přinese.</p>
+          </div>
+          <div class="card azure">
+            <div class="num"><span class="dot" style="background:var(--azure);box-shadow:0 0 8px rgba(106,169,255,0.6)"></span><span class="label-text" style="color:var(--azure)">Prodloužená 1. návštěva</span></div>
+            <h3>10–15 min navíc per pacient</h3>
+            <p>Každý nepřipravený pacient prodlouží první návštěvu minimálně o 10–15 minut základní psychoedukací — čas, který mohl být věnován klinicky hodnotnějšímu rozhovoru.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ 5 · KLINICKÉ PROBLÉMY 3/3 ═══ -->
+      <section class="slide" data-screen-label="05 Systémová zátěž">
+        <div class="eyebrow reveal reveal-1"><span class="sec-no">§ 05</span> Klinické problémy — 3 / 3</div>
+        <h2 class="reveal reveal-2">Efekt přesahuje pacienta — <em>rodina a klinika</em></h2>
+        <div class="g g-21" style="flex:1">
+          <div class="reveal reveal-3">
+            <ul class="bul">
+              <li><b>Sebemanagement:</b> pacient neví, které nežádoucí účinky jsou normální vs. alarmující — ani kdy zavolat kliniku vs. urgentní příjem</li>
+              <li><b>Výživa a aktivita:</b> potřeby při RT se zásadně liší od HT — generický leták tyto rozdíly nepostihne, pacient dostane univerzální (= nepřesnou) radu</li>
+              <li><b>Zátěž personálu:</b> sestry a koordinátorky opakovaně odpovídají na totožné základní otázky — parkování, co vzít, co je normální; přetíženost telefonní linky</li>
+              <li><b>Vyloučení rodiny:</b> primární opatrovatel přichází bez kontextu, přebírá roli informačního zprostředkovatele s chybami a panikou</li>
+            </ul>
+          </div>
+          <div class="g reveal reveal-4" style="gap:14px">
+            <div class="mega-stat">
+              <div class="val">10–15'</div>
+              <div class="lbl">zbytečně strávených per pacient základní edukací na 1. návštěvě</div>
+            </div>
+            <div class="mega-stat alert">
+              <div class="val">= čas</div>
+              <div class="lbl">na klinicky hodnotnější rozhovor — měřitelná úspora, obhájitelný přínos</div>
+            </div>
+            <div class="mega-stat amber">
+              <div class="val">rodina</div>
+              <div class="lbl">jako zprostředkovatel digitálního přístupu u ~67letého pacienta — sekundární cílovka</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ 6 · DEFINICE SYSTÉMU ═══ -->
+      <section class="slide" data-screen-label="06 Definice">
+        <div class="eyebrow reveal reveal-1"><span class="sec-no">§ 06</span> Definice systému</div>
+        <h2 class="reveal reveal-2">Co přesně stavíme — <em>čistě vymezeno</em></h2>
+        <p class="lede sans reveal reveal-2" style="margin-top:0;margin-bottom:22px;max-width:90ch">
+          ALT+SHIFT+HEAL je <b>digitální průvodce příchodem</b> onkologického pacienta, aktivovaný QR kódem ve vystavené zprávě odesílajícím lékařem.
+        </p>
+        <div class="g g-21 reveal reveal-3" style="flex:1;align-items:start;gap:40px">
+          <div>
+            <div class="h-rule" style="margin-bottom:18px">
+              <span class="endcap"></span>
+              <span class="label">Tři definiční vlastnosti</span>
+              <span class="line"></span>
+            </div>
+            <div class="card" style="margin-bottom:12px">
+              <div class="num"><span class="dot"></span><span class="label-text">Bod aktivace</span></div>
+              <h3>QR v odporúčacom dokumente</h3>
+              <p>Nie app store, nie nemocničný portál. Aktivácia cez existujúcu cestu pacienta — bez inštalácie, bez registrácie, nulová záťaž pre personál.</p>
+            </div>
+            <div class="card" style="margin-bottom:12px">
+              <div class="num"><span class="dot"></span><span class="label-text">Časové okno</span></div>
+              <h3>Medzi odporúčaním a 1. návštěvou</h3>
+              <p>Presne okno informačného vákua — nie monitoring symptómov počas liečby, nie dlhodobý digitálny sprievodca.</p>
+            </div>
+            <div class="card">
+              <div class="num"><span class="dot"></span><span class="label-text">Personalizácia</span></div>
+              <h3>Obsah dle typu léčby</h3>
+              <p>Kroky, nežádoucí účinky, výživa — vše se větví dle léčebné modality. Ne generický leták pro „onkologické pacienty".</p>
+            </div>
+          </div>
+          <div>
+            <div class="h-rule" style="margin-bottom:18px">
+              <span class="endcap" style="background:var(--alert);box-shadow:0 0 10px rgba(255,106,77,0.6)"></span>
+              <span class="label" style="color:var(--alert)">Vědomě mimo rozsah</span>
+              <span class="line" style="background:linear-gradient(90deg,var(--alert),var(--line-2) 40%,transparent)"></span>
+            </div>
+            <ul class="bul">
+              <li>Diagnostika nebo klinické rozhodování</li>
+              <li>ePRO symptom monitoring <em>durante</em> léčbě</li>
+              <li>Integrace do NIS v 1. fázi</li>
+              <li>MDR-klasifikovaný software (SaMD)</li>
+              <li>Jakýkoli diagnostický claim</li>
+            </ul>
+            <div class="hl-box" style="margin-top:18px">
+              <p>Toto vymezení je obranné a zámerné — znižuje regulačné riziko a chráni klinickú zodpovednosť garanta.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ 7 · JAK FUNGUJE ═══ -->
+      <section class="slide" data-screen-label="07 Jak funguje">
+        <div class="eyebrow reveal reveal-1"><span class="sec-no">§ 07</span> Mechanizmus — ako to funguje</div>
+        <h2 class="reveal reveal-2">Tři pilíře — <em>workflow, personalizace, trvalost</em></h2>
+        <div class="pillars">
+          <div class="pillar p1 reveal reveal-3">
+            <div class="roman-num">I</div>
+            <div class="pn">Pilíř · Doručení</div>
+            <h3><em>Workflow,</em> ne instalace</h3>
+            <p>Odkaz / QR kód přímo v lékařské zprávě odesílajícího pracoviště. Pacient otevře ještě doma — žádná registrace, žádná instalace, nulová zátěž pro personál.</p>
+            <div class="note">Distribuce využívá existující cestu pacienta — urolog → onkologie. Nulová nová zátěž pro kliniku.</div>
+          </div>
+          <div class="pillar p2 reveal reveal-4">
+            <div class="roman-num">II</div>
+            <div class="pn">Pilíř · Personalizace</div>
+            <h3>Cesta <em>dle typu</em> léčby</h3>
+            <p>Kroky, nežádoucí účinky a výživa přesně podle léčebné modality: RT / HT / chirurgie / aktivní sledování / RT + HT. Ne generický leták.</p>
+            <div class="note">Logika větvení závisí na tom, kdy je typ léčby znám — klíčová otázka pro paní doktorku.</div>
+          </div>
+          <div class="pillar p3 reveal reveal-5">
+            <div class="roman-num">III</div>
+            <div class="pn">Pilíř · Trvalost</div>
+            <h3>Bod pravdy, <em>ne PDF</em></h3>
+            <p>Pacient se vrací, kontroluje průběh, ukládá otázky pro lékaře, sdílí pohled pro rodinu. Deník, checklist přípravy, kontakty kliniky.</p>
+            <div class="note">Přesně toto odlišuje náš model od papírových letáků i od ePRO platforem.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ 8 · ARCHITEKTURA ═══ -->
+      <section class="slide" data-screen-label="08 Architektura">
+        <div class="eyebrow reveal reveal-1"><span class="sec-no">§ 08</span> Systémová architektura</div>
+        <h2 class="reveal reveal-2">Tři vrstvy — od pacienta ke <em>garantované udržitelnosti</em></h2>
+        <div style="flex:1;display:flex;flex-direction:column;gap:14px;justify-content:center">
+          <div class="card reveal reveal-3" style="border-left:3px solid var(--vital)">
+            <div class="num"><span class="dot"></span><span class="label-text" style="color:var(--vital)">Vrstva 1 · Hotovo — prototyp existuje</span></div>
+            <div style="display:grid;grid-template-columns:1fr 2fr;gap:24px;align-items:start">
+              <div>
+                <h3 style="color:var(--vital)">Pacientská aplikace</h3>
+                <p>Single-page PWA · localStorage · offline-capable · aktivace cez QR · onboarding flow · 5 záložiek</p>
+              </div>
+              <div style="font-family:var(--mono);font-size:11.5px;color:var(--paper);line-height:1.9">
+                Domů → přehled, léčba, termín &nbsp;|&nbsp; Cesta → kroky, efekty, výživa &nbsp;|&nbsp; Průběh → timeline<br/>
+                Otázky → uložené + tisk &nbsp;|&nbsp; Více → kontakty, deník, rodina, nemocnice, co je normální
+              </div>
+            </div>
+          </div>
+          <div class="card reveal reveal-4" style="border-left:3px solid var(--amber)">
+            <div class="num"><span class="dot" style="background:var(--amber);box-shadow:0 0 8px rgba(245,185,66,0.6)"></span><span class="label-text" style="color:var(--amber)">Vrstva 2 · Budoucí fáze — Content CMS + klinická validace</span></div>
+            <div style="display:grid;grid-template-columns:1fr 2fr;gap:24px;align-items:start">
+              <div>
+                <h3 style="color:var(--amber)">Správa obsahu</h3>
+                <p>Strukturovaná editace · workflow schvalování · Dr. Čermáková jako bottleneck kvality</p>
+              </div>
+              <div style="font-family:var(--mono);font-size:11.5px;color:var(--paper);line-height:1.9">
+                Editace léčebného obsahu bez kódu &nbsp;|&nbsp; Verzování obsahu<br/>
+                Schvalovací flow garant → deploy &nbsp;|&nbsp; Audit trail změn obsahu
+              </div>
+            </div>
+          </div>
+          <div class="card reveal reveal-5" style="border-left:3px solid var(--azure)">
+            <div class="num"><span class="dot" style="background:var(--azure);box-shadow:0 0 8px rgba(106,169,255,0.6)"></span><span class="label-text" style="color:var(--azure)">Vrstva 3 · Dlouhodobý diferenciátor — Sub-agentní správa obsahu</span></div>
+            <div style="display:grid;grid-template-columns:1fr 2fr;gap:24px;align-items:start">
+              <div>
+                <h3 style="color:var(--azure)">Automatizovaná udržitelnost</h3>
+                <p>Monitoring zdrojů guidelines · draft změn → lidská validace → deploy · naše odpověď na content rot</p>
+              </div>
+              <div style="font-family:var(--mono);font-size:11.5px;color:var(--paper);line-height:1.9">
+                Zdroje: EAU / NCCN / ČUS guidelines &nbsp;|&nbsp; Agenti detekují změny protokolů<br/>
+                Draft update → garant schválí → auto-deploy &nbsp;|&nbsp; Moat, který CMSy neumí napodobit
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ 9 · SUB-AGENTNÍ DIFERENCIÁTOR ═══ -->
+      <section class="slide" data-screen-label="09 Sub-agentní">
+        <div class="eyebrow reveal reveal-1"><span class="sec-no">§ 09</span> Klíčový diferenciátor</div>
+        <h2 class="reveal reveal-2"><em>Content rot</em> — hlavní riziko. Sub-agentní systém — naše odpověď.</h2>
+        <div class="g g-21" style="flex:1">
+          <div class="reveal reveal-3">
+            <div class="hl-box" style="margin-bottom:22px">
+              <p><b>Hlavní riziko takových projektů není technika.</b> Jsou to zastaralé informace — do 18–24 měsíců bez aktivní péče. Léčebné protokoly se mění. Manuální aktualizace se zapomíná. Nepřesný obsah → klinická nepřesnost → právní odpovědnost.</p>
+            </div>
+            <ul class="bul">
+              <li>Medicínský obsah má <b>krátkou životnost</b> — nové protokoly, nové léky, aktualizace EAU / ČUS guidelines</li>
+              <li>Manuální aktualizace = závislost na jedné osobě = <b>single point of failure</b></li>
+              <li>Většina zdravotních portálů umírá tímto způsobem — <b>death by neglect</b></li>
+              <li>Sub-agentní vrstva je proto klíčový moat — <b>generické CMSy ani konkurenti to neumí napodobit</b></li>
+            </ul>
+          </div>
+          <div class="reveal reveal-4" style="display:flex;flex-direction:column;gap:12px">
+            <div class="card azure" style="border-left:3px solid var(--azure)">
+              <div class="num"><span class="dot" style="background:var(--azure);box-shadow:0 0 8px rgba(106,169,255,0.6)"></span><span class="label-text" style="color:var(--azure)">01 · Monitor</span></div>
+              <h3>Sledování zdrojů</h3>
+              <p>Agenti průběžně monitorují EAU, NCCN, ČUS guidelines a detekují relevantní změny protokolů léčby ca prostaty.</p>
+            </div>
+            <div class="card azure" style="border-left:3px solid var(--azure)">
+              <div class="num"><span class="dot" style="background:var(--azure);box-shadow:0 0 8px rgba(106,169,255,0.6)"></span><span class="label-text" style="color:var(--azure)">02 · Draft</span></div>
+              <h3>Návrh aktualizace</h3>
+              <p>Agent připraví draft změny obsahu v aplikaci — garant schvaluje a koriguje, nekopíruje a nevyhledává sám.</p>
+            </div>
+            <div class="card azure" style="border-left:3px solid var(--azure)">
+              <div class="num"><span class="dot" style="background:var(--azure);box-shadow:0 0 8px rgba(106,169,255,0.6)"></span><span class="label-text" style="color:var(--azure)">03 · Deploy</span></div>
+              <h3>Schválení → live</h3>
+              <p>Jedním klikem garant schválí; obsah jde live. Žádné čekání na vývojáře. Audit trail každé změny.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ 10 · EVIDENCE ═══ -->
+      <section class="slide" data-screen-label="10 Evidence">
+        <div class="eyebrow reveal reveal-1"><span class="sec-no">§ 10</span> Validace konceptu</div>
+        <h2 class="reveal reveal-2">Funguje to? <em>Ano — evidence-based</em></h2>
+        <div class="evidence">
+          <div class="ev-card reveal reveal-3">
+            <div class="ev-num">n = 112</div>
+            <p>Prospektivní studie u nově diagnostikovaných pacientů s ca prostaty: <b style="color:var(--bone)">tablet + video vs. papírový leták</b> — digitální skupina vykazovala vyšší spokojenost a porozumění léčbě.</p>
+            <div class="ev-src">PubMed · PMID 35711488 · 2022</div>
+          </div>
+          <div class="ev-card reveal reveal-4">
+            <div class="ev-num">40+</div>
+            <p>Onkologických center v Evropě rutinně používá digitální ePRO monitoring (Kaiku Health / Elekta). <b style="color:var(--bone)">Digitální model je v praxi zaveden</b> — inovujeme doručení, ne princip.</p>
+            <div class="ev-src">Kaiku Health / Elekta · EU deployment</div>
+          </div>
+          <div class="ev-card reveal reveal-5">
+            <div class="ev-num">ICHOM</div>
+            <p>Mezinárodní validovaný standardní set pro lokalizovaný ca prostaty (EPIC-26) — připravený rámec pro měření kvality života, pokud budeme sledovat i outcomes.</p>
+            <div class="ev-src">ICHOM Standard Set · The Clinician</div>
+          </div>
+        </div>
+        <div class="hl-box reveal reveal-6">
+          <p>Nevstupujeme do neprozkoumaného konceptu. Inovujeme <b>lokální doručovací model</b> — referral-embedded, pre-arrival, personalizovaný. Ten ověřený zatím není. To je obhájitelná, konkrétní pozice.</p>
+        </div>
+      </section>
+
+      <!-- ═══ 11 · MAPA TRHU ═══ -->
+      <section class="slide" data-screen-label="11 Konkurence">
+        <div class="eyebrow reveal reveal-1"><span class="sec-no">§ 11</span> Analýza trhu</div>
+        <h2 class="reveal reveal-2">Mapa řešení — kde je <em>volné místo</em></h2>
+        <div class="comp-map">
+          <div class="comp-row reveal reveal-3">
+            <span class="cl">A · Obsah</span>
+            <span class="cn"><b>rakovinaprostaty.org, cus.cz, linkos, MOÚ</b> — statická edukace, bez doručení do workflow, bez personalizace</span>
+            <span class="pill pill-amber">kurátorovat</span>
+          </div>
+          <div class="comp-row reveal reveal-4">
+            <span class="cl">B · Navigátory</span>
+            <span class="cn"><b>NCCN Navigator, Preveta</b> — guideline navigátory pro rozhodování <b>lékaře</b>, ne pacienta</span>
+            <span class="pill pill-azure">jiná cílovka</span>
+          </div>
+          <div class="comp-row reveal reveal-5">
+            <span class="cl">C · ePRO platformy</span>
+            <span class="cn"><b>Kaiku / Elekta, Resilience, Careology, Vinehealth, Outcomes4Me</b> — monitoring symptomů <em>během</em> léčby, MDR-regulované, drahé, 18měsíční sales cycle</span>
+            <span class="pill pill-alert">červený oceán</span>
+          </div>
+          <div class="comp-row ours reveal reveal-6">
+            <span class="cl">D · Pre-arrival</span>
+            <span class="cn"><b>— volné místo</b> · Doručení přes referral <em>před</em> 1. návštěvou, personalizace dle léčby, trvalý bod pravdy, nulová integrace</span>
+            <span class="pill pill-vital">naše pozice</span>
+          </div>
+        </div>
+        <div class="hl-box reveal reveal-7">
+          <p>Nikdo systematicky nedoručí <b>konkrétnímu</b> pacientovi personalizovaný obsah <b>přes lékařskou zprávu, před příchodem</b>. To je naše odlišení — ne obsah samotný, ale <b>doručení a načasování</b>.</p>
+        </div>
+      </section>
+
+      <!-- ═══ 12 · PROČ NE GENERALIZACE ═══ -->
+      <section class="slide" data-screen-label="12 Generalizace">
+        <div class="eyebrow reveal reveal-1"><span class="sec-no">§ 12</span> Strategická analýza — do hloubky</div>
+        <h2 class="reveal reveal-2">Proč generalizace <em class="alert">škodí kvalitě</em> — ne jen strategii</h2>
+        <div class="g g-21" style="flex:1">
+          <div class="reveal reveal-3">
+            <p class="lede sans" style="margin-top:0;margin-bottom:22px">Generalizace není jen strategická past. Přímo snižuje klinickou hodnotu produktu pro každého pacienta.</p>
+            <ul class="bul">
+              <li>Obsah pro ca prostaty (RT, ADT, RARP) je <b>fundamentálně jiný</b> než pro ca prsu, plic nebo kolorekta</li>
+              <li>Výživa, nežiadané účinky, psychologické aspekty — <b>vše diagnóza-specifické</b></li>
+              <li>Generický obsah = nízká relevance = <b>nízká důvěra pacienta</b> = nepoužívaný produkt = žádný efekt</li>
+              <li>Klinická validace se nedá škálovat bez <b>nového garanta per diagnóza</b> per pracoviště</li>
+              <li>Každé rozšíření = nová specializace = přirozená <b>bariéra vstupu pro kopísty</b></li>
+            </ul>
+          </div>
+          <div class="reveal reveal-4" style="display:flex;flex-direction:column;gap:14px">
+            <div style="font-family:var(--mono);font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:var(--vital)">Srovnání přístupu</div>
+            <div style="padding:18px 20px;background:var(--surf);border:1px solid var(--vital);border-left:3px solid var(--vital);border-radius:8px">
+              <div style="font-family:var(--mono);font-size:10px;color:var(--vital);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:10px">Úzký výřez · ca prostaty</div>
+              <p style="font-size:13.5px;color:var(--bone-2);line-height:1.6">Obsah přesně pro ca prostaty · jeden garant · vysoká relevance · důvěra pacienta · měřitelný efekt · obhájitelný pilot</p>
+            </div>
+            <div style="padding:18px 20px;background:var(--surf);border:1px solid var(--alert);border-left:3px solid var(--alert);border-radius:8px">
+              <div style="font-family:var(--mono);font-size:10px;color:var(--alert);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:10px">Generalizace · „celá onkologie"</div>
+              <p style="font-size:13.5px;color:var(--bone-2);line-height:1.6">Obsah pro „onkologii" · více garantů · nízká relevance · nedůvěra · nepoužívaný produkt · žádný měřitelný efekt</p>
+            </div>
+            <div class="hl-box" style="margin-top:4px">
+              <p>Úzký výřez s excelentním obsahem bije generické řešení <b>v každém zdravotním výsledku</b>.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ 13 · STRATEGICKÁ OTÁZKA ═══ -->
+      <section class="slide" data-screen-label="13 Strategická otázka">
+        <div class="eyebrow reveal reveal-1"><span class="sec-no">§ 13</span> Klíčová strategická otázka</div>
+        <h2 class="reveal reveal-2">Je „celkový onkologický nástroj" <em class="amber">dobrý nápad?</em></h2>
+        <div class="verdict">
+          <div class="vcard bad reveal reveal-3">
+            <div class="verdict-stamp">×</div>
+            <div class="vl">Jako šířka funkcí — ne</div>
+            <h3>Červený oceán</h3>
+            <p>Kaiku (Elekta), Resilience, Outcomes4Me, Belong — financovaní, MDR-regulovaní, v EU nemocnicích nasazení. Studentský tým je za 10 měsíců nepředběhne šířkou. Na porotě: „Proč ne Kaiku?"</p>
+          </div>
+          <div class="vcard good reveal reveal-4">
+            <div class="verdict-stamp">✓</div>
+            <div class="vl">Jako úzký klín — ano</div>
+            <h3>Volné místo</h3>
+            <p>Referral-embedded pre-arrival průvodce pro ca prostaty. Malý, měřitelný pilot s reálným klinickým garantem ve FN Ostrava — přesně to porota Zdravotnictví 4.0 hodnotí.</p>
+          </div>
+          <div class="vcard star reveal reveal-5">
+            <div class="verdict-stamp">★</div>
+            <div class="vl">Chytrá střední cesta</div>
+            <h3>Tenká platforma, velká vize</h3>
+            <p>Postavit úzký klín na <b style="color:var(--bone)">škálovatelné architektuře</b> — modulární obsah, sub-agentní správa, rozšíření na další diagnózy bez přepisování. Nesoutěžíme šířkou; vlastníme doručení a udržování.</p>
+          </div>
+        </div>
+        <div class="hl-box reveal reveal-6">
+          <p>Doporučení: <b>„malý obhájitelný pilot, velká udržitelná vize"</b> — vstoupit úzce s ca prostaty, ale navrhnout architekturu tak, aby se bez přepisu rozrostla do celé onkologie.</p>
+        </div>
+      </section>
+
+      <!-- ═══ 14 · SCOPE ═══ -->
+      <section class="slide" data-screen-label="14 Scope">
+        <div class="eyebrow reveal reveal-1"><span class="sec-no">§ 14</span> Doporučený rozsah</div>
+        <h2 class="reveal reveal-2">Co stavíme — a co <em class="alert">vědomě ne</em></h2>
+        <div class="scope-grid">
+          <div class="scope-col in reveal reveal-3">
+            <h3>V rozsahu pilotu (10 měsíců)</h3>
+            <div class="scope-item"><span class="ico">→</span><span>Ca prostaty · FN Ostrava onkologie</span></div>
+            <div class="scope-item"><span class="ico">→</span><span>QR/odkaz v lékařské zprávě odesílajícího pracoviště</span></div>
+            <div class="scope-item"><span class="ico">→</span><span>Personalizace dle typu léčby (RT / HT / OP / sledování / RT+HT)</span></div>
+            <div class="scope-item"><span class="ico">→</span><span>Trvalý bod: příprava, otázky pro lékaře, průběh, deník</span></div>
+            <div class="scope-item"><span class="ico">→</span><span>Papírový QR fallback pro nedigitální pacienty</span></div>
+            <div class="scope-item"><span class="ico">→</span><span>Měřitelné metriky: čas 1. vyšetření, pre/post dotazník stresu</span></div>
+          </div>
+          <div class="scope-col out reveal reveal-4">
+            <h3>Vědomě mimo rozsah</h3>
+            <div class="scope-item"><span class="ico">×</span><span>Plný ePRO symptom monitoring</span></div>
+            <div class="scope-item"><span class="ico">×</span><span>Diagnostika nebo klinické rozhodování</span></div>
+            <div class="scope-item"><span class="ico">×</span><span>Integrace do NIS v 1. fázi</span></div>
+            <div class="scope-item"><span class="ico">×</span><span>MDR-klasifikovaný software</span></div>
+            <div class="scope-item"><span class="ico">×</span><span>„Všechny diagnózy najednou"</span></div>
+            <div class="scope-item"><span class="ico">×</span><span>Funkce bez jasně definovaného vlastníka obsahu</span></div>
+          </div>
+          <div class="arch-card reveal reveal-5">
+            <h3>Architektura pro dlouhodobou udržitelnost</h3>
+            <p>Největší riziko takových projektů není technika, ale <b>zastarání obsahu a adopce workflowu</b>. Proto navrhujeme modulární obsah s jasným vlastníkem aktualizací a sub-agentní systém pro průběžnou správu — naše odpověď na hlavní riziko i cesta k celoonkologické vizi bez přímého souboje s Kaiku/Resilience.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ 15 · RIZIKA ═══ -->
+      <section class="slide" data-screen-label="15 Rizika">
+        <div class="eyebrow reveal reveal-1"><span class="sec-no">§ 15</span> Rizika — pojmenujme je dřív, než se zeptá porota</div>
+        <h2 class="reveal reveal-2">Hlavní rizika a <em class="amber">jejich závažnost</em></h2>
+        <div class="risk-list">
+          <div class="risk-row reveal reveal-3">
+            <span class="rn">Udržitelnost obsahu</span>
+            <span><span class="pill pill-alert">vysoká</span></span>
+            <span class="rm">Nejčastější „death by neglect" takových portálů → vlastník + review cyklus + sub-agentní aktualizace (viz § 09)</span>
+          </div>
+          <div class="risk-row reveal reveal-3">
+            <span class="rn">Digitální gramotnost (~67 let)</span>
+            <span><span class="pill pill-alert">vysoká</span></span>
+            <span class="rm">Nutný papírový fallback + design pro rodinu jako zprostředkovatele + přístupnost (velké písmo, TTS, offline)</span>
+          </div>
+          <div class="risk-row reveal reveal-4">
+            <span class="rn">Personalizace před znalostí typu léčby</span>
+            <span><span class="pill pill-amber">střední</span></span>
+            <span class="rm">Typ léčby znám až po MDT — otázka č. 2 pro paní doktorku; možné řešení: generická verze + update po MDT</span>
+          </div>
+          <div class="risk-row reveal reveal-4">
+            <span class="rn">Adopce odesílajících lékařů (urologie)</span>
+            <span><span class="pill pill-amber">střední</span></span>
+            <span class="rm">Link musí být nulová zátěž navíc — jinak ho urolog nevloží; ideálně automatizace přes šablonu zprávy</span>
+          </div>
+          <div class="risk-row reveal reveal-5">
+            <span class="rn">GDPR / tokenovaný odkaz</span>
+            <span><span class="pill pill-amber">střední</span></span>
+            <span class="rm">Generický link vs. personalizovaný token — dopad na funkcionalitu; vyřešit s právním oddělením FN</span>
+          </div>
+          <div class="risk-row reveal reveal-5">
+            <span class="rn">MDR status (regulace SW)</span>
+            <span><span class="pill pill-vital">nízká *</span></span>
+            <span class="rm">* Při hlídaném rozsahu (čistě edukační, nediagnostický obsah) zůstáváme mimo MDR — scope musíme ustrážit</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ 16 · OTÁZKY ═══ -->
+      <section class="slide" data-screen-label="16 Otázky">
+        <div class="eyebrow reveal reveal-1"><span class="sec-no">§ 16</span> Otázky na paní doktorku</div>
+        <h2 class="reveal reveal-2">Co potřebujeme <em>rozhodnout společně</em></h2>
+        <div class="qa">
+          <div class="qa-item reveal reveal-3">
+            <div class="qbody">
+              Kde přesně v cestě pacienta vstupuje odkaz?
+              <span class="ans">Generuje ho urolog při odeslání, nebo onkologie při objednání? Ručně, nebo automaticky ze systému?</span>
+            </div>
+          </div>
+          <div class="qa-item reveal reveal-4">
+            <div class="qbody">
+              Kdy je znám typ léčby?
+              <span class="ans">O RT / HT / chirurgii / sledování rozhoduje MDT — možná až po 1. vyšetření. Jak pak personalizovat průvodce <em>předtím</em>?</span>
+            </div>
+          </div>
+          <div class="qa-item reveal reveal-5">
+            <div class="qbody">
+              Generický vs. tokenovaný odkaz?
+              <span class="ans">Dopad na GDPR, autentizaci a funkci „kontroly výsledků". Co je klinicky a právně přijatelné?</span>
+            </div>
+          </div>
+          <div class="qa-item reveal reveal-6">
+            <div class="qbody">
+              Kdo je vlastníkem a garantem aktualizace obsahu?
+              <span class="ans">Nejdůležitější dlouhodobé riziko — bez jmenovaného vlastníka obsah do 2 let zastará. Máte kapacitu / zájem?</span>
+            </div>
+          </div>
+          <div class="qa-item reveal reveal-7">
+            <div class="qbody">
+              Jak měříme přínos — a co je dostatečný důkaz?
+              <span class="ans">Pre/post dotazník stresu, délka vstupního vyšetření, počet opakovaných dotazů? Co přesvědčí oddělení i vedení FN?</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ 17 · DALŠÍ KROKY ═══ -->
+      <section class="slide" data-screen-label="17 Další kroky">
+        <div class="eyebrow reveal reveal-1"><span class="sec-no">§ 17</span> Časování a co bude dál</div>
+        <h2 class="reveal reveal-2">Další kroky a <em>harmonogram</em></h2>
+        <div class="next-steps">
+          <div class="ns reveal reveal-3">
+            <div class="nd">Nyní · Fáze návrhu</div>
+            <h3>Prototyp je hotov</h3>
+            <p>Interaktivní prototyp <b>existuje a funguje</b> — 5 záložek, 5 léčebných modalit, nežádoucí účinky, výživa, otázky s tiskem, deník, pohled pro rodinu, navigace do nemocnice. Deadline fáze návrhu: <b>začátek června 2026.</b></p>
+          </div>
+          <div class="ns reveal reveal-4">
+            <div class="nd">Do konce května</div>
+            <h3>Projektový návrh</h3>
+            <p>Zapracujeme odpovědi na 5 klíčových otázek (§ 16) do projektové dokumentace: technická architektura, UX flow, model správy obsahu, metriky úspěchu, architektura sub-agentního systému.</p>
+          </div>
+          <div class="ns reveal reveal-5">
+            <div class="nd">Fáze 3 · 10 měsíců</div>
+            <h3>Reálný pilot</h3>
+            <p>Pokud postoupíme (3 projekty): interaktivní průvodce nasazený v reálném provozu FN Ostrava + sub-agentní systém pro udržitelnost obsahu — naše odpověď na hlavní riziko.</p>
+          </div>
+        </div>
+        <div class="hl-box reveal reveal-6">
+          <p><b>Po dnešní schůzce:</b> Zapracujeme odpovědi na klíčové otázky, doladíme prototyp dle zpětné vazby a navrhneme architektonický rámec sub-agentního systému — naší odpovědi na riziko udržitelnosti.</p>
+        </div>
+      </section>
+
+      <!-- ═══ 18 · ZÁVĚR ═══ -->
+      <section class="slide center" data-screen-label="18 Závěr">
+        <div class="close-wrap">
+          <div class="chapter-glow"></div>
+          <div class="ribbon reveal reveal-1">Onko · <b>Systémová analýza</b> · ALT+SHIFT+HEAL · 2026</div>
+          <div class="sig-rule reveal reveal-2 draw-line"></div>
+          <div class="title-halo reveal reveal-3">
+            <h1>
+              Malý, obhájitelný pilot.<br/>
+              <em>Velká, udržitelná<br/>vize.</em>
+            </h1>
+          </div>
+          <p class="lede reveal reveal-4">Úzký výřez · škálovatelná architektura · sub-agentní udržitelnost.</p>
+          <div class="close-sig reveal reveal-5">
+            <div class="close-mark">O</div>
+            <div>
+              <div style="font-family:var(--serif);font-weight:500;font-size:20px;color:var(--bone);letter-spacing:-0.01em">Onko · ALT+SHIFT+HEAL</div>
+              <div style="font-family:var(--mono);font-size:11px;color:var(--paper);margin-top:4px;letter-spacing:0.08em">
+                Mucha · Martynková · Tomica · Tobola &nbsp;·&nbsp; MUDr. Čermáková, Ph.D.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- HUD BOTTOM -->
+    <div class="hud-bot">
+      <div class="pos">
+        <span class="big" id="pos-big">01</span>
+        <span class="tot">/ 18 · § <span id="pos-label">Titul</span></span>
+      </div>
+      <div class="label">Klinický editorial · pracovní podklad</div>
+    </div>
+
+    <div class="dots" id="dots"></div>
+    <div class="nav">
+      <button onclick="go(-1)" aria-label="zpět">‹</button>
+      <button onclick="go(1)" aria-label="dál">›</button>
+    </div>
+
+    <script>
+      const S = [...document.querySelectorAll(".slide")];
+      let i = 0;
+      const dots = document.getElementById("dots");
+      S.forEach((_, k) => {
+        const d = document.createElement("i");
+        d.onclick = () => set(k);
+        dots.appendChild(d);
+      });
+      function set(n) {
+        i = Math.max(0, Math.min(S.length - 1, n));
+        S.forEach((s, k) => s.classList.toggle("on", k === i));
+        [...dots.children].forEach((d, k) => d.classList.toggle("on", k === i));
+        document.getElementById("pos-big").textContent = String(i + 1).padStart(2, "0");
+        const lbl = S[i].dataset.screenLabel || "";
+        document.getElementById("pos-label").textContent = lbl.replace(/^\d+\s*/, "");
+        const cur = document.querySelector(".slide.on");
+        if (cur) cur.scrollTop = 0;
+        try { window.parent.postMessage({ slideIndexChanged: i }, "*"); } catch (e) {}
+      }
+      function go(d) { set(i + d); }
+      set(0);
+      addEventListener("keydown", (e) => {
+        if (["ArrowRight","ArrowDown"," ","PageDown"].includes(e.key)) { go(1); e.preventDefault(); }
+        if (["ArrowLeft","ArrowUp","PageUp"].includes(e.key)) { go(-1); e.preventDefault(); }
+        if (e.key === "Home") set(0);
+        if (e.key === "End") set(S.length - 1);
+      });
+      let tx = null;
+      addEventListener("touchstart", (e) => (tx = e.touches[0].clientX), { passive: true });
+      addEventListener("touchend", (e) => {
+        if (tx === null) return;
+        const dx = e.changedTouches[0].clientX - tx;
+        if (Math.abs(dx) > 50) go(dx < 0 ? 1 : -1);
+        tx = null;
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1638 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ALT+SHIFT+HEAL — Digitální průvodce · Prototyp</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ── BRAND TOKENS ───────────────────────────────── */
+:root{
+  --b-bg:#0a0e13;--b-bg2:#11161c;--b-bg3:#161c24;--b-panel:#181f28;
+  --b-line:#232c38;--b-line2:#2c3744;
+  --b-ink:#e6edf3;--b-dim:#8b97a7;--b-mute:#5a6677;
+  --b-mint:#5fcfa3;--b-mint2:#7ee0b8;--b-coral:#ff5d6c;--b-amber:#f6c85f;
+  --brand-sans:"Space Grotesk",system-ui,sans-serif;
+  --brand-mono:"JetBrains Mono",ui-monospace,monospace;
+  /* App (patient-facing) tokens */
+  --a-bg:#F5F7FA;--a-card:#FFFFFF;--a-card2:#F0F4F8;
+  --a-ink:#111827;--a-muted:#64748B;--a-faint:#94A3B8;
+  --a-mint:#2DA876;--a-mint-s:#E6F7F1;--a-mint-m:#B3E8D4;
+  --a-coral:#E84C5A;--a-coral-s:#FDECEA;
+  --a-amber:#D4970A;--a-amber-s:#FEF3CD;
+  --a-line:#E2E8F0;--a-shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
+  --a-shadow-m:0 4px 12px rgba(0,0,0,.10),0 2px 4px rgba(0,0,0,.06);
+  --app-sans:"Inter",system-ui,sans-serif;
+  --fs:1; /* a11y scale */
+}
+.hc{
+  --a-bg:#FFFFFF;--a-card:#F0F4F8;--a-ink:#000000;--a-muted:#1a2030;
+  --a-line:#000000;--a-mint:#1a7a52;--a-mint-s:#d0ffe8;
+  --a-faint:#4a5568;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{min-height:100vh;background:var(--b-bg);font-family:var(--brand-sans)}
+
+/* ── OUTER LAYOUT ───────────────────────────────── */
+.stage{display:flex;align-items:flex-start;justify-content:center;gap:48px;
+  padding:48px 40px 60px;min-height:100vh;flex-wrap:wrap}
+
+/* ── BRAND SIDE PANEL ───────────────────────────── */
+.side{width:300px;flex-shrink:0;padding-top:8px}
+.ash-logo{font-family:var(--brand-mono);font-weight:600;font-size:13px;
+  letter-spacing:.22em;color:var(--b-ink);display:flex;align-items:center;gap:10px;
+  margin-bottom:32px}
+.ash-logo .dot{width:32px;height:32px;border-radius:8px;
+  background:linear-gradient(135deg,var(--b-mint),var(--b-mint2));
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;color:#0a0e13;font-weight:700;letter-spacing:.06em}
+.side h1{font-size:28px;font-weight:700;color:var(--b-ink);line-height:1.15;letter-spacing:-.02em;margin-bottom:14px}
+.side h1 span{color:var(--b-mint)}
+.side .sub{font-size:14px;color:var(--b-dim);line-height:1.6;margin-bottom:28px}
+.pillars{display:flex;flex-direction:column;gap:12px}
+.pl{background:var(--b-bg2);border:1px solid var(--b-line2);border-radius:12px;padding:14px 16px;
+  border-left:3px solid var(--b-mint)}
+.pl.c2{border-left-color:var(--b-coral)}
+.pl.c3{border-left-color:var(--b-amber)}
+.pl h3{font-size:13px;font-weight:600;color:var(--b-ink);margin-bottom:4px}
+.pl p{font-size:12px;color:var(--b-dim);line-height:1.5}
+.side .badge{display:inline-flex;align-items:center;gap:7px;
+  background:var(--b-bg3);border:1px solid var(--b-line2);border-radius:99px;
+  padding:7px 13px;font-family:var(--brand-mono);font-size:11px;
+  color:var(--b-mint);letter-spacing:.08em;margin-bottom:24px}
+.side .badge::before{content:"";width:7px;height:7px;border-radius:50%;
+  background:var(--b-mint);box-shadow:0 0 6px var(--b-mint)}
+.side-note{font-family:var(--brand-mono);font-size:11px;color:var(--b-mute);
+  margin-top:24px;line-height:1.7;letter-spacing:.02em}
+.side-note a{color:var(--b-mint);text-decoration:none}
+
+/* ── PHONE SHELL ────────────────────────────────── */
+.phone{flex-shrink:0;width:390px;height:844px;position:relative;
+  background:#0c0d0c;border-radius:56px;
+  box-shadow:0 0 0 1px rgba(255,255,255,.06),
+    0 48px 80px -24px rgba(0,0,0,.7),
+    inset 0 0 0 1px rgba(255,255,255,.04)}
+.phone::before{content:"";position:absolute;inset:0;border-radius:56px;
+  background:linear-gradient(160deg,rgba(95,207,163,.04),transparent 50%);z-index:0}
+.notch{position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:126px;height:34px;background:#0c0d0c;border-radius:0 0 22px 22px;z-index:30}
+.screen{position:absolute;inset:10px;border-radius:47px;overflow:hidden;
+  background:var(--a-bg);display:flex;flex-direction:column;z-index:1}
+
+/* ── STATUS BAR ─────────────────────────────────── */
+.statusbar{height:44px;padding:14px 22px 0;display:flex;justify-content:space-between;
+  align-items:center;flex-shrink:0;background:var(--a-bg)}
+.sb-time{font-family:var(--brand-mono);font-size:13px;font-weight:600;
+  color:var(--a-ink);letter-spacing:.02em}
+.sb-icons{display:flex;gap:6px;align-items:center}
+.sb-icons svg{width:16px;height:16px;fill:var(--a-ink);opacity:.8}
+.sb-battery{font-family:var(--brand-mono);font-size:11px;color:var(--a-ink);opacity:.7}
+
+/* ── APP HEADER ─────────────────────────────────── */
+.appbar{padding:10px 20px 12px;display:flex;align-items:center;justify-content:space-between;
+  flex-shrink:0;border-bottom:1px solid var(--a-line);background:var(--a-bg)}
+.appbar-logo{display:flex;align-items:center;gap:8px}
+.appbar-logo .mark{width:28px;height:28px;border-radius:8px;
+  background:linear-gradient(135deg,var(--a-mint),#52d4a0);
+  display:flex;align-items:center;justify-content:center}
+.appbar-logo .mark svg{width:14px;height:14px;fill:#fff}
+.appbar-logo span{font-family:var(--brand-mono);font-size:12px;font-weight:600;
+  color:var(--a-ink);letter-spacing:.12em}
+.appbar-actions{display:flex;gap:8px}
+.icon-btn{width:34px;height:34px;border-radius:10px;border:1px solid var(--a-line);
+  background:var(--a-card);display:flex;align-items:center;justify-content:center;cursor:pointer;
+  transition:.15s;flex-shrink:0}
+.icon-btn:active,.icon-btn.on{background:var(--a-mint-s);border-color:var(--a-mint)}
+.icon-btn svg{width:16px;height:16px;stroke:var(--a-muted);fill:none;stroke-width:2;
+  stroke-linecap:round;stroke-linejoin:round}
+.icon-btn.on svg{stroke:var(--a-mint)}
+
+/* ── BODY + TABS ────────────────────────────────── */
+.app-body{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;
+  scrollbar-width:none;padding-bottom:70px}
+.app-body::-webkit-scrollbar{width:0}
+.tab-bar{position:absolute;bottom:0;left:0;right:0;height:72px;
+  background:var(--a-bg);border-top:1px solid var(--a-line);
+  display:flex;padding:8px 4px calc(env(safe-area-inset-bottom)+8px);
+  box-shadow:0 -1px 0 rgba(0,0,0,.04);z-index:20}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;
+  gap:3px;cursor:pointer;border-radius:10px;padding:6px 2px;transition:.15s}
+.tab .ti{width:24px;height:24px;display:flex;align-items:center;justify-content:center}
+.tab .ti svg{width:22px;height:22px;stroke:var(--a-faint);fill:none;stroke-width:1.8;
+  stroke-linecap:round;stroke-linejoin:round;transition:.15s}
+.tab .tl{font-family:var(--app-sans);font-size:10px;color:var(--a-faint);
+  transition:.15s;font-weight:500}
+.tab.on .ti svg{stroke:var(--a-mint)}
+.tab.on .tl{color:var(--a-mint);font-weight:600}
+
+/* ── SCREENS ────────────────────────────────────── */
+.scr{display:none;animation:fadeUp .22s ease}
+.scr.on{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ── ONBOARDING ─────────────────────────────────── */
+.onboarding{position:absolute;inset:0;z-index:40;background:var(--a-bg);
+  display:flex;flex-direction:column;border-radius:47px;overflow:hidden}
+.onb-hero{flex:1;background:linear-gradient(160deg,#1a3a2e 0%,#0f1e18 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:40px 28px;text-align:center}
+.onb-icon{width:72px;height:72px;border-radius:20px;
+  background:rgba(95,207,163,.18);border:1px solid rgba(95,207,163,.3);
+  display:flex;align-items:center;justify-content:center;margin-bottom:24px}
+.onb-icon svg{width:36px;height:36px;stroke:#5fcfa3;fill:none;stroke-width:1.5;
+  stroke-linecap:round;stroke-linejoin:round}
+.onb-hero h2{font-family:var(--brand-sans);font-size:calc(24px*var(--fs));font-weight:700;
+  color:#e6edf3;letter-spacing:-.02em;margin-bottom:10px}
+.onb-hero p{font-size:calc(14px*var(--fs));color:#8b97a7;line-height:1.6;max-width:26ch}
+.onb-body{padding:24px 24px 28px;background:var(--a-bg)}
+.onb-card{background:var(--a-mint-s);border:1px solid var(--a-mint-m);
+  border-radius:14px;padding:16px;margin-bottom:16px}
+.onb-card .label{font-family:var(--brand-mono);font-size:10px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--a-mint);margin-bottom:8px}
+.onb-card .name{font-size:calc(15px*var(--fs));font-weight:600;color:var(--a-ink);margin-bottom:3px}
+.onb-card .det{font-size:calc(13px*var(--fs));color:var(--a-muted)}
+.btn-primary{width:100%;background:var(--a-mint);color:#fff;border:0;
+  border-radius:14px;padding:calc(14px*var(--fs)) 20px;
+  font-family:var(--brand-sans);font-size:calc(15px*var(--fs));font-weight:600;cursor:pointer;
+  transition:.15s;letter-spacing:-.01em}
+.btn-primary:active{opacity:.85}
+.btn-ghost{width:100%;background:transparent;color:var(--a-muted);border:1px solid var(--a-line);
+  border-radius:14px;padding:12px 20px;
+  font-family:var(--brand-sans);font-size:calc(14px*var(--fs));font-weight:500;cursor:pointer;margin-top:8px}
+
+/* ── HOME SCREEN ────────────────────────────────── */
+.home-hero{background:linear-gradient(135deg,#1a3a2e 0%,#132a22 60%,#0f2018 100%);
+  padding:20px 20px 24px;position:relative;overflow:hidden}
+.home-hero::after{content:"";position:absolute;right:-30px;top:-30px;
+  width:160px;height:160px;border-radius:50%;
+  background:radial-gradient(circle,rgba(95,207,163,.14),transparent 70%)}
+.home-greeting{font-family:var(--brand-mono);font-size:11px;color:rgba(95,207,163,.7);
+  letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
+.home-name{font-size:calc(22px*var(--fs));font-weight:700;color:#e6edf3;
+  letter-spacing:-.02em;margin-bottom:6px;font-family:var(--brand-sans)}
+.home-dx{font-size:calc(13px*var(--fs));color:#8b97a7;margin-bottom:18px;line-height:1.5}
+.journey-prog{background:rgba(255,255,255,.08);border-radius:10px;padding:12px 14px}
+.jp-label{font-size:calc(11px*var(--fs));color:rgba(230,237,243,.5);
+  font-family:var(--brand-mono);letter-spacing:.08em;margin-bottom:8px}
+.jp-bar-bg{height:6px;background:rgba(255,255,255,.12);border-radius:3px;overflow:hidden}
+.jp-bar{height:6px;border-radius:3px;
+  background:linear-gradient(90deg,var(--b-mint),var(--b-mint2));
+  transition:width .6s ease}
+.jp-steps{display:flex;justify-content:space-between;margin-top:6px}
+.jp-step-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.15);
+  position:relative;cursor:default}
+.jp-step-dot.done{background:var(--b-mint)}
+.jp-step-dot.now{background:var(--b-mint);box-shadow:0 0 0 3px rgba(95,207,163,.3)}
+
+/* ── SECTION HEADER ─────────────────────────────── */
+.sh{padding:18px 20px 6px;display:flex;justify-content:space-between;align-items:center}
+.sh-label{font-family:var(--brand-mono);font-size:10.5px;color:var(--a-muted);
+  letter-spacing:.12em;text-transform:uppercase;font-weight:600}
+.sh-action{font-size:12px;color:var(--a-mint);font-weight:600;cursor:pointer}
+
+/* ── TX CHIPS ───────────────────────────────────── */
+.chips-row{padding:0 20px 4px;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
+.chips-row::-webkit-scrollbar{width:0;height:0}
+.chip{font-size:calc(12.5px*var(--fs));border:1.5px solid var(--a-line);
+  background:var(--a-card);border-radius:99px;padding:8px 14px;cursor:pointer;
+  white-space:nowrap;color:var(--a-muted);font-weight:500;transition:.15s;flex-shrink:0;
+  font-family:var(--app-sans)}
+.chip.on{background:var(--a-mint-s);border-color:var(--a-mint);color:var(--a-mint);font-weight:600}
+
+/* ── QUICK ACTION CARDS ─────────────────────────── */
+.qa-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px 20px}
+.qa-card{background:var(--a-card);border:1px solid var(--a-line);border-radius:16px;
+  padding:16px 14px;cursor:pointer;transition:.15s;
+  box-shadow:var(--a-shadow)}
+.qa-card:active{transform:scale(.97)}
+.qa-card .ic{width:36px;height:36px;border-radius:10px;margin-bottom:10px;
+  display:flex;align-items:center;justify-content:center}
+.qa-card .ic svg{width:18px;height:18px;stroke:inherit;fill:none;
+  stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.qa-card h4{font-size:calc(13px*var(--fs));font-weight:600;color:var(--a-ink);
+  margin-bottom:3px;line-height:1.3}
+.qa-card p{font-size:calc(11.5px*var(--fs));color:var(--a-muted);line-height:1.4}
+.qa-card.mint .ic{background:var(--a-mint-s);stroke:var(--a-mint)}
+.qa-card.mint .ic svg{stroke:var(--a-mint)}
+.qa-card.coral .ic{background:var(--a-coral-s)}
+.qa-card.coral .ic svg{stroke:var(--a-coral)}
+.qa-card.amber .ic{background:var(--a-amber-s)}
+.qa-card.amber .ic svg{stroke:var(--a-amber)}
+.qa-card.blue .ic{background:#EFF6FF}
+.qa-card.blue .ic svg{stroke:#3B82F6}
+
+/* ── NEXT APPOINTMENT CARD ──────────────────────── */
+.next-card{margin:0 20px 4px;background:var(--a-mint);border-radius:18px;
+  padding:18px;box-shadow:0 6px 20px -4px rgba(45,168,118,.4);
+  display:flex;justify-content:space-between;align-items:flex-start}
+.nc-left h4{font-size:calc(14px*var(--fs));font-weight:700;color:#fff;margin-bottom:4px}
+.nc-left p{font-size:calc(12px*var(--fs));color:rgba(255,255,255,.75)}
+.nc-right{text-align:right}
+.nc-right .days{font-size:calc(28px*var(--fs));font-weight:700;color:#fff;
+  line-height:1;font-family:var(--brand-sans)}
+.nc-right .dlabel{font-size:calc(10px*var(--fs));color:rgba(255,255,255,.65);
+  font-family:var(--brand-mono);letter-spacing:.08em}
+
+/* ── PATHWAY SCREEN ─────────────────────────────── */
+.path-hero{background:linear-gradient(135deg,#1a3a2e,#0f1e18);
+  padding:16px 20px 18px;margin-bottom:4px}
+.path-hero h2{font-size:calc(18px*var(--fs));font-weight:700;color:#e6edf3;
+  font-family:var(--brand-sans);margin-bottom:4px}
+.path-hero p{font-size:calc(12.5px*var(--fs));color:#8b97a7}
+.path-prog{display:flex;align-items:center;gap:8px;margin-top:12px}
+.pp-fill{flex:1;height:4px;background:rgba(255,255,255,.12);border-radius:2px;overflow:hidden}
+.pp-fill-in{height:4px;background:var(--b-mint);border-radius:2px;transition:width .5s}
+.pp-label{font-family:var(--brand-mono);font-size:11px;color:rgba(95,207,163,.8)}
+.step-item{margin:0 20px 10px;background:var(--a-card);border:1px solid var(--a-line);
+  border-radius:16px;overflow:hidden;box-shadow:var(--a-shadow);transition:.15s}
+.step-item.now{border-color:var(--a-mint);box-shadow:0 0 0 2px rgba(45,168,118,.15),var(--a-shadow)}
+.step-item.done{opacity:.75}
+.step-top{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer}
+.step-num{width:32px;height:32px;border-radius:10px;display:flex;align-items:center;
+  justify-content:center;flex-shrink:0;font-family:var(--brand-mono);font-size:13px;font-weight:700}
+.step-num.done-c{background:var(--a-mint-s);color:var(--a-mint)}
+.step-num.now-c{background:var(--a-mint);color:#fff}
+.step-num.next-c{background:var(--a-card2);color:var(--a-muted)}
+.step-info{flex:1}
+.step-info b{font-size:calc(14px*var(--fs));font-weight:600;color:var(--a-ink);display:block}
+.step-info small{font-size:calc(12px*var(--fs));color:var(--a-muted)}
+.step-arr{width:20px;color:var(--a-faint);transition:.2s;font-size:18px;line-height:1}
+.step-item.open .step-arr{transform:rotate(180deg)}
+.step-det{max-height:0;overflow:hidden;transition:max-height .3s ease}
+.step-item.open .step-det{max-height:400px}
+.step-det-in{padding:0 16px 16px;border-top:1px solid var(--a-line)}
+.step-det-in p{font-size:calc(13.5px*var(--fs));color:var(--a-muted);
+  line-height:1.65;margin-top:12px}
+.step-det-in .tip-box{background:var(--a-amber-s);border-radius:10px;
+  padding:10px 12px;margin-top:10px;display:flex;gap:8px;align-items:flex-start}
+.step-det-in .tip-box svg{width:14px;height:14px;fill:var(--a-amber);flex-shrink:0;margin-top:2px}
+.step-det-in .tip-box span{font-size:calc(12px*var(--fs));color:var(--a-ink);line-height:1.5}
+.step-status{display:inline-block;font-family:var(--brand-mono);font-size:10px;
+  letter-spacing:.06em;padding:3px 8px;border-radius:6px;margin-top:8px}
+.st-done{background:var(--a-mint-s);color:var(--a-mint)}
+.st-now{background:var(--a-mint);color:#fff}
+.st-next{background:var(--a-card2);color:var(--a-muted)}
+
+/* ── PREP SCREEN ────────────────────────────────── */
+.prog-ring-wrap{display:flex;flex-direction:column;align-items:center;
+  padding:22px 20px 14px}
+.prog-ring-wrap .ring-label{font-size:calc(13px*var(--fs));color:var(--a-muted);
+  margin-top:10px;font-weight:500}
+.prog-ring-wrap .ring-pct{font-size:calc(26px*var(--fs));font-weight:700;
+  color:var(--a-ink);font-family:var(--brand-sans)}
+.ring-ctn{position:relative;width:110px;height:110px}
+.ring-ctn svg{transform:rotate(-90deg)}
+.ring-ctn .ring-val{position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center}
+.ck-list{padding:0 20px}
+.ck-item{display:flex;gap:12px;align-items:flex-start;padding:13px 14px;
+  background:var(--a-card);border:1px solid var(--a-line);border-radius:14px;
+  margin-bottom:9px;cursor:pointer;transition:.15s}
+.ck-item:active{transform:scale(.98)}
+.ck-item.done{background:var(--a-mint-s);border-color:var(--a-mint-m)}
+.ck-box{width:22px;height:22px;border-radius:7px;border:2px solid var(--a-faint);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.15s}
+.ck-item.done .ck-box{background:var(--a-mint);border-color:var(--a-mint)}
+.ck-box svg{width:12px;height:12px;stroke:#fff;fill:none;stroke-width:3;
+  stroke-linecap:round;stroke-linejoin:round;opacity:0;transition:.15s}
+.ck-item.done .ck-box svg{opacity:1}
+.ck-text{flex:1}
+.ck-text b{font-size:calc(13.5px*var(--fs));color:var(--a-ink);font-weight:600;display:block}
+.ck-text span{font-size:calc(12px*var(--fs));color:var(--a-muted);line-height:1.4}
+.ck-item.done .ck-text b{text-decoration:line-through;color:var(--a-muted)}
+
+/* ── QUESTIONS BUILDER ──────────────────────────── */
+.q-builder{padding:0 20px 16px}
+.q-item{display:flex;gap:10px;align-items:center;padding:12px 14px;
+  background:var(--a-card);border:1px solid var(--a-line);border-radius:14px;
+  margin-bottom:9px;cursor:pointer;transition:.15s}
+.q-item.on{background:var(--a-mint-s);border-color:var(--a-mint)}
+.q-check{width:20px;height:20px;border-radius:6px;border:2px solid var(--a-line);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.15s}
+.q-item.on .q-check{background:var(--a-mint);border-color:var(--a-mint)}
+.q-check svg{width:10px;height:10px;stroke:#fff;fill:none;stroke-width:3;
+  stroke-linecap:round;opacity:0;transition:.1s}
+.q-item.on .q-check svg{opacity:1}
+.q-item span{font-size:calc(13.5px*var(--fs));color:var(--a-ink);line-height:1.45}
+.add-q-row{display:flex;gap:8px;padding:0 20px;margin-bottom:8px}
+.add-q-input{flex:1;border:1.5px solid var(--a-line);border-radius:12px;
+  padding:10px 12px;font-size:calc(13px*var(--fs));color:var(--a-ink);
+  background:var(--a-card);font-family:var(--app-sans);outline:none}
+.add-q-input:focus{border-color:var(--a-mint)}
+.add-q-btn{background:var(--a-mint);color:#fff;border:0;border-radius:12px;
+  padding:10px 14px;font-weight:600;cursor:pointer;font-size:13px;white-space:nowrap}
+.q-summary{margin:0 20px;background:var(--a-card2);border-radius:14px;
+  padding:14px;border:1px solid var(--a-line)}
+.q-summary .qs-label{font-family:var(--brand-mono);font-size:10px;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--a-muted);margin-bottom:10px}
+.q-summary li{font-size:calc(13px*var(--fs));color:var(--a-ink);padding:5px 0;
+  border-bottom:1px solid var(--a-line);list-style:none;line-height:1.45}
+.q-summary li:last-child{border-bottom:0}
+.q-summary li::before{content:"→ ";color:var(--a-mint);font-weight:600}
+
+/* ── JOURNEY TIMELINE ───────────────────────────── */
+.tl-ctn{padding:12px 20px;position:relative}
+.tl-line{position:absolute;left:38px;top:20px;bottom:20px;width:2px;
+  background:var(--a-line);z-index:0}
+.tl-ev{display:flex;gap:14px;position:relative;z-index:1;margin-bottom:14px}
+.tl-dot{width:16px;height:16px;border-radius:50%;flex-shrink:0;margin-top:4px;
+  border:3px solid var(--a-line);background:var(--a-bg);transition:.2s;cursor:pointer}
+.tl-dot.done{background:var(--a-mint);border-color:var(--a-mint);
+  box-shadow:0 0 0 3px rgba(45,168,118,.2)}
+.tl-dot.now{background:var(--a-mint);border-color:var(--a-mint);
+  box-shadow:0 0 0 5px rgba(45,168,118,.25),0 0 0 8px rgba(45,168,118,.1)}
+.tl-dot.future{background:var(--a-bg);border-color:var(--a-line)}
+.tl-body{flex:1;background:var(--a-card);border:1px solid var(--a-line);
+  border-radius:14px;padding:13px 14px;box-shadow:var(--a-shadow)}
+.tl-body.now-e{border-color:var(--a-mint)}
+.tl-body h4{font-size:calc(14px*var(--fs));font-weight:600;color:var(--a-ink);margin-bottom:3px}
+.tl-body .meta{font-size:calc(12px*var(--fs));color:var(--a-muted);margin-bottom:6px}
+.tl-body .result-box{background:var(--a-mint-s);border-radius:8px;padding:8px 10px;
+  margin-top:8px;cursor:pointer}
+.tl-body .result-box .rl{font-family:var(--brand-mono);font-size:10px;color:var(--a-mint);
+  letter-spacing:.08em;margin-bottom:3px}
+.tl-body .result-box .rv{font-size:calc(13px*var(--fs));font-weight:600;color:var(--a-ink)}
+.tl-body .result-box .rexpl{font-size:calc(12px*var(--fs));color:var(--a-muted);
+  margin-top:4px;line-height:1.5;display:none}
+.tl-body .result-box.exp .rexpl{display:block}
+
+/* ── MORE SCREEN ────────────────────────────────── */
+.gloss-search{margin:12px 20px 0;display:flex;align-items:center;gap:10px;
+  background:var(--a-card);border:1.5px solid var(--a-line);border-radius:12px;
+  padding:10px 14px}
+.gloss-search svg{width:16px;height:16px;stroke:var(--a-faint);fill:none;
+  stroke-width:2;stroke-linecap:round;flex-shrink:0}
+.gloss-input{flex:1;border:0;background:transparent;font-size:calc(13.5px*var(--fs));
+  color:var(--a-ink);font-family:var(--app-sans);outline:none}
+.gloss-input::placeholder{color:var(--a-faint)}
+.gloss-list{padding:10px 20px}
+.gloss-item{padding:13px 0;border-bottom:1px solid var(--a-line)}
+.gloss-item:last-child{border-bottom:0}
+.gloss-item h4{font-size:calc(14px*var(--fs));font-weight:600;color:var(--a-ink);margin-bottom:4px}
+.gloss-item p{font-size:calc(13px*var(--fs));color:var(--a-muted);line-height:1.55}
+.a11y-card{margin:8px 20px;background:var(--a-card);border:1px solid var(--a-line);
+  border-radius:16px;padding:16px;box-shadow:var(--a-shadow)}
+.a11y-card h3{font-size:calc(14px*var(--fs));font-weight:600;color:var(--a-ink);margin-bottom:12px}
+.a11y-row{display:flex;justify-content:space-between;align-items:center;
+  padding:10px 0;border-bottom:1px solid var(--a-line)}
+.a11y-row:last-child{border-bottom:0;padding-bottom:0}
+.a11y-row span{font-size:calc(13.5px*var(--fs));color:var(--a-ink)}
+.toggle{width:44px;height:26px;border-radius:13px;background:var(--a-line);
+  cursor:pointer;position:relative;transition:.2s;flex-shrink:0}
+.toggle::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;
+  background:#fff;border-radius:50%;transition:.2s;
+  box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.toggle.on{background:var(--a-mint)}
+.toggle.on::after{left:21px}
+.read-btn{width:100%;background:var(--b-mint2);color:#0a0e13;border:0;
+  border-radius:12px;padding:13px;font-size:calc(14px*var(--fs));font-weight:700;
+  cursor:pointer;margin-top:12px;font-family:var(--brand-sans);
+  display:flex;align-items:center;justify-content:center;gap:8px}
+.read-btn.speaking{background:var(--a-coral-s);color:var(--a-coral);border:1px solid var(--a-coral)}
+.family-card{margin:8px 20px;background:linear-gradient(135deg,#1a3a2e,#0f1e18);
+  border-radius:16px;padding:20px;color:#e6edf3}
+.family-card h3{font-size:calc(16px*var(--fs));font-weight:700;margin-bottom:8px;font-family:var(--brand-sans)}
+.family-card p{font-size:calc(13px*var(--fs));color:#8b97a7;line-height:1.6;margin-bottom:14px}
+.share-btn{background:var(--b-mint);color:#0a0e13;border:0;border-radius:12px;
+  padding:12px 20px;font-size:calc(14px*var(--fs));font-weight:700;cursor:pointer;
+  font-family:var(--brand-sans);width:100%}
+
+/* ── TOAST ──────────────────────────────────────── */
+.toast{position:absolute;bottom:80px;left:50%;transform:translateX(-50%) translateY(12px);
+  background:#111827;color:#fff;font-size:13px;padding:10px 18px;border-radius:99px;
+  opacity:0;transition:.25s;pointer-events:none;z-index:99;white-space:nowrap;
+  box-shadow:var(--a-shadow-m)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ── UTILS ──────────────────────────────────────── */
+.scr-title{font-size:calc(20px*var(--fs));font-weight:700;color:var(--a-ink);
+  font-family:var(--brand-sans);padding:18px 20px 6px;letter-spacing:-.02em}
+.divider{height:1px;background:var(--a-line);margin:4px 20px}
+.spacer{height:12px}
+.brand-banner{background:var(--b-bg2);border-top:1px solid var(--b-line);
+  display:flex;align-items:center;justify-content:center;gap:8px;padding:8px 0}
+.brand-banner span{font-family:var(--brand-mono);font-size:10px;color:var(--b-mute);
+  letter-spacing:.12em;text-transform:uppercase}
+.brand-banner .dot{width:5px;height:5px;border-radius:50%;background:var(--b-mint)}
+
+/* ── T1: DISCLAIMER / GDPR / BADGE ─────────────────── */
+.verified-chip{font-family:var(--brand-mono);font-size:9px;color:var(--a-mint);
+  letter-spacing:.06em;margin-top:2px;opacity:.85}
+.onb-gdpr{font-size:11px;color:var(--a-faint);line-height:1.55;
+  text-align:center;margin-top:12px;padding:0 4px}
+.disc-bar{margin:12px 20px 0;padding:10px 12px;background:var(--a-card2);
+  border-radius:10px;border:1px solid var(--a-line)}
+.disc-bar p{font-size:10.5px;color:var(--a-faint);line-height:1.6;text-align:center}
+.disc-bar strong{color:var(--a-muted)}
+
+/* ── T5: VEDLEJŠÍ ÚČINKY ────────────────────────────── */
+.eff-card{background:var(--a-card);border:1px solid var(--a-line);border-radius:14px;
+  margin-bottom:9px;border-left:3px solid var(--a-amber);box-shadow:var(--a-shadow)}
+.eff-card.possible{border-left-color:var(--a-line)}
+.eff-top{display:flex;align-items:center;gap:10px;padding:13px 14px;cursor:pointer}
+.eff-title{flex:1;font-size:calc(13.5px*var(--fs));font-weight:600;color:var(--a-ink)}
+.eff-badge{font-family:var(--brand-mono);font-size:9px;letter-spacing:.08em;
+  text-transform:uppercase;padding:3px 8px;border-radius:6px;white-space:nowrap;flex-shrink:0}
+.eff-badge.common{background:var(--a-amber-s);color:var(--a-amber)}
+.eff-badge.possible{background:var(--a-card2);color:var(--a-muted)}
+.eff-arr{width:18px;color:var(--a-faint);font-size:16px;transition:.2s;flex-shrink:0;text-align:center}
+.eff-card.open .eff-arr{transform:rotate(180deg)}
+.eff-body{max-height:0;overflow:hidden;transition:max-height .28s ease}
+.eff-card.open .eff-body{max-height:220px}
+.eff-body-in{padding:0 14px 14px;border-top:1px solid var(--a-line)}
+.eff-body-in p{font-size:calc(12.5px*var(--fs));color:var(--a-muted);line-height:1.6;padding-top:10px}
+.eff-action{background:var(--a-amber-s);border-radius:8px;padding:9px 11px;margin-top:8px;
+  font-size:calc(12px*var(--fs));color:var(--a-ink);line-height:1.5}
+.eff-action strong{color:var(--a-amber);font-weight:600}
+
+/* ── T6: VÝŽIVA ─────────────────────────────────────── */
+.nutr-item{display:flex;gap:11px;align-items:flex-start;padding:11px 14px;
+  background:var(--a-card);border:1px solid var(--a-line);border-radius:12px;
+  margin-bottom:8px;box-shadow:var(--a-shadow)}
+.nutr-dot{width:8px;height:8px;border-radius:50%;background:var(--a-mint);flex-shrink:0;margin-top:5px}
+.nutr-body b{font-size:calc(13px*var(--fs));font-weight:600;color:var(--a-ink);display:block;margin-bottom:2px}
+.nutr-body span{font-size:calc(12px*var(--fs));color:var(--a-muted);line-height:1.5}
+
+/* ── T7: KONTAKTY ───────────────────────────────────── */
+.contact-card{margin:0 20px 10px;background:var(--a-card);border:1px solid var(--a-line);
+  border-radius:14px;overflow:hidden;box-shadow:var(--a-shadow)}
+.contact-card.urgent{border-left:3px solid var(--a-coral)}
+.contact-head{padding:12px 14px 8px}
+.contact-head h4{font-size:calc(13.5px*var(--fs));font-weight:600;color:var(--a-ink);margin-bottom:2px}
+.contact-head .ch-hours{font-size:calc(11.5px*var(--fs));color:var(--a-muted)}
+.contact-foot{display:flex;align-items:center;justify-content:space-between;
+  padding:8px 14px 12px;gap:10px;border-top:1px solid var(--a-line)}
+.contact-note{font-size:calc(11.5px*var(--fs));color:var(--a-muted);flex:1;line-height:1.4}
+.contact-tel{font-family:var(--brand-mono);font-size:calc(13px*var(--fs));font-weight:600;
+  color:var(--a-mint);white-space:nowrap;text-decoration:none;flex-shrink:0}
+.contact-card.urgent .contact-tel{color:var(--a-coral)}
+
+/* ── T8: JE TO NORMÁLNÍ ─────────────────────────────── */
+.norm-item{margin:0 20px 9px;background:var(--a-card);border:1px solid var(--a-line);
+  border-radius:14px;overflow:hidden;cursor:pointer;box-shadow:var(--a-shadow)}
+.norm-top{display:flex;align-items:center;gap:10px;padding:13px 14px}
+.norm-dot{width:10px;height:10px;border-radius:50%;background:#EDE9FE;
+  border:2px solid #7C3AED;flex-shrink:0}
+.norm-title{flex:1;font-size:calc(13.5px*var(--fs));font-weight:600;color:var(--a-ink)}
+.norm-arr{width:18px;color:var(--a-faint);font-size:16px;transition:.2s;
+  flex-shrink:0;text-align:center}
+.norm-item.open .norm-arr{transform:rotate(180deg)}
+.norm-body{max-height:0;overflow:hidden;transition:max-height .28s ease}
+.norm-item.open .norm-body{max-height:180px}
+.norm-body-in{padding:0 14px 14px;border-top:1px solid var(--a-line)}
+.norm-body-in p{font-size:calc(12.5px*var(--fs));color:var(--a-muted);
+  line-height:1.65;padding-top:10px}
+
+/* ── T9: ORIENTACE V NEMOCNICI ──────────────────────── */
+.hosp-card{margin:0 20px 8px;background:var(--a-card);border:1px solid var(--a-line);
+  border-radius:14px;overflow:hidden;box-shadow:var(--a-shadow)}
+.hosp-row{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;
+  border-bottom:1px solid var(--a-line)}
+.hosp-row:last-child{border-bottom:0}
+.hosp-ic{width:32px;height:32px;border-radius:9px;background:var(--a-mint-s);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.hosp-ic svg{width:15px;height:15px;stroke:var(--a-mint);fill:none;
+  stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.hosp-row-b label{font-family:var(--brand-mono);font-size:10px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--a-muted);display:block;margin-bottom:2px}
+.hosp-row-b span{font-size:calc(13px*var(--fs));color:var(--a-ink);line-height:1.45}
+
+/* ── T10: OSOBNÍ POZNÁMKY ───────────────────────────── */
+.note-ta{width:100%;border:1.5px solid var(--a-line);border-radius:12px;
+  padding:12px 14px;font-size:calc(13px*var(--fs));color:var(--a-ink);
+  background:var(--a-card);font-family:var(--app-sans);outline:none;
+  resize:none;min-height:88px;line-height:1.6;display:block}
+.note-ta:focus{border-color:var(--a-mint)}
+.note-ta::placeholder{color:var(--a-faint)}
+.btn-note-save{margin-top:8px;background:var(--a-mint);color:#fff;border:0;
+  border-radius:12px;padding:11px 20px;font-size:calc(13.5px*var(--fs));
+  font-weight:600;cursor:pointer;font-family:var(--brand-sans);width:100%}
+.note-entry{padding:10px 14px;background:var(--a-card);border:1px solid var(--a-line);
+  border-radius:12px;margin-top:8px}
+.note-entry .ne-date{font-family:var(--brand-mono);font-size:10px;color:var(--a-muted);
+  letter-spacing:.06em;margin-bottom:5px}
+.note-entry .ne-text{font-size:calc(13px*var(--fs));color:var(--a-ink);line-height:1.55}
+.note-empty{font-size:12px;color:var(--a-faint);padding:8px 0;text-align:center}
+
+/* ── T11: FAMILY OVERLAY ────────────────────────────── */
+.fov{position:absolute;inset:0;z-index:50;background:var(--a-bg);
+  border-radius:47px;overflow:hidden;display:flex;flex-direction:column}
+.fov-header{background:linear-gradient(135deg,#1a3a2e,#0f1e18);
+  padding:16px 16px 14px;display:flex;align-items:center;gap:12px;flex-shrink:0}
+.fov-close{width:32px;height:32px;border-radius:10px;
+  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.15);
+  color:#e6edf3;font-size:18px;cursor:pointer;display:flex;align-items:center;
+  justify-content:center;flex-shrink:0;line-height:1}
+.fov-header h3{font-family:var(--brand-sans);font-size:17px;font-weight:700;
+  color:#e6edf3;letter-spacing:-.02em;flex:1}
+.fov-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.fov-body::-webkit-scrollbar{width:0}
+.fov-patient{margin:16px 16px 0;background:var(--a-mint-s);
+  border:1px solid var(--a-mint-m);border-radius:14px;padding:14px}
+.fov-patient .fp-lbl{font-family:var(--brand-mono);font-size:10px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--a-mint);margin-bottom:6px}
+.fov-patient .fp-name{font-size:calc(15px*var(--fs));font-weight:700;
+  color:var(--a-ink);margin-bottom:2px}
+.fov-patient .fp-det{font-size:calc(12px*var(--fs));color:var(--a-muted);line-height:1.5}
+.fov-appt{margin:12px 16px 0;background:var(--a-amber-s);
+  border:1px solid rgba(214,151,10,.2);border-radius:14px;
+  padding:13px 14px;display:flex;justify-content:space-between;align-items:center}
+.fov-appt .fa-l h4{font-size:calc(13.5px*var(--fs));font-weight:600;
+  color:var(--a-ink);margin-bottom:2px}
+.fov-appt .fa-l p{font-size:calc(12px*var(--fs));color:var(--a-muted)}
+.fov-appt .fa-days{font-size:calc(26px*var(--fs));font-weight:700;
+  color:var(--a-amber);font-family:var(--brand-sans);line-height:1;text-align:right}
+.fov-appt .fa-dlbl{font-family:var(--brand-mono);font-size:9px;
+  color:var(--a-amber);letter-spacing:.08em;text-align:right}
+.fov-section{padding:14px 16px 4px}
+.fov-section h4{font-family:var(--brand-mono);font-size:10px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--a-muted);margin-bottom:10px}
+.fov-help-item{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px}
+.fov-help-item .fh-dot{width:6px;height:6px;border-radius:50%;
+  background:var(--a-mint);flex-shrink:0;margin-top:6px}
+.fov-help-item span{font-size:calc(13px*var(--fs));color:var(--a-ink);line-height:1.55}
+.fov-contact{margin:4px 16px 16px;background:var(--a-coral-s);
+  border:1px solid rgba(232,76,90,.2);border-radius:12px;
+  padding:12px 14px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.fov-contact span{font-size:calc(12.5px*var(--fs));color:var(--a-ink);font-weight:500;line-height:1.4}
+.fov-contact a{font-family:var(--brand-mono);font-size:13px;
+  color:var(--a-coral);font-weight:700;text-decoration:none;white-space:nowrap;flex-shrink:0}
+.fov-disc{margin:0 16px 20px;font-size:10.5px;color:var(--a-faint);
+  line-height:1.6;text-align:center}
+
+/* ── T3: PRINT ──────────────────────────────────────── */
+.btn-print{background:var(--a-card2);color:var(--a-ink);border:1.5px solid var(--a-line);
+  border-radius:12px;padding:12px 16px;font-size:13px;font-weight:600;
+  cursor:pointer;font-family:var(--brand-sans);white-space:nowrap;flex-shrink:0}
+@media print{
+  body>*{display:none!important}
+  #print-target{display:block!important;position:fixed;top:0;left:0;
+    width:100%;padding:20mm;font-family:system-ui,sans-serif;color:#111}
+  #print-target h2{font-size:20px;margin-bottom:4px;font-family:system-ui}
+  #print-target .pt-meta{font-size:12px;color:#666;margin-bottom:18px;border-bottom:1px solid #ddd;padding-bottom:10px}
+  #print-target .pt-item{padding:9px 0;border-bottom:1px solid #eee;font-size:14px;
+    page-break-inside:avoid;display:flex;gap:10px;align-items:flex-start}
+  #print-target .pt-item::before{content:"";display:inline-block;width:16px;height:16px;
+    border:2px solid #aaa;border-radius:3px;flex-shrink:0;margin-top:1px}
+  #print-target .pt-footer{margin-top:20px;font-size:10px;color:#999;border-top:1px solid #eee;padding-top:10px}
+}
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <!-- ── LEFT SIDE PANEL ── -->
+  <aside class="side">
+    <div class="ash-logo">
+      <div class="dot">ASH</div>
+      ALT+SHIFT+HEAL
+    </div>
+    <span class="badge">PROTOTYP · ZDRAVOTNICTVÍ 4.0</span>
+    <h1>Tak by to<br><span>vypadalo.</span><br>Tohle by<br><span>to umělo.</span></h1>
+    <p class="sub">Interaktivní demo pacientského průvodce. Vyzkoušejte spodní záložky, rozklikejte kroky, odškrtávejte checklist — vše se ukládá.</p>
+    <div class="pillars">
+      <div class="pl">
+        <h3>01 · Doručení ve workflow</h3>
+        <p>QR/odkaz v lékařské zprávě. Pacient otevře ještě doma — nulová instalace.</p>
+      </div>
+      <div class="pl c2">
+        <h3>02 · Personalizace dle léčby</h3>
+        <p>Vyberte léčbu na titulní obrazovce — cesta a kroky se celé přepíší.</p>
+      </div>
+      <div class="pl c3">
+        <h3>03 · Trvalý bod, ne PDF</h3>
+        <p>Checklist + otázky pro lékaře se ukládají v odkazu. PDF se ztratí — toto ne.</p>
+      </div>
+    </div>
+    <p class="side-note">
+      Tým: T. Mucha · A. Martynková · M. Tomica · D. Tobola<br>
+      Garant: MUDr. Z. Čermáková, Ph.D. · FN Ostrava<br>
+      Data jsou demonstrativní · FEI VŠB–TUO 2026
+    </p>
+  </aside>
+
+  <!-- ── PHONE ── -->
+  <div class="phone" id="phone">
+    <div class="notch"></div>
+    <div class="screen" id="screen">
+
+      <!-- STATUS BAR -->
+      <div class="statusbar">
+        <span class="sb-time" id="sbtime">9:41</span>
+        <div class="sb-icons">
+          <svg viewBox="0 0 24 24"><path d="M1 6C8 1 16 1 23 6M4 10c5-4 11-4 16 0M7 14c3-2 7-2 10 0M11 18h2"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+          <span class="sb-battery">100%</span>
+        </div>
+      </div>
+
+      <!-- APP BAR -->
+      <div class="appbar">
+        <div class="appbar-logo">
+          <div class="mark">
+            <svg viewBox="0 0 24 24"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M12 8v4l3 3" style="fill:none;stroke:#fff;stroke-width:2"/></svg>
+          </div>
+          <span>PRŮVODCE</span>
+          <div class="verified-chip">Obsah ověřen · MUDr. Z. Čermáková, Ph.D.</div>
+        </div>
+        <div class="appbar-actions">
+          <div class="icon-btn" id="btn-fs" onclick="toggleFS()" title="Větší písmo">
+            <svg viewBox="0 0 24 24"><text x="4" y="17" style="font-size:14px;fill:currentColor;stroke:none">A+</text></svg>
+          </div>
+          <div class="icon-btn" id="btn-hc" onclick="toggleHC()" title="Vysoký kontrast">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18" style="opacity:.3"/></svg>
+          </div>
+          <div class="icon-btn" id="btn-speak" onclick="speak()" title="Číst nahlas">
+            <svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- BODY -->
+      <div class="app-body" id="body">
+
+        <!-- ─ HOME ─ -->
+        <div class="scr on" data-s="home">
+          <div class="home-hero">
+            <div class="home-greeting">Dobrý den</div>
+            <div class="home-name">Pane Nováku</div>
+            <div class="home-dx">Karcinom prostaty · FN Ostrava · Onkologická klinika</div>
+            <div class="journey-prog">
+              <div class="jp-label">Průběh léčby</div>
+              <div class="jp-bar-bg"><div class="jp-bar" id="jpbar" style="width:20%"></div></div>
+              <div class="jp-steps" id="jpsteps"></div>
+            </div>
+          </div>
+
+          <div class="sh"><span class="sh-label">Typ léčby</span>
+            <span class="sh-action" onclick="goTab('cesta')">zobrazit cestu →</span></div>
+          <div class="chips-row" id="tx-chips">
+            <div class="chip on" data-tx="rt">Radioterapie</div>
+            <div class="chip" data-tx="ht">Hormonální léčba</div>
+            <div class="chip" data-tx="rtht">RT + Hormonální</div>
+            <div class="chip" data-tx="op">Operace</div>
+            <div class="chip" data-tx="as">Aktivní sledování</div>
+          </div>
+
+          <div class="sh" style="margin-top:8px"><span class="sh-label">Nejbližší termín</span></div>
+          <div class="next-card">
+            <div class="nc-left">
+              <h4>Vstupní vyšetření</h4>
+              <p>Onkologická klinika · Č. dveří 312</p>
+            </div>
+            <div class="nc-right">
+              <div class="days">9</div>
+              <div class="dlabel">DNÍ</div>
+            </div>
+          </div>
+
+          <div class="qa-grid">
+            <div class="qa-card mint" onclick="goTab('prip')">
+              <div class="ic"><svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
+              <h4>Příprava</h4><p id="prep-pct-home">0 % splněno</p>
+            </div>
+            <div class="qa-card coral" onclick="goTab('ot')">
+              <div class="ic"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+              <h4>Otázky pro lékaře</h4><p id="q-count-home">0 vybráno</p>
+            </div>
+            <div class="qa-card amber" onclick="goTab('vys')">
+              <div class="ic"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+              <h4>Výsledky</h4><p>Přehled průběhu</p>
+            </div>
+            <div class="qa-card blue" onclick="goTab('vice')">
+              <div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+              <h4>Slovníček</h4><p>Pojmy bez žargonu</p>
+            </div>
+          </div>
+          <div class="spacer"></div>
+        </div>
+
+        <!-- ─ PATHWAY ─ -->
+        <div class="scr" data-s="cesta">
+          <div class="path-hero">
+            <h2 id="path-title">Radioterapie</h2>
+            <p id="path-sub">Vaše cesta krok za krokem</p>
+            <div class="path-prog">
+              <div class="pp-fill"><div class="pp-fill-in" id="path-prog" style="width:20%"></div></div>
+              <span class="pp-label" id="path-prog-label">1 / 5</span>
+            </div>
+          </div>
+          <div id="steps-list"></div>
+          <div class="sh" style="margin-top:4px"><span class="sh-label">Možné vedlejší účinky</span></div>
+          <div id="effects-list" style="padding:0 20px"></div>
+          <div class="sh"><span class="sh-label">Výživa a životní styl</span></div>
+          <div id="nutr-list" style="padding:0 20px 8px"></div>
+          <div class="spacer"></div>
+        </div>
+
+        <!-- ─ PŘÍPRAVA ─ -->
+        <div class="scr" data-s="prip">
+          <div class="prog-ring-wrap">
+            <div class="ring-ctn">
+              <svg width="110" height="110" viewBox="0 0 110 110">
+                <circle cx="55" cy="55" r="46" fill="none" stroke="#E2E8F0" stroke-width="8"/>
+                <circle cx="55" cy="55" r="46" fill="none" stroke="#2DA876" stroke-width="8"
+                  stroke-linecap="round" id="ring-arc"
+                  stroke-dasharray="289" stroke-dashoffset="289" style="transition:.5s ease"/>
+              </svg>
+              <div class="ring-val">
+                <span class="ring-pct" id="ring-pct">0 %</span>
+                <span style="font-size:11px;color:var(--a-muted)">připraven</span>
+              </div>
+            </div>
+            <div class="ring-label">Příprava na vstupní vyšetření</div>
+          </div>
+          <div class="sh"><span class="sh-label">Vezměte s sebou</span></div>
+          <div class="ck-list" id="ck-docs"></div>
+          <div class="sh"><span class="sh-label">Psychická příprava</span></div>
+          <div class="ck-list" id="ck-mental"></div>
+          <div class="spacer"></div>
+        </div>
+
+        <!-- ─ OTÁZKY PRO LÉKAŘE ─ -->
+        <div class="scr" data-s="ot">
+          <div class="scr-title">Otázky pro lékaře</div>
+          <p style="padding:0 20px 14px;font-size:calc(13.5px*var(--fs));color:var(--a-muted);line-height:1.6">
+            Vyberte otázky, které si chcete zapamatovat. Přidejte vlastní.
+            Na vyšetření si seznam jednoduše otevřete — <b>nepůjdete naslepo</b>.
+          </p>
+          <div class="sh"><span class="sh-label">Doporučené otázky</span></div>
+          <div class="q-builder" id="q-suggested"></div>
+          <div class="sh"><span class="sh-label">Přidat vlastní otázku</span></div>
+          <div class="add-q-row">
+            <input class="add-q-input" id="q-input" placeholder="Napište svoji otázku…" maxlength="120">
+            <button class="add-q-btn" onclick="addQ()">+ Přidat</button>
+          </div>
+          <div id="q-custom-list" style="padding:0 20px 8px"></div>
+          <div class="sh"><span class="sh-label">Váš seznam</span></div>
+          <div class="q-summary"><div class="qs-label">VEZMU SI S SEBOU</div>
+            <ul id="q-summary-list"><li style="color:var(--a-faint)">Zatím žádné otázky.</li></ul>
+          </div>
+          <div style="padding:12px 20px 0;display:flex;gap:8px">
+            <button class="btn-primary" style="flex:1" onclick="toast('Seznam uložen ✓')">Uložit seznam</button>
+            <button class="btn-print" onclick="printQuestions()">Vytisknout</button>
+          </div>
+          <div class="spacer"></div>
+        </div>
+
+        <!-- ─ VÝSLEDKY ─ -->
+        <div class="scr" data-s="vys">
+          <div class="path-hero">
+            <h2>Můj průběh</h2>
+            <p>Trvalý přehled — vždy dostupný, nic se neztratí</p>
+          </div>
+          <div class="tl-ctn">
+            <div class="tl-line"></div>
+            <div class="tl-ev">
+              <div class="tl-dot done"></div>
+              <div class="tl-body">
+                <h4>Odeslání z urologie</h4>
+                <div class="meta">6. 5. 2026 · MUDr. Kratochvíl</div>
+                <span class="step-status st-done">Hotovo</span>
+              </div>
+            </div>
+            <div class="tl-ev">
+              <div class="tl-dot done"></div>
+              <div class="tl-body">
+                <h4>Krevní odběry a PSA</h4>
+                <div class="meta">8. 5. 2026 · Laboratoř FN Ostrava</div>
+                <div class="result-box" onclick="this.classList.toggle('exp')">
+                  <div class="rl">VÝSLEDEK PSA</div>
+                  <div class="rv">8,4 ng/ml ↑</div>
+                  <div class="rexpl">PSA (prostatický specifický antigen) je bílkovina tvořená prostatou. Hodnota 8,4 ng/ml je zvýšená — proto probíhá další vyšetření. Sám o sobě PSA diagnózu nestanoví.</div>
+                </div>
+                <span class="step-status st-done" style="margin-top:8px">Hotovo</span>
+              </div>
+            </div>
+            <div class="tl-ev">
+              <div class="tl-dot now"></div>
+              <div class="tl-body now-e">
+                <h4>Vstupní vyšetření na onkologii</h4>
+                <div class="meta">25. 5. 2026 · Dveře č. 312 · za 9 dní</div>
+                <span class="step-status st-now">Nadcházející</span>
+              </div>
+            </div>
+            <div class="tl-ev">
+              <div class="tl-dot future"></div>
+              <div class="tl-body">
+                <h4>Plánovací CT</h4>
+                <div class="meta">~2. 6. 2026 · Radiodiagnostika FN Ostrava</div>
+                <span class="step-status st-next">Čeká</span>
+              </div>
+            </div>
+            <div class="tl-ev">
+              <div class="tl-dot future"></div>
+              <div class="tl-body">
+                <h4>Příprava ozařovacího plánu</h4>
+                <div class="meta">3–7 dní · fyzik + radiolog</div>
+                <span class="step-status st-next">Čeká</span>
+              </div>
+            </div>
+            <div class="tl-ev">
+              <div class="tl-dot future"></div>
+              <div class="tl-body">
+                <h4>Zahájení série ozáření</h4>
+                <div class="meta">~20. 6. 2026 · 5× týdně, několik týdnů</div>
+                <span class="step-status st-next">Čeká</span>
+              </div>
+            </div>
+            <div class="tl-ev">
+              <div class="tl-dot future"></div>
+              <div class="tl-body">
+                <h4>Kontrola po léčbě + PSA</h4>
+                <div class="meta">~srpen 2026 · datum bude upřesněno</div>
+                <span class="step-status st-next">Čeká</span>
+              </div>
+            </div>
+          </div>
+          <div class="spacer"></div>
+        </div>
+
+        <!-- ─ VÍCE ─ -->
+        <div class="scr" data-s="vice">
+
+          <!-- T9: ORIENTACE -->
+          <div class="sh"><span class="sh-label">Orientace v nemocnici</span></div>
+          <div class="hosp-card" id="hosp-card"></div>
+
+          <!-- T7: KONTAKTY -->
+          <div class="sh"><span class="sh-label">Důležité kontakty</span></div>
+          <div id="contacts-list"></div>
+
+          <div class="divider" style="margin:8px 20px 4px"></div>
+
+          <!-- T8: JE TO NORMÁLNÍ -->
+          <div class="sh"><span class="sh-label">Je to normální?</span></div>
+          <p style="padding:0 20px 10px;font-size:calc(12.5px*var(--fs));color:var(--a-muted);line-height:1.55">Pocity, které prožívá většina pacientů — kliknutím rozbalte.</p>
+          <div id="normalni-list"></div>
+
+          <div class="divider" style="margin:8px 20px 4px"></div>
+
+          <!-- T10: OSOBNÍ POZNÁMKY -->
+          <div class="sh"><span class="sh-label">Moje poznámky</span></div>
+          <div style="padding:0 20px">
+            <textarea class="note-ta" id="note-input" placeholder="Zapište cokoliv — co jste pocítili, co chcete říct lékaři, otázku, která vás napadla…" maxlength="500"></textarea>
+            <button class="btn-note-save" onclick="saveNote()">Uložit poznámku</button>
+            <div id="notes-history"></div>
+          </div>
+
+          <div class="divider" style="margin:8px 20px 4px"></div>
+
+          <!-- PRO RODINU -->
+          <div class="sh"><span class="sh-label">Pro rodinu</span></div>
+          <div class="family-card">
+            <h3>Sdílet s blízkými</h3>
+            <p>Jednoduchý přehled pro rodinu — aby věděli, co vás čeká, a mohli vám pomoci.</p>
+            <button class="share-btn" onclick="openFamilyView()">Zobrazit přehled pro rodinu</button>
+          </div>
+
+          <div class="divider" style="margin:8px 20px 4px"></div>
+
+          <!-- PŘÍSTUPNOST -->
+          <div class="sh"><span class="sh-label">Přístupnost</span></div>
+          <div class="a11y-card">
+            <div class="a11y-row">
+              <span>Větší písmo (A+)</span>
+              <div class="toggle" id="tog-fs" onclick="toggleFS()"></div>
+            </div>
+            <div class="a11y-row">
+              <span>Vysoký kontrast</span>
+              <div class="toggle" id="tog-hc" onclick="toggleHC()"></div>
+            </div>
+            <button class="read-btn" id="read-btn" onclick="speak()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg>
+              Číst tuto obrazovku nahlas
+            </button>
+          </div>
+
+          <div class="divider" style="margin:8px 20px 4px"></div>
+
+          <!-- SLOVNÍČEK -->
+          <div class="sh"><span class="sh-label">Slovníček pojmů</span></div>
+          <div class="gloss-search">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input class="gloss-input" id="gloss-in" placeholder="Hledat výraz…" oninput="filterGloss()">
+          </div>
+          <div class="gloss-list" id="gloss-list"></div>
+
+          <div class="disc-bar">
+            <p><strong>Upozornění:</strong> Průvodce je informační pomůcka. Nenahrazuje odbornou lékařskou péči. Data jsou uložena pouze ve vašem zařízení.</p>
+          </div>
+          <div class="spacer"></div>
+        </div>
+
+      </div><!-- /app-body -->
+
+      <!-- TAB BAR -->
+      <nav class="tab-bar">
+        <div class="tab on" data-t="home" onclick="goTab('home')">
+          <div class="ti"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+          <span class="tl">Domů</span>
+        </div>
+        <div class="tab" data-t="cesta" onclick="goTab('cesta')">
+          <div class="ti"><svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></div>
+          <span class="tl">Cesta</span>
+        </div>
+        <div class="tab" data-t="prip" onclick="goTab('prip')">
+          <div class="ti"><svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
+          <span class="tl">Příprava</span>
+        </div>
+        <div class="tab" data-t="ot" onclick="goTab('ot')">
+          <div class="ti"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+          <span class="tl">Otázky</span>
+        </div>
+        <div class="tab" data-t="vys" onclick="goTab('vys')">
+          <div class="ti"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+          <span class="tl">Průběh</span>
+        </div>
+        <div class="tab" data-t="vice" onclick="goTab('vice')">
+          <div class="ti"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></div>
+          <span class="tl">Více</span>
+        </div>
+      </nav>
+
+      <!-- ONBOARDING OVERLAY -->
+      <div class="onboarding" id="onboarding">
+        <div class="onb-hero">
+          <div class="onb-icon">
+            <svg viewBox="0 0 24 24"><path d="M14.5 10c-.83 0-1.5-.67-1.5-1.5v-5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5z"/><path d="M20.5 10H19V8.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/><path d="M9.5 14c.83 0 1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5S8 21.33 8 20.5v-5c0-.83.67-1.5 1.5-1.5z"/><path d="M3.5 14H5v1.5c0 .83-.67 1.5-1.5 1.5S2 16.33 2 15.5 2.67 14 3.5 14z"/><path d="M14 14.5c0-.83.67-1.5 1.5-1.5h5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-5c-.83 0-1.5-.67-1.5-1.5z"/><path d="M15.5 19H14v1.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5-.67-1.5-1.5-1.5z"/><path d="M10 9.5C10 8.67 9.33 8 8.5 8h-5C2.67 8 2 8.67 2 9.5S2.67 11 3.5 11h5c.83 0 1.5-.67 1.5-1.5z"/><path d="M8.5 5H10V3.5C10 2.67 9.33 2 8.5 2S7 2.67 7 3.5 7.67 5 8.5 5z"/></svg>
+          </div>
+          <h2>Naskenováno z vaší<br>lékařské zprávy</h2>
+          <p>Váš digitální průvodce léčbou karcinomu prostaty. Bezpečný přístup, kdykoliv a kdekoliv.</p>
+        </div>
+        <div class="onb-body">
+          <div class="onb-card">
+            <div class="label">OD VAŠEHO LÉKAŘE</div>
+            <div class="name">MUDr. Jan Kratochvíl</div>
+            <div class="det">Urologická ambulance · FN Ostrava · 6. 5. 2026</div>
+          </div>
+          <button class="btn-primary" onclick="dismissOnboarding()">Otevřít průvodce →</button>
+          <button class="btn-ghost" onclick="dismissOnboarding()">Nejprve přeskočit</button>
+          <p class="onb-gdpr">Vaše data jsou uložena pouze ve vašem zařízení. Nic se neodešle. Průvodce nenahrazuje odbornou lékařskou péči.</p>
+        </div>
+      </div>
+
+      <!-- T11: FAMILY OVERLAY -->
+      <div class="fov" id="fov" style="display:none">
+        <div class="fov-header">
+          <button class="fov-close" onclick="closeFamilyView()">&#215;</button>
+          <h3>Přehled pro rodinu</h3>
+        </div>
+        <div class="fov-body">
+          <div class="fov-patient">
+            <div class="fp-lbl">Pacient</div>
+            <div class="fp-name">Pan Novák</div>
+            <div class="fp-det">Karcinom prostaty · FN Ostrava · Onkologická klinika<br>
+              Léčba: <span id="fov-tx-name">Radioterapie</span></div>
+          </div>
+          <div class="fov-appt">
+            <div class="fa-l">
+              <h4>Vstupní vyšetření</h4>
+              <p>Onkologická klinika · Dveře č. 312</p>
+            </div>
+            <div>
+              <div class="fa-days">9</div>
+              <div class="fa-dlbl">DNÍ</div>
+            </div>
+          </div>
+          <div class="fov-section">
+            <h4>Jak konkrétně pomoci</h4>
+            <div id="fov-help-items"></div>
+          </div>
+          <div class="fov-contact">
+            <span>Urgentní příjem FN Ostrava (nonstop)</span>
+            <a href="tel:+420597371111">+420 597 371 111</a>
+          </div>
+          <div class="fov-disc">Tento přehled je informační pomůcka pro blízké.<br>
+            Vždy se řiďte pokyny ošetřujícího lékaře.</div>
+        </div>
+      </div>
+
+      <!-- TOAST -->
+      <div class="toast" id="toast"></div>
+
+    </div><!-- /screen -->
+    <div class="brand-banner">
+      <div class="dot"></div>
+      <span>ALT+SHIFT+HEAL</span>
+      <div class="dot"></div>
+    </div>
+  </div><!-- /phone -->
+
+</div><!-- /stage -->
+
+<!-- PRINT TARGET (hidden, only visible @media print) -->
+<div id="print-target" style="display:none">
+  <h2>Otázky pro lékaře</h2>
+  <div class="pt-meta" id="pt-meta"></div>
+  <div id="pt-items"></div>
+  <div class="pt-footer">Digitální průvodce · ALT+SHIFT+HEAL · FN Ostrava, Onkologická klinika · Obsah schválen MUDr. Z. Čermáková, Ph.D.</div>
+</div>
+
+<script>
+/* ── DATA ──────────────────────────────────────── */
+const PATH={
+  rt:{name:"Radioterapie",sub:"Léčba přesným zářením, ambulantně",steps:[
+    {t:"Vstupní vyšetření",dur:"~60 min",stat:"now",
+     desc:"Lékař probere váš nález, historii a plán léčby. Doporučujeme přijít s doprovodem. Připravte si seznam léků a výsledky od urologa.",
+     tip:"Nebojte se ptát na cokoliv — k tomu slouží i záložka Otázky pro lékaře."},
+    {t:"Plánovací CT",dur:"~30 min",stat:"next",
+     desc:"Zaměříme oblast ozařování. Budete ležet v klidu v přístroji — je to nebolestivé. Nepotřebujete lačnit.",
+     tip:"Přineste s sebou předchozí CT snímky, pokud je máte."},
+    {t:"Příprava ozařovacího plánu",dur:"3–7 dní",stat:"next",
+     desc:"Tým fyzik-radiolog připraví přesný plán ozáření ušitý přímo pro vás. V tuto dobu nemusíte být přítomen.",
+     tip:"Plán je zcela individuální — každý pacient má jiný."},
+    {t:"Série ozáření",dur:"několik týdnů",stat:"next",
+     desc:"Krátké ambulantní návštěvy, obvykle 5× týdně. Samotné ozáření trvá jen minuty. Běžné aktivity většinou bez omezení.",
+     tip:"Dopravte se tak, aby vám cesta nezpůsobovala zbytečný stres."},
+    {t:"Pravidelné kontroly",dur:"dlouhodobě",stat:"next",
+     desc:"Sledování PSA a vašeho stavu. Termíny uvidíte v záložce Průběh. Při jakýchkoliv potížích nečekejte na kontrolu — zavolejte.",
+     tip:"Mějte u sebe číslo na onkologické pracoviště."}
+  ],effects:[
+    {t:"Únava",sev:"common",desc:"Mírná až střední únava nastupuje obvykle ve 2.–3. týdnu ozáření. Je to nejčastější vedlejší účinek.",act:"Střídejte krátké procházky a odpočinek. Nenuťte se do výkonu — únava pomine po léčbě."},
+    {t:"Časté nucení na moč",sev:"common",desc:"Ozáření pánevní oblasti dočasně dráždí sliznici močového měchýře.",act:"Pijte alespoň 1,5 l vody denně. Příznaky odezní po skončení série."},
+    {t:"Střevní reakce",sev:"possible",desc:"Mírné průjmy nebo změny stolice, zejm. při ozáření pánevní oblasti.",act:"Přejděte na bílou rýži, vařenou mrkev, banány. Tučná a pikantní jídla omezte."},
+    {t:"Kožní reakce",sev:"possible",desc:"Citlivost nebo zarudnutí kůže v ozařované oblasti.",act:"Nepoužívejte mýdla s parfémy. Nenoste těsné oděvy přes ozařovanou oblast."}
+  ],nutr:[
+    {t:"Dostatek tekutin",tip:"Min. 1,5–2 l vody denně pomáhá sliznicím a snášenlivosti ozáření."},
+    {t:"Lehká strava při střevní reakci",tip:"Rýže, toast, vařená zelenina, banány. Pikantní a tučná jídla na dobu léčby omezte."},
+    {t:"Alkohol minimálně",tip:"Alkohol dráždí sliznice a může zhoršit vedlejší účinky ozáření."},
+    {t:"Lačnění není nutné",tip:"Na samotnou séansu ozáření nemusíte lačnit — pokud lékař výslovně neurčí jinak."}
+  ]},
+  ht:{name:"Hormonální léčba",sub:"Systematická léčba ovlivňující hormony",steps:[
+    {t:"Vstupní vyšetření",dur:"~45 min",stat:"now",
+     desc:"Probereme typ a délku hormonální léčby, očekávané vedlejší účinky a způsob podávání. Přijďte s doprovodem.",
+     tip:"Zeptejte se na možné účinky na únavu, náladu a fyzickou kondici."},
+    {t:"Zahájení léčby",dur:"1 den",stat:"next",
+     desc:"Aplikace první dávky (injekce nebo tablety). Vysvětlíme vám přesný režim a co sledovat.",
+     tip:"Zapište si datum zahájení — pomůže sledovat průběh."},
+    {t:"Sledování a úpravy",dur:"průběžně",stat:"next",
+     desc:"Pravidelné kontroly PSA, kostní hustoty a snášenlivosti. Dávkování upravujeme dle výsledků.",
+     tip:"Při neobvyklých příznacích kontaktujte pracoviště — nečekejte na příští kontrolu."},
+    {t:"Dlouhodobé kontroly",dur:"trvale",stat:"next",
+     desc:"Pravidelné návštěvy a monitoring. Termíny vidíte v záložce Průběh.",
+     tip:"Veďte si zápisník příznaků — usnadní komunikaci s lékařem."}
+  ],effects:[
+    {t:"Návaly horka",sev:"common",desc:"Náhlé pocity tepla a pocení — nepříjemné, ale zdravotně bezpečné. Postihují většinu pacientů na HT.",act:"Vrstvené oblékání, ventilátor. Alkohol a kořeněná jídla intenzitu zvyšují."},
+    {t:"Únava",sev:"common",desc:"Celková únavnost a snížená výkonnost jsou běžné — přímo způsobené HT.",act:"30 minut svižné chůze denně výrazně pomáhá energii i náladě."},
+    {t:"Sexuální funkce",sev:"common",desc:"Snížené libido a erektilní dysfunkce jsou přímým důsledkem snížení testosteronu.",act:"Komunikujte s partnerem i lékařem. Existují účinné možnosti léčby — zeptejte se."},
+    {t:"Hustota kostí",sev:"possible",desc:"Dlouhodobá HT může snižovat kostní hustotu (riziko osteoporózy).",act:"Pohyb a dostatek vápníku + vitamínu D kosti chrání. Zeptejte se na DEXA scan."},
+    {t:"Příbytek na váze",sev:"possible",desc:"HT mění metabolismus — zvyšuje podíl tuku, snižuje svalovou hmotu.",act:"Vyvážená strava s dostatkem bílkovin a pravidelný pohyb jsou klíčové."}
+  ],nutr:[
+    {t:"Pohyb zachovává kosti",tip:"30 minut svižné chůze denně zpomaluje úbytek kostní hustoty způsobený HT."},
+    {t:"Vápník a vitamín D",tip:"Mléčné výrobky, tučné ryby, vejce. Sluneční světlo 15 min denně pro vitamín D."},
+    {t:"Sledujte váhu",tip:"HT mění metabolismus. Vyvážená strava s dostatkem bílkovin pomáhá udržet svalovou hmotu."},
+    {t:"Alkohol střídmě",tip:"Alkohol může zhoršovat návaly horka a negativně ovlivňovat kostní hustotu."}
+  ]},
+  op:{name:"Operace (prostatektomie)",sub:"Chirurgické odstranění prostaty",steps:[
+    {t:"Vstupní vyšetření",dur:"~60 min",stat:"now",
+     desc:"Indikace výkonu, diskuse o technice (robotická/klasická), rizicích a rekonvalescenci. Přijďte s doprovodem.",
+     tip:"Zeptejte se na délku hospitalizace a omezení po výkonu."},
+    {t:"Předoperační vyšetření",dur:"1–2 dny",stat:"next",
+     desc:"Interní a anesteziologické zhodnocení. Krevní testy, EKG. Lační se od půlnoci.",
+     tip:"Informujte lékaře o všech lécích, které užíváte."},
+    {t:"Výkon a hospitalizace",dur:"3–5 dní",stat:"next",
+     desc:"Samotná operace trvá 2–4 hodiny. Po ní je standardní pobyt na oddělení. Katétr se vyjme po cca 1–2 týdnech.",
+     tip:"Připravte si na pobyt pohodlný oděv a osobní věci."},
+    {t:"Rekonvalescence",dur:"4–8 týdnů",stat:"next",
+     desc:"Postupné obnovení aktivit. Fyzioterapie pánevního dna. Pravidelné kontroly rány.",
+     tip:"Rehabilitace pánevního dna výrazně pomáhá kvalitě života — začněte co nejdříve."},
+    {t:"Dlouhodobé kontroly",dur:"trvale",stat:"next",
+     desc:"Sledování PSA každé 3–6 měsíců. Termíny v záložce Průběh.",
+     tip:"Hodnota PSA by po operaci měla klesat k nule."}
+  ],effects:[
+    {t:"Inkontinence moče",sev:"common",desc:"Únik moče po vyjmutí katétru je normální — u většiny pacientů se postupně výrazně zlepší.",act:"Kegelovy cviky pánevního dna začněte ihned po vyjmutí katétru. Časná rehabilitace = nejlepší výsledek."},
+    {t:"Erektilní dysfunkce",sev:"common",desc:"Závisí na technice operace a zachování nervových svazků. Výsledek se může zlepšovat měsíce.",act:"Promluvte s lékařem brzy — existuje léčba a časná rehabilitace je efektivnější."},
+    {t:"Bolest a hojení rány",sev:"common",desc:"Mírná bolest a citlivost v oblasti rány a jizvy jsou normální a postupně ustupují.",act:"Závažnější bolest, zarudnutí nebo horečka → ihned kontaktujte lékaře."},
+    {t:"Únava po operaci",sev:"common",desc:"Operace a anestézie způsobují celkovou únavu na 2–4 týdny.",act:"Postupně zvyšujte aktivitu dle pokynů lékaře. Hojení nelze uspěchat."}
+  ],nutr:[
+    {t:"Lačnění před operací",tip:"Od půlnoci před výkonem nic nejíst ani nepít — dle přesných pokynů anesteziologa."},
+    {t:"Lehká strava po operaci",tip:"První dny tekuté a kašovité pokrmy, postupně přecházejte na normální stravu."},
+    {t:"Hydratace urychluje hojení",tip:"Min. 1,5 l vody denně. Dostatečné tekutiny podporují hojení tkání."},
+    {t:"Rehabilitace pánevního dna",tip:"Kegelovy cviky: stáhněte svaly pánevního dna, držte 5 s, uvolněte. 10× opakujte, 3× denně."}
+  ]},
+  as:{name:"Aktivní sledování",sub:"Bezpečná volba u nízce rizikového nálezu",steps:[
+    {t:"Vstupní vyšetření",dur:"~45 min",stat:"now",
+     desc:"Potvrzení kritérií pro sledování, plán kontrol a podmínky přechodu na léčbu. Zeptejte se na vše, co vás zajímá.",
+     tip:"Aktivní sledování neznamená nic nedělat — znamená pravidelně kontrolovat."},
+    {t:"Plán kontrol",dur:"1 den",stat:"next",
+     desc:"Nastavíme intervaly PSA (každé 3–6 měsíců), biopsií a zobrazovacích metod.",
+     tip:"Zapište si přesně domluvený harmonogram."},
+    {t:"Pravidelné kontroly PSA",dur:"průběžně",stat:"next",
+     desc:"Sledování trendu hodnot. Důležitější než absolutní číslo je, jak se PSA mění v čase.",
+     tip:"Přineste na každou kontrolu výsledky předchozích měření."},
+    {t:"Přehodnocení léčby",dur:"dle nálezu",stat:"next",
+     desc:"Pokud PSA stoupá nebo biopsie ukáže progresi, společně přejdeme na léčbu. Toto rozhodnutí nikdy není urgentní.",
+     tip:"Neváhejte se zeptat na kritéria, při kterých budeme léčbu zahajovat."}
+  ],effects:[
+    {t:"Psychická zátěž sledování",sev:"common",desc:"Žít s vědomím diagnózy bez okamžité léčby může být psychicky náročné — i při nízkém riziku.",act:"Mluvte o obavách s lékařem nebo blízkými. Informovanost a jasný plán snižují úzkost."},
+    {t:"Obavy z progrese",sev:"possible",desc:"Strach, že nádor roste mezi kontrolami, prožívá mnoho pacientů na aktivním sledování.",act:"Ptejte se lékaře na přesná kritéria sledování. Konkrétní čísla a harmonogram snižují nejistotu."}
+  ],nutr:[
+    {t:"Zdravý životní styl stačí",tip:"Aktivní sledování nevyžaduje speciální dietu. Zdravý životní styl je dostačující a prospěšný."},
+    {t:"Pravidelný pohyb",tip:"Fyzická aktivita je prospěšná. Cílte na alespoň 150 minut mírného pohybu týdně."},
+    {t:"Lykopen",tip:"Rajčata, meloun, grapefruit — antioxidační účinky. Vědecké důkazy jsou omezené, ale škodit nebudou."}
+  ]},
+  rtht:{name:"RT + Hormonální léčba",sub:"Kombinovaná léčba — nejčastější u středně a vysoce rizikového nálezu",steps:[
+    {t:"Vstupní vyšetření",dur:"~60 min",stat:"now",
+     desc:"Lékař probere nález a plán kombinované léčby. HT začíná obvykle 2–3 měsíce před RT — zmenšuje prostatu a zvyšuje účinek záření. Přijďte s doprovodem.",
+     tip:"Zeptejte se na celkovou délku hormonální léčby (obvykle 2–3 roky u vysoce rizikového nálezu)."},
+    {t:"Zahájení hormonální léčby",dur:"1 den",stat:"next",
+     desc:"Aplikace první dávky HT (injekce nebo tablety). Vedlejší účinky — únava, návaly horka — začínají brzy. Zapište si datum zahájení.",
+     tip:"HT nastupuje rychle — připravte rodinu na možné změny nálady a energie."},
+    {t:"Plánovací CT",dur:"~30 min",stat:"next",
+     desc:"Zaměříme oblast ozáření. Nebolestivé, nepotřebujete lačnit. Přineste předchozí CT snímky.",
+     tip:"Prostata zmenšená HT umožňuje přesnější plán ozáření."},
+    {t:"Série ozáření",dur:"několik týdnů",stat:"next",
+     desc:"Krátké ambulantní návštěvy, obvykle 5× týdně. Samotné ozáření trvá minuty. HT pokračuje souběžně.",
+     tip:"Pravidelná docházka je klíčová. Domluvte si spolehlivou dopravu."},
+    {t:"Pokračování HT a kontroly",dur:"měsíce–roky",stat:"next",
+     desc:"HT pokračuje i po skončení RT (celková délka 2–3 roky). Pravidelné kontroly PSA, kostní hustoty a snášenlivosti.",
+     tip:"Veďte si zápisník vedlejších účinků — usnadní komunikaci s lékařem při kontrolách."}
+  ],effects:[
+    {t:"Únava",sev:"common",desc:"Kombinace RT a HT zesiluje únavu — nejčastější vedlejší účinek kombinované léčby.",act:"Respektujte únavu, ale udržujte lehkou aktivitu. Krátké procházky pomáhají více než pasivní odpočinek."},
+    {t:"Návaly horka",sev:"common",desc:"Z HT — náhlé pocity tepla a pocení. Začínají brzy po zahájení hormonální léčby.",act:"Vrstvené oblékání, ventilátor. Alkohol a kořeněná jídla intenzitu zvyšují."},
+    {t:"Časté nucení na moč",sev:"common",desc:"Z RT — ozáření dočasně dráždí močový měchýř a okolní tkáně.",act:"Pijte dostatek vody. Příznaky odezní po skončení ozáření."},
+    {t:"Sexuální funkce",sev:"common",desc:"RT i HT mají kumulativní efekt na erektilní funkci — postihuje většinu pacientů.",act:"Promluvte s lékařem brzy — existuje léčba. Časná rehabilitace je efektivnější."},
+    {t:"Hustota kostí",sev:"possible",desc:"Dlouhodobá HT (2–3 roky) výrazně snižuje kostní hustotu.",act:"Pohyb a vápník jsou nutností. Zeptejte se na DEXA scan po 1–2 letech HT."}
+  ],nutr:[
+    {t:"Dostatek tekutin",tip:"Min. 1,5–2 l vody denně. Pomáhá sliznicím při RT i celkové kondici při HT."},
+    {t:"Pohyb zachovává kosti",tip:"I přes únavu: 20–30 minut chůze denně výrazně pomáhá kostní hustotě a kondici."},
+    {t:"Vápník a vitamín D",tip:"Mléčné výrobky, ryby, vejce, sluneční světlo — ochrana kostí při dlouhodobé HT."},
+    {t:"Alkohol minimálně",tip:"Zhoršuje návaly horka (HT) i slizniční reakce (RT) — dvojí důvod to omezit."}
+  ]}
+};
+const CHECKS_DOCS=[
+  {b:"Lékařská zpráva od urologa",s:"Originál nebo kopie"},
+  {b:"Výsledky PSA a biopsie",s:"Pokud je máte s sebou nebo v systému"},
+  {b:"Kartička pojišťovny",s:"VZP, OZP nebo jiná"},
+  {b:"Seznam užívaných léků",s:"Název, dávkování, frekvence"},
+  {b:"Průkaz totožnosti",s:"Občanský průkaz nebo pas"},
+  {b:"Doprovod / kontakt rodiny",s:"Telefonní číslo blízké osoby"}
+];
+const CHECKS_MENTAL=[
+  {b:"Přečetl jsem tento průvodce",s:"Vím, co mě čeká"},
+  {b:"Sepsal jsem otázky pro lékaře",s:"Záložka Otázky pro lékaře"},
+  {b:"Informoval jsem rodinu",s:"Vědí, kde jsem a co se děje"},
+  {b:"Mám pohodlné oblečení",s:"Vyšetření může trvat i hodinu"}
+];
+const QUESTIONS=[
+  "Jaké jsou u mě konkrétní možnosti léčby?",
+  "Jak léčba ovlivní můj běžný život a práci?",
+  "Jaké jsou očekávané vedlejší účinky?",
+  "Kdy a jak se dozvím výsledky?",
+  "Jak dlouho bude léčba trvat?",
+  "Na koho se obrátím při potížích mimo pracovní dobu?",
+  "Mohu léčbu kombinovat s jinými aktivitami (sport, jídlo)?",
+  "Jak bude sledován výsledek léčby?"
+];
+const GLOSSARY=[
+  {t:"PSA",d:"Prostatický specifický antigen — bílkovina tvořená prostatou. Zvýšená hladina může (ale nemusí) signalizovat problém. Sleduje se jak hodnota, tak trend."},
+  {t:"Karcinom prostaty",d:"Zhoubný nádor prostaty. Nejčastější onkologické onemocnění mužů. Při včasném záchytu má velmi dobrou prognózu."},
+  {t:"Radioterapie (RT)",d:"Léčba přesným ionizujícím zářením. Cíleně ničí nádorové buňky. Probíhá ambulantně, samotné ozáření trvá několik minut."},
+  {t:"Hormonální léčba (HT)",d:"Snižuje hladinu mužských pohlavních hormonů, které podporují růst nádoru. Podává se injekčně nebo v tabletách."},
+  {t:"Prostatektomie",d:"Chirurgické odstranění prostaty. Může být provedena roboticky nebo klasicky. Léčí nádor lokalizovaný v prostatě."},
+  {t:"MDT (Multidisciplinární tým)",d:"Skupina odborníků (urolog, onkolog, radiolog, patolog), která společně doporučuje nejlepší léčebný postup."},
+  {t:"Biopsie",d:"Odebrání malé části tkáně prostaty k laboratornímu vyšetření. Potvrzuje diagnózu a určuje agresivitu nádoru."},
+  {t:"Gleason skóre",d:"Hodnotí agresivitu nádoru pod mikroskopem (stupnice 6–10). Vyšší číslo = agresivnější nádor."},
+  {t:"Aktivní sledování",d:"Strategie u nízce rizikových nádorů — pravidelně kontrolujeme, léčbu zahájíme jen při progresi."},
+  {t:"ePRO",d:"Elektronicky sbírané výsledky hlášené pacientem (příznaky, kvalita života). Pomáhají lékaři sledovat váš stav."}
+];
+
+/* ── T11: FAMILY HELP DATA ──────────────────────── */
+const FAMILY_HELP={
+  rt:["Nabídněte pravidelný odvoz na ozáření — denní docházení několik týdnů je logisticky náročné.",
+      "Respektujte únavu — nevnímejte ji jako lenost. Je přímý vedlejší účinek záření.",
+      "Připravujte lehká, dobře stravitelná jídla. Apetit může být v průběhu léčby snížený.",
+      "Váš klidný a stabilní postoj výrazně pomáhá — léčba trvá týdny."],
+  ht:["Buďte tolerantní k návalům horka a výkyvům nálady — jsou vedlejší účinek léčby, ne charakter.",
+      "Povzbuzujte k pohybu — procházky společně jsou příjemné i prospěšné pro kosti.",
+      "Změny v sexualitě jsou součástí léčby — otevřená komunikace bez tlaku pomáhá oběma.",
+      "Připomínejte pravidelné kontroly — harmonogram je důležitý."],
+  op:["Plánujte 4–8 týdnů pomoci doma po operaci — transport, vaření, každodenní aktivity.",
+      "Povzbuzujte k cvičení pánevního dna (Kegelovy cviky) — jde o trvalý výsledek.",
+      "Buďte trpěliví s rekonvalescencí — hojení má svůj čas a nelze ho uspěchat.",
+      "Zarudnutí, horečka nebo silná bolest rány → ihned kontaktujte lékaře."],
+  as:["Respektujte volbu aktivního sledování — není to 'nedělat nic', je to informované rozhodnutí.",
+      "Obavy a nejistota jsou normální i při nízkém riziku — naslouchejte bez zlehčování.",
+      "Připomínejte pravidelné kontroly PSA — pravidelnost je základ bezpečnosti.",
+      "Žijte normálně — aktivní sledování nevyžaduje žádná omezení běžného života."],
+  rtht:["Nabídněte pravidelný odvoz na série ozáření — denní docházení několik týdnů.",
+        "Respektujte kombinovanou únavu — RT + HT jsou náročnější dohromady.",
+        "Buďte tolerantní k návalům horka a výkyvům nálady z HT.",
+        "Povzbuzujte k pohybu — výrazně pomáhá i při únavě a chrání kosti při HT.",
+        "Celková délka léčby je delší (RT + roky HT) — trvalá podpora je klíčová."]
+};
+
+/* ── T7: CONTACTS DATA ──────────────────────────── */
+const CONTACTS=[
+  {name:"Onkologická klinika FN Ostrava",hours:"Po–Pá 7:00–15:30",
+   phone:"+420 597 373 331",note:"Ambulance, dotazy k léčbě, výsledky",urgent:false},
+  {name:"Urgentní příjem FN Ostrava",hours:"Nepřetržitě · pro akutní stavy",
+   phone:"+420 597 371 111",note:"Závažné příznaky mimo pracovní dobu",urgent:true},
+  {name:"Psychologická linka Amelie",hours:"Po–Pá 9:00–18:00 · bezplatně",
+   phone:"222 519 740",note:"Podpora pro onkologické pacienty a rodiny",urgent:false}
+];
+/* ── T9: HOSPITAL DATA ──────────────────────────── */
+const HOSPITAL=[
+  {ic:"pin",label:"Adresa",val:"17. listopadu 1790, 708 52 Ostrava-Poruba"},
+  {ic:"car",label:"Parkování",val:"Parkoviště P3 u Onkologické kliniky · vjezd z ul. Dr. Šmerala · ~20 Kč/hod."},
+  {ic:"bus",label:"MHD",val:"Tramvaj č. 8 nebo 17 · zastávka FN Poruba"},
+  {ic:"nav",label:"Orientace v budově",val:"Vstup C → výtah → 3. podlaží → Onkologická klinika vlevo"},
+  {ic:"clk",label:"Přijďte",val:"Alespoň 15 minut před termínem · kartička pojišťovny + průkaz totožnosti"}
+];
+const HOSP_ICONS={
+  pin:'<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>',
+  car:'<rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>',
+  bus:'<rect x="2" y="3" width="20" height="14" rx="2"/><path d="M10 3v14M14 3v14"/><circle cx="7" cy="20" r="1"/><circle cx="17" cy="20" r="1"/>',
+  nav:'<polygon points="3 11 22 2 13 21 11 13 3 11"/>',
+  clk:'<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>'
+};
+/* ── T8: NORMALNI DATA ──────────────────────────── */
+const NORMALNI=[
+  {t:"Strach a úzkost",txt:"Naprostá většina pacientů prožívá strach po obdržení diagnózy. Je to normální reakce — nesvědčí o slabosti. Sdílení obav s lékařem nebo blízkými pomáhá."},
+  {t:"Hněv",txt:"Někteří pacienti jsou naštvaní — na osud, na lékaře nebo na situaci. I to je normální součást procesu přijetí diagnózy."},
+  {t:"Potřeba vše kontrolovat",txt:"Snaha pochopit každý detail vlastní diagnózy je zcela přirozená. Informovaní pacienti se cítí lépe. Ptejte se — opakovaně klidně."},
+  {t:"Obavy o rodinu",txt:"Myšlenky na dopady léčby na blízké jsou u většiny pacientů. Sdílejte je — rodina chce vědět a pomáhat, i když neví jak."},
+  {t:"Únava z rozhodování",txt:"Množství informací a voleb může být ohromující. Nepotřebujete vše vyřešit najednou — máte průvodce, lékaře a čas."}
+];
+
+/* ── STATE ─────────────────────────────────────── */
+let tx=localStorage.getItem('tx')||'rt';
+let ckDocs=JSON.parse(localStorage.getItem('ckd')||'[]');
+let ckMent=JSON.parse(localStorage.getItem('ckm')||'[]');
+let qSel=JSON.parse(localStorage.getItem('qs')||'[]');
+let qCustom=JSON.parse(localStorage.getItem('qc')||'[]');
+let bigFS=localStorage.getItem('fs')==='1';
+let hiCon=localStorage.getItem('hc')==='1';
+let speaking=false;
+let onbSeen=localStorage.getItem('onb')==='1';
+let notes=JSON.parse(localStorage.getItem('diary')||'[]');
+
+/* ── INIT ───────────────────────────────────────── */
+window.addEventListener('DOMContentLoaded',()=>{
+  setClock();setInterval(setClock,30000);
+  if(onbSeen)document.getElementById('onboarding').style.display='none';
+  if(bigFS){document.documentElement.style.setProperty('--fs','1.15');
+    document.getElementById('btn-fs').classList.add('on');
+    document.getElementById('tog-fs')&&document.getElementById('tog-fs').classList.add('on');}
+  if(hiCon){document.getElementById('screen').classList.add('hc');
+    document.getElementById('btn-hc').classList.add('on');
+    document.getElementById('tog-hc')&&document.getElementById('tog-hc').classList.add('on');}
+  setTx(tx,false);
+  renderChecks();renderQ();renderGloss();updateHome();buildJourneyDots();
+  renderContacts();renderNormalni();renderHospital();renderNotes();
+});
+function setClock(){
+  const n=new Date();
+  document.getElementById('sbtime').textContent=
+    n.getHours()+':'+(n.getMinutes()<10?'0':'')+n.getMinutes();
+}
+
+/* ── ONBOARDING ─────────────────────────────────── */
+function dismissOnboarding(){
+  document.getElementById('onboarding').style.display='none';
+  localStorage.setItem('onb','1');onbSeen=true;
+}
+
+/* ── TAB NAVIGATION ─────────────────────────────── */
+function goTab(s){
+  document.querySelectorAll('.scr').forEach(x=>x.classList.toggle('on',x.dataset.s===s));
+  document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x.dataset.t===s));
+  document.getElementById('body').scrollTop=0;
+  if(s==='vice'){
+    const th=document.getElementById('tog-fs');const thc=document.getElementById('tog-hc');
+    if(th)th.classList.toggle('on',bigFS);
+    if(thc)thc.classList.toggle('on',hiCon);
+  }
+}
+
+/* ── TREATMENT SELECTOR ─────────────────────────── */
+function setTx(key,save=true){
+  tx=key;if(save)localStorage.setItem('tx',key);
+  document.querySelectorAll('[data-tx]').forEach(c=>c.classList.toggle('on',c.dataset.tx===key));
+  renderPath();
+}
+document.addEventListener('click',e=>{
+  const c=e.target.closest('[data-tx]');if(c)setTx(c.dataset.tx);
+});
+
+/* ── PATHWAY ────────────────────────────────────── */
+function renderPath(){
+  const p=PATH[tx];
+  document.getElementById('path-title').textContent=p.name;
+  document.getElementById('path-sub').textContent=p.sub;
+  const nowIdx=p.steps.findIndex(s=>s.stat==='now');
+  const done=nowIdx<0?0:nowIdx;
+  const pct=Math.round((done/p.steps.length)*100);
+  document.getElementById('path-prog').style.width=Math.max(pct,5)+'%';
+  document.getElementById('path-prog-label').textContent=(done+1)+' / '+p.steps.length;
+  const box=document.getElementById('steps-list');box.innerHTML='';
+  p.steps.forEach((s,i)=>{
+    const st=i<nowIdx?'done':i===nowIdx?'now':'next';
+    const el=document.createElement('div');
+    el.className='step-item '+st;
+    el.innerHTML=`<div class="step-top" onclick="this.parentNode.classList.toggle('open')">
+      <div class="step-num ${st}-c">${st==='done'?'✓':i+1}</div>
+      <div class="step-info"><b>${s.t}</b><small>${s.dur}</small></div>
+      <div class="step-arr">⌄</div></div>
+      <div class="step-det"><div class="step-det-in">
+        <p>${s.desc}</p>
+        <div class="tip-box"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="#D4970A"/></svg>
+        <span>${s.tip}</span></div>
+        <span class="step-status ${st==='done'?'st-done':st==='now'?'st-now':'st-next'}">${st==='done'?'Absolvováno':st==='now'?'Aktuální krok':'Čeká'}</span>
+      </div></div>`;
+    box.appendChild(el);
+    if(st==='now')setTimeout(()=>el.classList.add('open'),200);
+  });
+  renderEffects();
+  renderNutr();
+  buildJourneyDots();
+}
+
+/* ── T7: CONTACTS ───────────────────────────────── */
+function renderContacts(){
+  const box=document.getElementById('contacts-list');if(!box)return;
+  box.innerHTML='';
+  CONTACTS.forEach(c=>{
+    const el=document.createElement('div');
+    el.className='contact-card'+(c.urgent?' urgent':'');
+    el.innerHTML=`<div class="contact-head">
+      <h4>${c.name}</h4>
+      <div class="ch-hours">${c.hours}</div>
+    </div>
+    <div class="contact-foot">
+      <span class="contact-note">${c.note}</span>
+      <a class="contact-tel" href="tel:${c.phone.replace(/\s/g,'')}">${c.phone}</a>
+    </div>`;
+    box.appendChild(el);
+  });
+}
+/* ── T8: NORMALNI ───────────────────────────────── */
+function renderNormalni(){
+  const box=document.getElementById('normalni-list');if(!box)return;
+  box.innerHTML='';
+  NORMALNI.forEach((n,i)=>{
+    const el=document.createElement('div');el.className='norm-item';
+    el.innerHTML=`<div class="norm-top">
+      <div class="norm-dot"></div>
+      <span class="norm-title">${n.t}</span>
+      <div class="norm-arr">&#8964;</div></div>
+    <div class="norm-body"><div class="norm-body-in"><p>${n.txt}</p></div></div>`;
+    el.querySelector('.norm-top').onclick=()=>el.classList.toggle('open');
+    box.appendChild(el);
+  });
+}
+/* ── T11: FAMILY VIEW ───────────────────────────── */
+function openFamilyView(){
+  renderFamilyView();
+  document.getElementById('fov').style.display='flex';
+}
+function closeFamilyView(){
+  document.getElementById('fov').style.display='none';
+}
+function renderFamilyView(){
+  const txName=document.getElementById('fov-tx-name');
+  if(txName)txName.textContent=PATH[tx].name;
+  const box=document.getElementById('fov-help-items');if(!box)return;
+  box.innerHTML='';
+  (FAMILY_HELP[tx]||[]).forEach(h=>{
+    const el=document.createElement('div');el.className='fov-help-item';
+    el.innerHTML=`<div class="fh-dot"></div><span>${h}</span>`;
+    box.appendChild(el);
+  });
+}
+
+/* ── T10: NOTES ─────────────────────────────────── */
+function renderNotes(){
+  const box=document.getElementById('notes-history');if(!box)return;
+  box.innerHTML='';
+  if(!notes.length){
+    box.innerHTML='<p class="note-empty">Zatím žádné záznamy.</p>';return;}
+  notes.slice().reverse().slice(0,4).forEach(n=>{
+    const el=document.createElement('div');el.className='note-entry';
+    el.innerHTML=`<div class="ne-date">${n.date}</div><div class="ne-text">${n.text}</div>`;
+    box.appendChild(el);
+  });
+}
+function saveNote(){
+  const ta=document.getElementById('note-input');
+  const v=ta.value.trim();if(!v)return;
+  const d=new Date();
+  const date=d.getDate()+'. '+(d.getMonth()+1)+'. '+d.getFullYear();
+  notes.push({date,text:v});
+  if(notes.length>20)notes.shift();
+  localStorage.setItem('diary',JSON.stringify(notes));
+  ta.value='';renderNotes();toast('Poznámka uložena ✓');
+}
+
+/* ── T9: HOSPITAL ───────────────────────────────── */
+function renderHospital(){
+  const box=document.getElementById('hosp-card');if(!box)return;
+  box.innerHTML='';
+  HOSPITAL.forEach(h=>{
+    const el=document.createElement('div');el.className='hosp-row';
+    el.innerHTML=`<div class="hosp-ic"><svg viewBox="0 0 24 24">${HOSP_ICONS[h.ic]||''}</svg></div>
+      <div class="hosp-row-b"><label>${h.label}</label><span>${h.val}</span></div>`;
+    box.appendChild(el);
+  });
+}
+
+/* ── T5: EFFECTS ────────────────────────────────── */
+function renderEffects(){
+  const box=document.getElementById('effects-list');if(!box)return;
+  box.innerHTML='';
+  const effs=(PATH[tx].effects||[]);
+  effs.forEach((e,i)=>{
+    const el=document.createElement('div');
+    el.className='eff-card'+(e.sev==='possible'?' possible':'');
+    el.id='eff-'+i;
+    el.innerHTML=`<div class="eff-top" onclick="toggleEff(${i})">
+      <span class="eff-title">${e.t}</span>
+      <span class="eff-badge ${e.sev==='common'?'common':'possible'}">${e.sev==='common'?'Časté':'Možné'}</span>
+      <div class="eff-arr">&#8964;</div></div>
+      <div class="eff-body"><div class="eff-body-in">
+        <p>${e.desc}</p>
+        <div class="eff-action"><strong>Co dělat:</strong> ${e.act}</div>
+      </div></div>`;
+    box.appendChild(el);
+  });
+}
+function toggleEff(i){
+  const el=document.getElementById('eff-'+i);
+  if(el)el.classList.toggle('open');
+}
+function renderNutr(){
+  const box=document.getElementById('nutr-list');if(!box)return;
+  box.innerHTML='';
+  (PATH[tx].nutr||[]).forEach(n=>{
+    const el=document.createElement('div');el.className='nutr-item';
+    el.innerHTML=`<div class="nutr-dot"></div>
+      <div class="nutr-body"><b>${n.t}</b><span>${n.tip}</span></div>`;
+    box.appendChild(el);
+  });
+}
+
+/* ── JOURNEY DOTS ────────────────────────────────── */
+function buildJourneyDots(){
+  const p=PATH[tx];
+  const box=document.getElementById('jpsteps');if(!box)return;
+  box.innerHTML='';
+  const nowIdx=p.steps.findIndex(s=>s.stat==='now');
+  const pct=Math.max(5,Math.round(((nowIdx<0?0:nowIdx)/p.steps.length)*100));
+  const bar=document.getElementById('jpbar');if(bar)bar.style.width=pct+'%';
+  p.steps.forEach((s,i)=>{
+    const d=document.createElement('div');
+    d.className='jp-step-dot'+(i<nowIdx?' done':i===nowIdx?' now':'');
+    d.title=s.t;box.appendChild(d);
+  });
+}
+
+/* ── CHECKS ─────────────────────────────────────── */
+function renderChecks(){
+  renderList('ck-docs',CHECKS_DOCS,ckDocs,'ckd');
+  renderList('ck-mental',CHECKS_MENTAL,ckMent,'ckm');
+  updateRing();updateHome();
+}
+function renderList(id,data,state,key){
+  const box=document.getElementById(id);if(!box)return;box.innerHTML='';
+  data.forEach((it,i)=>{
+    const done=state.includes(i);
+    const el=document.createElement('div');el.className='ck-item'+(done?' done':'');
+    el.innerHTML=`<div class="ck-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="ck-text"><b>${it.b}</b><span>${it.s}</span></div>`;
+    el.onclick=()=>{
+      const idx=state.indexOf(i);idx>-1?state.splice(idx,1):state.push(i);
+      localStorage.setItem(key,JSON.stringify(state));renderChecks();};
+    box.appendChild(el);
+  });
+}
+function updateRing(){
+  const total=CHECKS_DOCS.length+CHECKS_MENTAL.length;
+  const done=ckDocs.length+ckMent.length;
+  const pct=Math.round((done/total)*100);
+  const circ=289;const offset=circ-(circ*(done/total));
+  document.getElementById('ring-arc').style.strokeDashoffset=offset;
+  document.getElementById('ring-pct').textContent=pct+' %';
+}
+
+/* ── QUESTIONS ───────────────────────────────────── */
+function renderQ(){
+  const box=document.getElementById('q-suggested');if(!box)return;box.innerHTML='';
+  QUESTIONS.forEach((q,i)=>{
+    const on=qSel.includes(i);
+    const el=document.createElement('div');el.className='q-item'+(on?' on':'');
+    el.innerHTML=`<div class="q-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <span>${q}</span>`;
+    el.onclick=()=>{
+      const idx=qSel.indexOf(i);idx>-1?qSel.splice(idx,1):qSel.push(i);
+      localStorage.setItem('qs',JSON.stringify(qSel));renderQ();updateHome();};
+    box.appendChild(el);
+  });
+  renderCustomQ();renderQSummary();
+}
+function renderCustomQ(){
+  const box=document.getElementById('q-custom-list');if(!box)return;box.innerHTML='';
+  qCustom.forEach((q,i)=>{
+    const el=document.createElement('div');el.className='q-item on';
+    el.innerHTML=`<div class="q-check on"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <span style="flex:1">${q}</span>
+      <span onclick="removeCustomQ(${i})" style="color:var(--a-faint);padding-left:8px;font-size:18px;cursor:pointer">×</span>`;
+    box.appendChild(el);
+  });
+}
+function addQ(){
+  const inp=document.getElementById('q-input');const v=inp.value.trim();
+  if(!v)return;qCustom.push(v);inp.value='';
+  localStorage.setItem('qc',JSON.stringify(qCustom));renderCustomQ();renderQSummary();
+  toast('Otázka přidána ✓');
+}
+function removeCustomQ(i){qCustom.splice(i,1);localStorage.setItem('qc',JSON.stringify(qCustom));renderCustomQ();renderQSummary();}
+function renderQSummary(){
+  const el=document.getElementById('q-summary-list');if(!el)return;el.innerHTML='';
+  const all=[...qSel.map(i=>QUESTIONS[i]),...qCustom];
+  if(!all.length){el.innerHTML='<li style="color:var(--a-faint)">Zatím žádné otázky.</li>';return;}
+  all.forEach(q=>{const li=document.createElement('li');li.textContent=q;el.appendChild(li);});
+}
+function updateHome(){
+  const total=CHECKS_DOCS.length+CHECKS_MENTAL.length;
+  const done=ckDocs.length+ckMent.length;
+  const pct=Math.round((done/total)*100);
+  const el=document.getElementById('prep-pct-home');if(el)el.textContent=pct+' % splněno';
+  const qc=document.getElementById('q-count-home');
+  if(qc)qc.textContent=(qSel.length+qCustom.length)+' vybráno';
+}
+
+/* ── GLOSSARY ────────────────────────────────────── */
+function renderGloss(filter=''){
+  const box=document.getElementById('gloss-list');if(!box)return;box.innerHTML='';
+  GLOSSARY.filter(g=>!filter||g.t.toLowerCase().includes(filter.toLowerCase())||
+    g.d.toLowerCase().includes(filter.toLowerCase())).forEach(g=>{
+      const el=document.createElement('div');el.className='gloss-item';
+      el.innerHTML=`<h4>${g.t}</h4><p>${g.d}</p>`;box.appendChild(el);});
+}
+function filterGloss(){renderGloss(document.getElementById('gloss-in').value);}
+
+/* ── ACCESSIBILITY ───────────────────────────────── */
+function toggleFS(){
+  bigFS=!bigFS;localStorage.setItem('fs',bigFS?'1':'0');
+  document.documentElement.style.setProperty('--fs',bigFS?'1.15':'1');
+  document.getElementById('btn-fs').classList.toggle('on',bigFS);
+  const t=document.getElementById('tog-fs');if(t)t.classList.toggle('on',bigFS);
+}
+function toggleHC(){
+  hiCon=!hiCon;localStorage.setItem('hc',hiCon?'1':'0');
+  document.getElementById('screen').classList.toggle('hc',hiCon);
+  document.getElementById('btn-hc').classList.toggle('on',hiCon);
+  const t=document.getElementById('tog-hc');if(t)t.classList.toggle('on',hiCon);
+}
+function speak(){
+  if(!('speechSynthesis' in window)){toast('Prohlížeč čtení nepodporuje');return;}
+  if(speaking){speechSynthesis.cancel();speaking=false;
+    document.getElementById('btn-speak').classList.remove('on');
+    const rb=document.getElementById('read-btn');
+    if(rb){rb.classList.remove('speaking');rb.innerHTML=rb.innerHTML.replace('Zastavit čtení','Číst tuto obrazovku nahlas');}
+    return;}
+  const scr=document.querySelector('.scr.on');
+  const text=scr?scr.innerText.replace(/\s+/g,' ').substring(0,800):'Průvodce';
+  const u=new SpeechSynthesisUtterance(text);u.lang='cs-CZ';u.rate=0.92;u.pitch=1;
+  u.onend=()=>{speaking=false;document.getElementById('btn-speak').classList.remove('on');
+    const rb=document.getElementById('read-btn');
+    if(rb){rb.classList.remove('speaking');rb.innerHTML=rb.innerHTML.replace('Zastavit čtení','Číst tuto obrazovku nahlas');}};
+  speechSynthesis.speak(u);speaking=true;
+  document.getElementById('btn-speak').classList.add('on');
+  const rb=document.getElementById('read-btn');
+  if(rb){rb.classList.add('speaking');rb.innerHTML=rb.innerHTML.replace('Číst tuto obrazovku nahlas','Zastavit čtení');}
+}
+
+/* ── TOAST ───────────────────────────────────────── */
+let toastT;
+function toast(msg){
+  const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');
+  clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('show'),2000);
+}
+
+/* ── PRINT QUESTIONS ────────────────────────────── */
+function printQuestions(){
+  const all=[...qSel.map(i=>QUESTIONS[i]),...qCustom];
+  if(!all.length){toast('Nejprve vyberte otázky');return;}
+  const d=new Date();
+  document.getElementById('pt-meta').textContent=
+    'Vytištěno: '+d.getDate()+'. '+(d.getMonth()+1)+'. '+d.getFullYear()+
+    ' · FN Ostrava, Onkologická klinika · '+PATH[tx].name;
+  const box=document.getElementById('pt-items');box.innerHTML='';
+  all.forEach(q=>{
+    const el=document.createElement('div');el.className='pt-item';
+    el.textContent=q;box.appendChild(el);});
+  document.getElementById('print-target').style.display='block';
+  window.print();
+  setTimeout(()=>{document.getElementById('print-target').style.display='none';},500);
+}
+
+/* ── Q-INPUT ENTER ──────────────────────────────── */
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&document.activeElement.id==='q-input')addQ();
+});
+</script>
+</body>
+</html>

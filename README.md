@@ -65,9 +65,9 @@ Pacient dostane QR kód priamo v odporúčacom liste od urológa. Otvorí spriev
 
 | Vrstva | Stav | Popis |
 |--------|------|-------|
-| 1 · Pacientská app | ✅ Hotovo | Single-page PWA, localStorage, offline |
-| 2 · Content CMS + validácia | 🔜 Fáza 2 | Editácia obsahu bez kódu, schvaľovací flow |
-| 3 · Sub-agentná správa | 🔜 Fáza 3 | Monitoring guidelines → draft → deploy |
+| 1 · Pacientská app | Hotovo | Single-page PWA, localStorage, offline |
+| 2 · Content CMS + validácia | Fáza 2 | Editácia obsahu bez kódu, schvaľovací flow |
+| 3 · Sub-agentná správa | Fáza 3 | Monitoring guidelines → draft → deploy |
 
 ---
 
@@ -75,7 +75,6 @@ Pacient dostane QR kód priamo v odporúčacom liste od urológa. Otvorí spriev
 
 | Súbor | Popis |
 |-------|-------|
-| `docs/analysis/analyza-podklady.md` | Kompletná analýza zadania |
 | `docs/analysis/details_per_slide.md` | Rozšírený komentár ku každému slidu prezentácie |
 | `docs/presentations/onko-podklady-schuzka1.html` | Prezentácia (18 slidov) |
 | `app/prototype/prototyp.html` | Funkčný prototyp aplikácie |

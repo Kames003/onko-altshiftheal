@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ALT+SHIFT+HEAL — Kritický audit prototypu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#07090c;color:#c9d1d9;font-family:'Inter',system-ui,sans-serif;
+  min-height:100vh;font-size:14px;line-height:1.6}
+
+.page{max-width:960px;margin:0 auto;padding:60px 40px 100px}
+@media(max-width:640px){.page{padding:32px 20px 80px}}
+
+/* ── HEADER ──────────────────────────── */
+.pg-header{margin-bottom:56px}
+.pg-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;
+  color:#5a6677;text-transform:uppercase;margin-bottom:14px}
+.pg-title{font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:700;
+  color:#e6edf3;letter-spacing:-.01em;line-height:1.15;margin-bottom:8px}
+.pg-title span{color:#2A9D8F}
+.pg-desc{font-size:14px;color:#8b97a7;line-height:1.65;max-width:580px}
+
+/* ── SCORE BAR ───────────────────────── */
+.score-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:52px}
+.score-card{background:#0f141a;border:1px solid #1e2a38;border-radius:14px;padding:18px 16px}
+.sc-num{font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:700;
+  margin-bottom:4px}
+.sc-label{font-size:12px;color:#5a6677;line-height:1.4}
+.green{color:#34d399}
+.amber{color:#f6c85f}
+.red{color:#ff5d6c}
+.blue{color:#60a5fa}
+
+/* ── SECTION ─────────────────────────── */
+.section{margin-bottom:48px}
+.sec-header{display:flex;align-items:baseline;gap:12px;margin-bottom:20px;
+  padding-bottom:10px;border-bottom:1px solid #161c24}
+.sec-title{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;
+  letter-spacing:.04em;color:#e6edf3;text-transform:uppercase}
+.sec-meta{font-size:12px;color:#5a6677}
+
+/* ── AUDIT TABLE ─────────────────────── */
+.audit-table{width:100%;border-collapse:collapse}
+.audit-table th{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;
+  color:#5a6677;text-transform:uppercase;padding:0 12px 10px;text-align:left;
+  border-bottom:1px solid #161c24}
+.audit-table td{padding:11px 12px;border-bottom:1px solid #0f141a;vertical-align:top}
+.audit-table tr:last-child td{border-bottom:0}
+.audit-table tr:hover td{background:rgba(255,255,255,.015)}
+.mod{font-weight:600;color:#c9d1d9;font-size:13px}
+.note{font-size:12px;color:#8b97a7;margin-top:3px;line-height:1.5}
+.pill{display:inline-flex;align-items:center;gap:5px;padding:4px 9px;
+  border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:10px;
+  letter-spacing:.05em;font-weight:600;white-space:nowrap}
+.ok{background:#0d2a1e;color:#34d399}
+.warn{background:#2a2000;color:#f6c85f}
+.crit{background:#2a0a0a;color:#ff5d6c}
+.info{background:#111827;color:#60a5fa}
+
+/* ── FINDING CARDS ───────────────────── */
+.findings{display:flex;flex-direction:column;gap:10px}
+.find{background:#0f141a;border:1px solid #1e2a38;border-radius:12px;
+  padding:14px 16px;border-left:3px solid transparent}
+.find.ok{border-left-color:#34d399}
+.find.warn{border-left-color:#f6c85f}
+.find.crit{border-left-color:#ff5d6c}
+.find-head{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.find-ico{font-size:15px;flex-shrink:0}
+.find-title{font-size:13px;font-weight:600;color:#c9d1d9}
+.find-body{font-size:12px;color:#8b97a7;line-height:1.6;padding-left:25px}
+.find-body code{font-family:'JetBrains Mono',monospace;font-size:11px;
+  background:#111827;padding:1px 5px;border-radius:4px;color:#60a5fa}
+
+/* ── QUESTIONS BLOCK ─────────────────── */
+.q-group{margin-bottom:32px}
+.q-group-label{font-family:'JetBrains Mono',monospace;font-size:10px;
+  letter-spacing:.14em;color:#2A9D8F;text-transform:uppercase;margin-bottom:12px}
+.q-list{display:flex;flex-direction:column;gap:8px}
+.q-item{background:#0f141a;border:1px solid #1e2a38;border-radius:10px;
+  padding:12px 14px;display:flex;gap:12px;align-items:flex-start}
+.q-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:#2A9D8F;
+  min-width:22px;flex-shrink:0;margin-top:1px}
+.q-text{font-size:13px;color:#c9d1d9;line-height:1.5}
+.q-why{font-size:11px;color:#5a6677;margin-top:3px;font-style:italic}
+.q-item.urgent{border-left:3px solid #f6c85f}
+
+/* ── PRIORITY MATRIX ─────────────────── */
+.matrix{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mx-cell{background:#0f141a;border:1px solid #1e2a38;border-radius:12px;padding:16px}
+.mx-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;
+  text-transform:uppercase;margin-bottom:10px}
+.mx-items{display:flex;flex-direction:column;gap:6px}
+.mx-item{font-size:12px;color:#8b97a7;display:flex;gap:7px}
+.mx-item::before{content:"·";color:#5a6677;flex-shrink:0}
+
+/* ── CALLOUT ─────────────────────────── */
+.callout{background:linear-gradient(135deg,#0d1f1c,#091614);
+  border:1px solid rgba(42,157,143,.25);border-radius:14px;padding:20px 22px;
+  margin-bottom:24px}
+.callout-label{font-family:'JetBrains Mono',monospace;font-size:10px;
+  letter-spacing:.15em;color:#2A9D8F;text-transform:uppercase;margin-bottom:8px}
+.callout p{font-size:13px;color:#8b97a7;line-height:1.65}
+
+/* ── DIVIDER ─────────────────────────── */
+hr{border:none;border-top:1px solid #161c24;margin:40px 0}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- ── HEADER ─────────────────────────────────────────── -->
+<div class="pg-header">
+  <div class="pg-tag">ALT+SHIFT+HEAL · Interný audit · 2026-05</div>
+  <h1 class="pg-title">Kritická analýza<br>prototypu <span>v0.3</span></h1>
+  <p class="pg-desc">Systematické vyhodnotenie prototypu voči požiadavkám projektu —
+    obsah, UX, MDR hranica, chýbajúce funkcie. Obsahuje pripravené otázky pre MUDr. Čermákovú.</p>
+</div>
+
+<!-- ── SCORE SUMMARY ──────────────────────────────────── -->
+<div class="score-row">
+  <div class="score-card">
+    <div class="sc-num amber">72 %</div>
+    <div class="sc-label">Obsahová pokrytosť<br>(vs. klinické minimum)</div>
+  </div>
+  <div class="score-card">
+    <div class="sc-num green">91 %</div>
+    <div class="sc-label">UX / Prístupnosť<br>(WCAG AA kritériá)</div>
+  </div>
+  <div class="score-card">
+    <div class="sc-num green">100 %</div>
+    <div class="sc-label">MDR hranica<br>(ADR 004 súlad)</div>
+  </div>
+  <div class="score-card">
+    <div class="sc-num red">3</div>
+    <div class="sc-label">Kritické medzery<br>pred pilotom</div>
+  </div>
+</div>
+
+<!-- ── 1. OBSAH ───────────────────────────────────────── -->
+<div class="section">
+  <div class="sec-header">
+    <span class="sec-title">01 — Obsahová analýza</span>
+    <span class="sec-meta">Dáta v JS konstantách — klinická presnosť, úplnosť, overiteľnosť</span>
+  </div>
+
+  <table class="audit-table">
+    <thead>
+      <tr>
+        <th style="width:22%">Modul</th>
+        <th style="width:12%">Stav</th>
+        <th>Hodnotenie</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><div class="mod">PATH · Radioterapia</div><div class="note">5 krokov, 4 účinky, 4 výživa</div></td>
+        <td><span class="pill warn">Overiť</span></td>
+        <td><div class="note">Chýbajú moderné techniky (IGRT/VMAT), fiduciálne markery, SpaceOAR gel. Séria "niekoľko týždňov" — pri SBRT je to 5 frakcií. <strong>Potrebuje spresniť pre FN Ostrava štandard.</strong></div></td>
+      </tr>
+      <tr>
+        <td><div class="mod">PATH · Hormonálna liečba</div><div class="note">4 kroky, 5 účinkov</div></td>
+        <td><span class="pill warn">Overiť</span></td>
+        <td><div class="note">"Injekcie alebo tablety" je nepresné — LHRH agonistu/antagonistu (injekcia) vs. bikalutamid (tablety) majú iné indikácie. Chýba kastračná rezistencia ako perspektíva.</div></td>
+      </tr>
+      <tr>
+        <td><div class="mod">PATH · Operácia</div><div class="note">5 krokov, 4 účinky</div></td>
+        <td><span class="pill ok">Dobrý</span></td>
+        <td><div class="note">Obsah klinicky presný. "Katéter 1–2 týždne" sedí pre robota aj klasiku. Chýba zmienka o PLND (pánevné lymfatické uzliny) a salvage RT pri PSA recidíve.</div></td>
+      </tr>
+      <tr>
+        <td><div class="mod">PATH · Aktívne sledovanie</div><div class="note">4 kroky, 2 účinky</div></td>
+        <td><span class="pill crit">Slabé</span></td>
+        <td><div class="note">Len 2 "účinky" (oba psychologické). Chýba: LUTS progresia, biopsia intervaly (1–2 roky), MR-navigovaná biopsia, presné EAU kritériá pre začatie liečby. Najrizikovejší modul z hľadiska klinickej presnosti.</div></td>
+      </tr>
+      <tr>
+        <td><div class="mod">PATH · RT + HT kombinácia</div><div class="note">5 krokov, 5 účinkov</div></td>
+        <td><span class="pill ok">Dobrý</span></td>
+        <td><div class="note">"2–3 roky u vysoce rizikového" sedí. Pre intermediate risk (6–18 mesiacov) chýba rozlíšenie — v aplikácii sa zobrazí rovnaký text pre obe riziká.</div></td>
+      </tr>
+      <tr>
+        <td><div class="mod">CHECKS_DOCS</div><div class="note">6 položiek</div></td>
+        <td><span class="pill warn">Neúplné</span></td>
+        <td><div class="note">Chýba: CD/film zo zobrazovacej metódy (CT, MRI) — pacienti sú bežne žiadaní o nosiče. Chýba: "Výsledky z iných pracovísk, ak ste boli vyšetrovaný inde".</div></td>
+      </tr>
+      <tr>
+        <td><div class="mod">CHECKS_MENTAL</div><div class="note">4 položky</div></td>
+        <td><span class="pill warn">Slabé</span></td>
+        <td><div class="note">Minimálne. Chýba: "Viem, kde v nemocnici parkovať / zastaviť", "Mám nabitý telefón", "Viem, na koho sa obrátiť ak sa stratím".</div></td>
+      </tr>
+      <tr>
+        <td><div class="mod">QUESTIONS</div><div class="note">8 otázok</div></td>
+        <td><span class="pill warn">Základné</span></td>
+        <td><div class="note">Generické, chýba: second opinion, štádium/prognóza (Gleason), klinické štúdie, konkrétne dopady na sexualitu/inkontinenciu, návrat do práce, plán sledovania po liečbe.</div></td>
+      </tr>
+      <tr>
+        <td><div class="mod">GLOSSARY</div><div class="note">10 pojmov</div></td>
+        <td><span class="pill warn">Neúplné</span></td>
+        <td><div class="note">Chýba: T-staging (T1–T4), IGRT/IMRT, uzliny, scintigrafia, klinická štúdia, kastrácia, PIRADS skóre. ePRO je v glosári, ale pacientov sa netýka.</div></td>
+      </tr>
+      <tr>
+        <td><div class="mod">KONTAKTY</div><div class="note">3 záznamy</div></td>
+        <td><span class="pill crit">Neoverené</span></td>
+        <td><div class="note">Telefóny neboli overené s FN Ostrava. Amelie linka (222 519 740) je reálna. Chýba: sociálny pracovník, koordinátor pacienta (patient navigator).</div></td>
+      </tr>
+      <tr>
+        <td><div class="mod">HOSPITAL navigácia</div><div class="note">5 záznamov</div></td>
+        <td><span class="pill crit">Neoverené</span></td>
+        <td><div class="note">Parkovisko P3, Vstup C, 3. poschodie, tramvaj 7/8/17 — <strong>všetko musí overiť niekto, kto bol fyzicky na pracovisku.</strong> Zlá navigácia je pre úzkostného pacienta fatálna.</div></td>
+      </tr>
+      <tr>
+        <td><div class="mod">NORMALNI?</div><div class="note">5 položiek</div></td>
+        <td><span class="pill ok">Dobrý</span></td>
+        <td><div class="note">Emotívne presné, dobre napísané. Chýba: fyzické prejavy úzkosti (nespavosť, búšenie srdca), túžba po izolácii.</div></td>
+      </tr>
+      <tr>
+        <td><div class="mod">FAMILY_HELP</div><div class="note">4–5 bodov / liečba</div></td>
+        <td><span class="pill ok">Dobrý</span></td>
+        <td><div class="note">Kvalitný obsah, realistický. Menšia vec: chýba "Čo robiť ak pacient odmieta pomoc alebo komunikáciu" — bežný stav u mužov v tejto vekovej skupine.</div></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ── 2. UX ───────────────────────────────────────────── -->
+<div class="section">
+  <div class="sec-header">
+    <span class="sec-title">02 — UX &amp; Prístupnosť</span>
+    <span class="sec-meta">Cieľová skupina: 60–75 rokov, mobilné zariadenie, stresový kontext</span>
+  </div>
+
+  <div class="findings">
+
+    <div class="find ok">
+      <div class="find-head"><span class="find-ico">✓</span>
+        <span class="find-title">Touch targets ≥ 48 px</span></div>
+      <div class="find-body">Všetky interaktívne prvky splňujú Material Design minimum. Checklisty, step-items, čipsy — overené.</div>
+    </div>
+
+    <div class="find ok">
+      <div class="find-head"><span class="find-ico">✓</span>
+        <span class="find-title">Typografia — 17px body / 1.6 line-height</span></div>
+      <div class="find-body">Spĺňa výskumné minimum pre 60+ skupinu. Big-text mód (1.2×) funkčný. Inter + Space Grotesk kombinácia je čitateľná.</div>
+    </div>
+
+    <div class="find ok">
+      <div class="find-head"><span class="find-ico">✓</span>
+        <span class="find-title">5-tabové menu s textovými labely</span></div>
+      <div class="find-body">Domů / Cesta / Příprava / Otázky / Více — v rámci kognitívneho limitu. Ikony + text vždy viditeľné.</div>
+    </div>
+
+    <div class="find ok">
+      <div class="find-head"><span class="find-ico">✓</span>
+        <span class="find-title">3-krokový onboarding s výberom liečby</span></div>
+      <div class="find-body">Lineárny flow, GDPR nóta, perzonalizácia hneď v kroku 2. Dismiss nie je možné skôr ako po kroku 3 — správne.</div>
+    </div>
+
+    <div class="find warn">
+      <div class="find-head"><span class="find-ico">⚠</span>
+        <span class="find-title">Tab "Více" — preťažená záložka</span></div>
+      <div class="find-body">Obsahuje 7 sekcií (kontakty, nemocnica, normální?, denník, rodina, glosár, prístupnosť). Kognitívna záťaž vysoká. Zvážte: Denník + Rodina do skrytého panelu, Glosár do modalu.</div>
+    </div>
+
+    <div class="find warn">
+      <div class="find-head"><span class="find-ico">⚠</span>
+        <span class="find-title">Hardcoded dátumy a PSA hodnota</span></div>
+      <div class="find-body">Časová os zobrazuje <code>25. 5. 2026</code>, <code>8,4 ng/ml</code>, <code>MUDr. Kratochvíl</code>. Pre demonštráciu OK, ale pri odovzdaní pacientovi pôsobí mätúco. Musí byť vizuálne označené ako "ukážka".</div>
+    </div>
+
+    <div class="find warn">
+      <div class="find-head"><span class="find-ico">⚠</span>
+        <span class="find-title">Dátum stretnutia — nie je nastaviteľný</span></div>
+      <div class="find-body">Home screen zobrazuje "9 dní" — hardcoded. Pacient nemôže zadať skutočný dátum svojho vyšetrenia. Jednoduchý datepicker na Home screen by výrazne zvýšil relevanciu.</div>
+    </div>
+
+    <div class="find warn">
+      <div class="find-head"><span class="find-ico">⚠</span>
+        <span class="find-title">Vysoký kontrast — nepresné farby</span></div>
+      <div class="find-body">V <code>.hc</code> triede je <code>--a-faint:#4a5568</code> — kontrast na bielom pozadí je 4.6:1, čo nespĺňa WCAG AAA (7:1). Pre skutočne slabozrakých nedostatočné.</div>
+    </div>
+
+    <div class="find warn">
+      <div class="find-head"><span class="find-ico">⚠</span>
+        <span class="find-title">Žiadny focus ring pre klávesnicu</span></div>
+      <div class="find-body">CSS neobsahuje <code>:focus-visible</code> štýly. Pre desktop preview a asistívne technológie (šípky, Tab) je navigácia vizuálne nevedená. Nenáročná oprava.</div>
+    </div>
+
+    <div class="find crit">
+      <div class="find-head"><span class="find-ico">✕</span>
+        <span class="find-title">Nie je skutočné PWA (chýba service worker)</span></div>
+      <div class="find-body">Nie je <code>manifest.json</code> ani service worker registration. Aplikácia načíta offline iba ak bola predtým v cache prehliadača — to nie je spoľahlivé. Pre skutočnú offline funkciu (letisko, zlý signál) je SW nevyhnutný.</div>
+    </div>
+
+    <div class="find crit">
+      <div class="find-head"><span class="find-ico">✕</span>
+        <span class="find-title">Tlačová pätička uvádza "Obsah schválen MUDr. Z. Čermáková" — predčasne</span></div>
+      <div class="find-body">Riadok v <code>#print-target</code>: <em>"Obsah schválen MUDr. Z. Čermáková, Ph.D."</em> — ak obsah ešte nebol klinicky overený, toto je nepravdivé tvrdenie. Nebezpečné aj z hľadiska zodpovednosti.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── 3. MDR ───────────────────────────────────────────── -->
+<div class="section">
+  <div class="sec-header">
+    <span class="sec-title">03 — MDR Hranica (ADR 004)</span>
+    <span class="sec-meta">EU Regulation 2017/745 · MDCG 2019-11</span>
+  </div>
+
+  <div class="callout">
+    <div class="callout-label">Záver hodnotenia</div>
+    <p>Prototyp zostáva pod prahom SaMD klasifikácie. Žiadna funkcia nespracováva pacientské dáta na klinický výstup.
+      Existuje však jedna hraničná vec: interpretácia PSA (8,4 ng/ml = "zvýšená") na Časovej osi — hoci s disclaimerom,
+      stále ide o klinickú interpretáciu zobrazovanú pacientovi. Odporúčame tento text overiť s lekárkou.</p>
+  </div>
+
+  <div class="findings">
+    <div class="find ok">
+      <div class="find-head"><span class="find-ico">✓</span><span class="find-title">Display-only — žiadne spracovanie klinických dát</span></div>
+      <div class="find-body">Aplikácia zobrazuje obsah, neprodukuje klinické odporúčania z pacientských vstupov.</div>
+    </div>
+    <div class="find ok">
+      <div class="find-head"><span class="find-ico">✓</span><span class="find-title">Denník je lokálny, neprenáša sa</span></div>
+      <div class="find-body">localStorage only, žiadne API volania. Denník nevytvára medicínsky záznam v zmysle MDR.</div>
+    </div>
+    <div class="find ok">
+      <div class="find-head"><span class="find-ico">✓</span><span class="find-title">Disclaimer prítomný</span></div>
+      <div class="find-body">"Průvodce nenahrazuje odbornou lékařskou péči" — v onboardingu aj v aplikácii.</div>
+    </div>
+    <div class="find warn">
+      <div class="find-head"><span class="find-ico">⚠</span><span class="find-title">PSA interpretácia na Časovej osi</span></div>
+      <div class="find-body">"8,4 ng/ml ↑ — zvýšená" je klinická interpretácia. Technicky je to vzorový obsah (hardcoded), nie výstup z pacientských dát — hranica je teda OK, ale text by mal schváliť klinický garant.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── 4. CHÝBAJÚCE FUNKCIE ───────────────────────────── -->
+<div class="section">
+  <div class="sec-header">
+    <span class="sec-title">04 — Chýbajúce funkcie</span>
+    <span class="sec-meta">Deklarované v ADRs a projektovom kontexte, ale neimplementované</span>
+  </div>
+  <div class="matrix">
+    <div class="mx-cell">
+      <div class="mx-label red">Blokujúce pre pilot</div>
+      <div class="mx-items">
+        <div class="mx-item">Overenie telefónnych čísel kontaktov s FN Ostrava</div>
+        <div class="mx-item">Overenie navigácie v nemocnici (Vstup C, 3. NP)</div>
+        <div class="mx-item">Odstránenie/označenie hardcoded dátumov a PSA hodnoty</div>
+        <div class="mx-item">Klinické schválenie obsahu lekárkou pred distribúciou</div>
+      </div>
+    </div>
+    <div class="mx-cell">
+      <div class="mx-label amber">Dôležité (pred prvým pacientom)</div>
+      <div class="mx-items">
+        <div class="mx-item">Service worker + manifest.json pre offline</div>
+        <div class="mx-item">Datepicker pre dátum vyšetrenia na Home screen</div>
+        <div class="mx-item">Oprava tlačovej pätičky (schválenie obsahu)</div>
+        <div class="mx-item">Rozšírenie QUESTIONS o klinicky špecifické otázky</div>
+        <div class="mx-item">CD/film zo zobrazenia do checklistu dokumentov</div>
+      </div>
+    </div>
+    <div class="mx-cell">
+      <div class="mx-label blue">Fáza 2</div>
+      <div class="mx-items">
+        <div class="mx-item">QR kód vstup z ambulantného referálu (ADR 001)</div>
+        <div class="mx-item">Skutočný patient navigator kontakt</div>
+        <div class="mx-item">Focus ring pre klávesnicu / asistívne tech.</div>
+        <div class="mx-item">Rozšírenie glosára (T-staging, PIRADS, IGRT)</div>
+      </div>
+    </div>
+    <div class="mx-cell">
+      <div class="mx-label" style="color:#5a6677">Nice to have</div>
+      <div class="mx-items">
+        <div class="mx-item">Modul aktivního sledovania — hlbší obsah</div>
+        <div class="mx-item">Rozlíšenie HT podľa rizikovej skupiny (RT+HT)</div>
+        <div class="mx-item">"Je to normální?" — fyzické prejavy úzkosti</div>
+        <div class="mx-item">Rodina: "Čo ak pacient odmieta komunikovať"</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr>
+
+<!-- ── 5. OTÁZKY PRE LEKÁRKU ──────────────────────────── -->
+<div class="section">
+  <div class="sec-header">
+    <span class="sec-title">05 — Otázky pre MUDr. Čermákovú</span>
+    <span class="sec-meta">Pripravené na stretnutie · klinická validácia obsahu</span>
+  </div>
+
+  <div class="callout" style="margin-bottom:32px">
+    <div class="callout-label">Kontext</div>
+    <p>Nižšie sú otázky zoradené podľa priority. Žlté otázky blokujú
+      nasadenie prototypu pacientom. Ostatné sú dôležité pre klinickú presnosť,
+      ale neblokujú demo prezentáciu.</p>
+  </div>
+
+  <div class="q-group">
+    <div class="q-group-label">A — Liečebné cesty · klinická presnosť</div>
+    <div class="q-list">
+
+      <div class="q-item urgent">
+        <div class="q-num">A1</div>
+        <div>
+          <div class="q-text">Aký štandard RT používa FN Ostrava — konvenčná frakcionácia (5×/týždeň, ~7–8 týždňov), hypo-frakcionácia alebo SBRT (5 frakcií)? Kolko frakcií je typických?</div>
+          <div class="q-why">Prototyp uvádza "niekoľko týždňov, 5×/týždeň" — SBRT by bolo úplne inak.</div>
+        </div>
+      </div>
+
+      <div class="q-item urgent">
+        <div class="q-num">A2</div>
+        <div>
+          <div class="q-text">Používate plánovacie markery (fiduciálne semienka) alebo SpaceOAR gél pred RT? Malo by to byť v krokovom prehľade?</div>
+          <div class="q-why">Moderný štandard pri LDR/HDR aj EBRT — pacienti sú prekvapení ak to v aplikácii nie je.</div>
+        </div>
+      </div>
+
+      <div class="q-item">
+        <div class="q-num">A3</div>
+        <div>
+          <div class="q-text">Pre aktívne sledovanie — aký je váš protokol: intervaly PSA, intervaly biopsie, podmienky pre začatie liečby (PSA doubling time? Gleason upgrade?)? </div>
+          <div class="q-why">Tento modul je klinicky najslabší — len 2 vedľajšie účinky, oba psychologické. EAU 2024 má konkrétne kritériá.</div>
+        </div>
+      </div>
+
+      <div class="q-item">
+        <div class="q-num">A4</div>
+        <div>
+          <div class="q-text">Pre RT+HT — ako rozlišujete dĺžku HT pre intermediate a high-risk? (6–18 mesiacov vs. 2–3 roky?) V aplikácii zobrazujeme rovnaký text pre oboje.</div>
+          <div class="q-why">Pacient s intermediate risk dostane text "2–3 roky HT" čo je nesprávne.</div>
+        </div>
+      </div>
+
+      <div class="q-item">
+        <div class="q-num">A5</div>
+        <div>
+          <div class="q-text">Aké sú najčastejšie otázky, ktoré vám pacienti kladú pri vstupnom vyšetrení — a na ktoré si väčšinou zabudnú opýtať?</div>
+          <div class="q-why">Zoznam 8 otázok v aplikácii bol zostavený bez klinického vstupu. Vaša skúsenosť ho výrazne zlepší.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="q-group">
+    <div class="q-group-label">B — Kontakty a navigácia · overenie faktov</div>
+    <div class="q-list">
+
+      <div class="q-item urgent">
+        <div class="q-num">B1</div>
+        <div>
+          <div class="q-text">Je telefón Onkologickej kliniky FN Ostrava správny: <strong>+420 597 373 331</strong>? Je to priama linka na ambulanciu kde bude pacient chodiť?</div>
+          <div class="q-why">Neoverené číslo v aplikácii je blokujúci problém pred pilotom.</div>
+        </div>
+      </div>
+
+      <div class="q-item urgent">
+        <div class="q-num">B2</div>
+        <div>
+          <div class="q-text">Je navigácia správna: <strong>Vstup C → výtah → 3. poschodie → Onkologická klinika vľavo</strong>? A parkovisko P3 z ul. Dr. Šmerala za 20 Kč/hod?</div>
+          <div class="q-why">Pre úzkostného pacienta je zlá navigácia frustrujúca. Musí ju overiť niekto, kto chodí do budovy.</div>
+        </div>
+      </div>
+
+      <div class="q-item">
+        <div class="q-num">B3</div>
+        <div>
+          <div class="q-text">Existuje na vašom pracovisku patient koordinátor alebo sociálny pracovník? Aké sú ich kontaktné údaje?</div>
+          <div class="q-why">Chýba v aplikácii ako typ kontaktu — mnohé centrá majú navigátora pacienta.</div>
+        </div>
+      </div>
+
+      <div class="q-item">
+        <div class="q-num">B4</div>
+        <div>
+          <div class="q-text">Aké psychologické zdroje sú dostupné priamo pri FN Ostrava pre onkologických pacientov? (Amelie sme zahrnuli — je správna linka pre váš región?)</div>
+          <div class="q-why">Psychologická podpora je klinicky dôležitá — chceme odkázať na dostupné, nie vzdialené zdroje.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="q-group">
+    <div class="q-group-label">C — Obsah, tón a klinická zodpovednosť</div>
+    <div class="q-list">
+
+      <div class="q-item urgent">
+        <div class="q-num">C1</div>
+        <div>
+          <div class="q-text">Môžeme použiť formuláciu <strong>"Obsah schválen MUDr. Z. Čermáková, Ph.D."</strong> v tlačovej pätičke a vo všetkých verejných verziách aplikácie? Čo by ste k tomu potrebovali?</div>
+          <div class="q-why">Aktuálne je to v prototypu hardcoded. Bez vášho explicitného schválenia to tam nesmie byť.</div>
+        </div>
+      </div>
+
+      <div class="q-item">
+        <div class="q-num">C2</div>
+        <div>
+          <div class="q-text">Je sekcia "Je to normální?" (strach, hnev, obavy o rodinu…) klinicky vhodne podaná? Nie je niečo čo by ste povedali inak alebo vynechali?</div>
+          <div class="q-why">Emotívny obsah je citlivý — chceme váš klinický pohľad pred distribúciou.</div>
+        </div>
+      </div>
+
+      <div class="q-item">
+        <div class="q-num">C3</div>
+        <div>
+          <div class="q-text">Erektilná dysfunkcia a inkontinencia — máte pocit, že obsah je dostatočne priamy, alebo je príliš opatrný/strojený pre vašich pacientov?</div>
+          <div class="q-why">Muži v tejto vekovej skupine majú rôznu otvorenosť — chceme nájsť správny tón.</div>
+        </div>
+      </div>
+
+      <div class="q-item">
+        <div class="q-num">C4</div>
+        <div>
+          <div class="q-text">Aké percento vašich pacientov prichádza na vstupné vyšetrenie s doprovodom? Malo by sme viac zdôrazniť, aby prišli s niekým?</div>
+          <div class="q-why">Aplikácia odporúča doprovod — chceme vedieť, ako veľmi je to reálna výzva pre vašich pacientov.</div>
+        </div>
+      </div>
+
+      <div class="q-item">
+        <div class="q-num">C5</div>
+        <div>
+          <div class="q-text">Odhadli by ste rozdelenie vašich nových pacientov podľa typu liečby? (RT / HT / RT+HT / operácia / aktívne sledovanie)</div>
+          <div class="q-why">Pomôže nám určiť, ktoré moduly sú najkritickejšie pre obsah a kde investovať čas na verifikáciu.</div>
+        </div>
+      </div>
+
+      <div class="q-item">
+        <div class="q-num">C6</div>
+        <div>
+          <div class="q-text">Je niečo, čo by ste <em>nikdy nechceli</em> vidieť v aplikácii, ktorú dávate pacientom? Nejaký typ informácie, tónu alebo obsahu, ktorý by bol kontraproduktívny?</div>
+          <div class="q-why">Otvorená otázka — vaša intuícia lekára má hodnotu, ktorú žiadna analýza nenahradí.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- ── FOOTER ──────────────────────────────────────────── -->
+<div style="margin-top:60px;padding-top:20px;border-top:1px solid #161c24;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+  <div style="font-family:'JetBrains Mono',monospace;font-size:10px;
+    color:#2e3a4a;letter-spacing:.08em">ALT+SHIFT+HEAL · AUDIT v0.3 · 2026-05</div>
+  <div style="font-size:11px;color:#5a6677">
+    Interný dokument — pred distribúciou pacientom vyžaduje klinické schválenie</div>
+</div>
+
+</div>
+</body>
+</html>

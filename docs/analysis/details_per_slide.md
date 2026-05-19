@@ -434,3 +434,74 @@ Dve kolóny: V rozsahu pilotu (6 položiek) + Vedome mimo rozsahu (6 položiek) 
 - Otázka 5 → určuje merací protokol pilotu
 
 ---
+
+## Audit prototypu — Otázky pre MUDr. Čermákovú
+
+> Tieto otázky vznikli kritickou analýzou prototypu v0.3.
+> Otázky označené (!) blokujú distribúciu pacientom — musia byť zodpovedané pred pilotom.
+
+### A — Klinická presnosť liečebných ciest
+
+**A1 (!) Typ rádioterapie na FN Ostrava**
+Aký štandard RT používate — konvenčná frakcionácia (5×/týždeň, ~7–8 týždňov), hypofrakcionácia alebo SBRT (5 frakcií)? Koľko frakcií je typických pre karcinóm prostaty na vašom pracovisku?
+Prototyp uvádza "niekoľko týždňov, 5×/týždeň" — pri SBRT by bol celý krokový prehľad iný.
+
+**A2 (!) Fiduciálne markery a SpaceOAR gél**
+Používate pred RT plánovacie markery (fiduciálne semienka) alebo SpaceOAR rektálny spacer? Malo by to byť zahrnuté v krokovom prehľade pre pacienta?
+Moderný štandard pri EBRT aj brachyterapii — pacienti sú prekvapení, ak to v aplikácii nie je.
+
+**A3 Protokol aktívneho sledovania**
+Aký je váš protokol pre aktívne sledovanie — intervaly PSA, intervaly biopsie, podmienky pre začatie liečby (PSA doubling time, Gleason upgrade, klinická progresia)?
+Tento modul je klinicky najslabší (len 2 psychologické "účinky"). EAU 2024 má konkrétne kritériá — chceme sa prispôsobiť vašej praxi.
+
+**A4 Dĺžka HT v kombinovanej liečbe RT+HT**
+Ako rozlišujete dĺžku HT pre intermediate a high-risk pacientov (6–18 mesiacov vs. 2–3 roky)? Prototyp zobrazuje rovnaký text pre obe skupiny — pacient s intermediate risk dostane nesprávnu informáciu.
+
+**A5 Najčastejšie otázky pacientov**
+Aké sú najčastejšie otázky, ktoré vám pacienti kladú pri vstupnom vyšetrení — a na ktoré si väčšinou zabudnú opýtať?
+Zoznam 8 otázok v aplikácii bol zostavený bez klinického vstupu. Vaša skúsenosť ho výrazne zlepší.
+
+---
+
+### B — Overenie faktov · kontakty a navigácia
+
+**B1 (!) Telefón Onkologickej kliniky**
+Je telefónne číslo +420 597 373 331 správne a je to priama linka na ambulanciu, kde bude pacient chodiť?
+Neoverené číslo je blokujúci problém pred pilotom.
+
+**B2 (!) Navigácia v budove**
+Je navigácia správna: Vstup C → výtah → 3. poschodie → Onkologická klinika vľavo? A parkovisko P3 z ulice Dr. Šmerala za ~20 Kč/hod?
+Pre úzkostného pacienta je zlá navigácia frustrujúca. Musí to overiť niekto, kto fyzicky chodí do budovy.
+
+**B3 Patient koordinátor / sociálny pracovník**
+Existuje na vašom pracovisku patient koordinátor alebo sociálny pracovník pre onkologických pacientov? Aké sú ich kontaktné údaje?
+Tento typ kontaktu v aplikácii chýba.
+
+**B4 Psychologická podpora**
+Aké psychologické zdroje sú dostupné priamo pri FN Ostrava? Je linka Amelie (222 519 740) relevantná pre vašich pacientov, alebo máte bližšiu alternatívu?
+
+---
+
+### C — Tón, obsah a klinická zodpovednosť
+
+**C1 (!) Schválenie obsahu**
+Môžeme použiť formuláciu "Obsah schválen MUDr. Z. Čermáková, Ph.D." v tlačovej pätičke a vo verejných verziách aplikácie? Čo by ste k tomu potrebovali — aký proces revízie?
+Bez explicitného schválenia táto formulácia v aplikácii nesmie zostať.
+
+**C2 Sekcia "Je to normální?"**
+Je sekcia piatich emočných stavov (strach, hnev, kontrola, obavy o rodinu, únava z rozhodnutí) klinicky vhodne podaná? Chýba niečo, alebo je niečo čo by ste povedali inak?
+
+**C3 Tón pri ED a inkontinencii**
+Erektilná dysfunkcia a inkontinencia — je obsah dostatočne priamy, alebo príliš opatrný pre vašich pacientov? Muži v tejto vekovej skupine majú rôznu otvorenosť na tieto témy.
+
+**C4 Doprovod na vstupné vyšetrenie**
+Aké percento vašich pacientov prichádza na vstupné vyšetrenie s doprovodom? Malo by sme túto výzvu viac zdôrazniť?
+
+**C5 Rozdelenie pacientov podľa liečby**
+Aké je orientačné rozdelenie vašich nových pacientov podľa typu liečby — RT / HT / RT+HT / operácia / aktívne sledovanie?
+Pomôže určiť, ktoré moduly sú najkritickejšie na obsahovú verifikáciu.
+
+**C6 Čo v aplikácii nechcete**
+Je niečo, čo by ste nikdy nechceli vidieť v aplikácii, ktorú dávate pacientom — typ informácie, tón alebo obsah, ktorý by bol kontraproduktívny?
+
+---
